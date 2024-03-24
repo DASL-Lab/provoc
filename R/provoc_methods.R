@@ -35,7 +35,7 @@ predict.provoc <- function(provoc_obj,
     # b1 <- Baaijens[Baaijens$sra == unique(Baaijens$sra)[1], ]
     # b2 <- Baaijens[Baaijens$sra == unique(Baaijens$sra)[2], ]
     
-    # predicted_values <- predict.provoc(res)
+    # predicted_values <- predict.provoc(res, b1, b2)
     # print(predicted_values)
     # -------
     # END OF TEMP
@@ -44,8 +44,11 @@ predict.provoc <- function(provoc_obj,
         stop("Object must be of class 'provoc'")
     }
 
-    b1_index <- match("b1", colnames(provoc_obj$variant))
-    b2_index <- match("b2", colnames(provoc_obj$variant))
+    # b1_index <- match("b1", colnames(provoc_obj$variant))
+    # b2_index <- match("b2", colnames(provoc_obj$variant))
+
+    b1_index <- match(b1, provoc_obj$group)
+    b2_index <- match(b2, provoc_obj$group)
 
     proportions <- as.numeric(provoc_obj$rho)
     variant_matrix <- attr(provoc_obj, "variant_matrix")
