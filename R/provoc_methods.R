@@ -22,12 +22,23 @@ predict.provoc <- function(provoc_obj,
     dispersion = NULL, terms = NULL) {
 
     # TEMP example usage
+    # -------
     # library(provoc)
     # data("Baaijens")
+    
     # Baaijens$mutation <- parse_mutations(Baaijens$label)
+    
     # res <- provoc(formula = cbind(count, coverage) ~ B.1.1.7 + B.1.617.2, data = Baaijens)
+    
     # print(get_convergence(res))
+    
+    # b1 <- Baaijens[Baaijens$sra == unique(Baaijens$sra)[1], ]
+    # b2 <- Baaijens[Baaijens$sra == unique(Baaijens$sra)[2], ]
+    
     # predicted_values <- predict.provoc(res)
+    # print(predicted_values)
+    # -------
+    # END OF TEMP
 
     if (!"provoc" %in% class(provoc_obj)) {
         stop("Object must be of class 'provoc'")
