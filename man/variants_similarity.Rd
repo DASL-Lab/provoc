@@ -9,7 +9,7 @@ variants_similarity(data, is_varmat)
 \arguments{
 \item{data}{A dataframe either before or after it has been fused with varmat}
 
-\item{is_varmat}{TRUE if data is a varaint matrix, FALSE if data is a fused dataframe}
+\item{is_varmat}{TRUE if data is a variant matrix, FALSE if data is a fused dataframe}
 }
 \value{
 none
