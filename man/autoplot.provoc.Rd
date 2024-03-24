@@ -4,7 +4,7 @@
 \alias{autoplot.provoc}
 \title{Plot a provoc object using ggplot2}
 \usage{
-\method{autoplot}{provoc}(provoc_obj, date_col = NULL)
+autoplot.provoc(provoc_obj, date_col = NULL)
 }
 \arguments{
 \item{provoc_obj}{The result of provoc(), or an object coerced via as.provoc().}

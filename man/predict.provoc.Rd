@@ -6,6 +6,8 @@
 \usage{
 \method{predict}{provoc}(
   provoc_obj,
+  b1,
+  b2,
   newdata = NULL,
   type = NULL,
   dispersion = NULL,

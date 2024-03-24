@@ -17,20 +17,35 @@
 #' @examples
 #' predicted_results <- predict(provoc_obj)
 predict.provoc <- function(provoc_obj,
+    b1, b2,
     newdata = NULL, type = NULL,
     dispersion = NULL, terms = NULL) {
+
+    # TEMP example usage
+    # library(provoc)
+    # data("Baaijens")
+    # Baaijens$mutation <- parse_mutations(Baaijens$label)
+    # res <- provoc(formula = cbind(count, coverage) ~ B.1.1.7 + B.1.617.2, data = Baaijens)
+    # print(get_convergence(res))
+    # predicted_values <- predict.provoc(res)
 
     if (!"provoc" %in% class(provoc_obj)) {
         stop("Object must be of class 'provoc'")
     }
 
+    b1_index <- match("b1", colnames(provoc_obj$variant))
+    b2_index <- match("b2", colnames(provoc_obj$variant))
+
     proportions <- as.numeric(provoc_obj$rho)
-    variant_matrix <- get_varmat(provoc_obj)
+    variant_matrix <- attr(provoc_obj, "variant_matrix")
+    #variant_matrix <- get_varmat(provoc_obj)
+
     if (any(!rownames(variant_matrix) %in% provoc_obj$variant)) {
         stop("Variant matrix does not match variants in results")
     }
 
-    results <- proportions %*% variant_matrix[provoc_obj$variant, ]
+    results <- proportions[b1_index] %*% variant_matrix[b2_index, ]
+    #results <- proportions %*% variant_matrix[provoc_obj$variant, ]
 
     return(results)
 }
