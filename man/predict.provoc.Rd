@@ -17,6 +17,10 @@
 \arguments{
 \item{provoc_obj}{Named list with \code{proportions} and \code{variant_matrix}.}
 
+\item{b1}{Name of the first sra sample group.}
+
+\item{b2}{Name of the second sra sample group.}
+
 \item{newdata}{Not yet implemented.}
 
 \item{type}{Not yet implemented.}
@@ -38,5 +42,12 @@ associated variant matrix, performs matrix multiplication to
 predict outcomes, and returns results in the same order as the original data.
 }
 \examples{
-predicted_results <- predict(provoc_obj)
+library(provoc)
+data("Baaijens")
+Baaijens$mutation <- parse_mutations(Baaijens$label)
+res <- provoc(formula = cbind(count, coverage) ~ B.1.1.7 + B.1.617.2, data = Baaijens)
+b1 <- Baaijens[Baaijens$sra == unique(Baaijens$sra)[1], ]
+b2 <- Baaijens[Baaijens$sra == unique(Baaijens$sra)[2], ]
+predicted_values <- predict.provoc(res, b1, b2)
+print(predicted_values)
 }

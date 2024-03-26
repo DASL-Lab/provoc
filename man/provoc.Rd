@@ -10,7 +10,7 @@ provoc(
   mutation_defs = NULL,
   by = NULL,
   update_interval = 20,
-  verbose = TRUE,
+  verbose = FALSE,
   annihilate = FALSE
 )
 }
