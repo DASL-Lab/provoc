@@ -83,7 +83,7 @@ print.summary.provoc <- function(summary.provoc) {
 #' @param plot_type Currently only "barplot" is implemented. Residual plots and other diagnostics are works in progress.
 #'
 #' @export
-plot.provoc <- function(provoc_obj, plot_type = c("barplot")) {
+plot.provoc <- function(provoc_obj, plot_type = c("barplot", "heatmap")) {
     #plot_types <- c("b", "r")
     #if(!all(plot_type %in% plot_types)) stop("Invalid plot choice.")
 
@@ -111,6 +111,19 @@ plot.provoc <- function(provoc_obj, plot_type = c("barplot")) {
             legend = unique(provoc_obj$variant),
             col = 1:length(unique(provoc_obj$variant)),
             pch = 15)
+    }
+    
+    # Heatmap
+    jaccard_similarity <- attributes(provoc_obj)$Jaccard_similarity
+    if (2 %in% plot_type || any(startsWith(plot_type, "h"))) {
+      image(1:nrow(jaccard_similarity),
+            1:ncol(jaccard_similarity),
+            jaccard_similarity,
+            axes = FALSE
+      )
+      axis(1, 1:nrow(jaccard_similarity), rownames(jaccard_similarity), padj = 1)
+      axis(2, 1:ncol(jaccard_similarity), colnames(jaccard_similarity), padj = 1)
+      title("Jaccard Similarity Among Variants")
     }
 }
 
