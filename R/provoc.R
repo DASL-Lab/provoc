@@ -3,7 +3,7 @@
 #' Applies provoc_optim to analyze COVID-19 Variant of Concern proportions.
 #' It allows flexible lineage and mutation definitions.
 #'
-#' @param formula A formula for the binomial model, like cbind(count, coverage) ~ .
+#' @param formula A formula for the binomial model, like `cbind(count, coverage) ~ .` for all variants in mutation_defs
 #' @param data Data frame containing count, coverage, and lineage columns.
 #' @param mutation_defs Optional mutation definitions; if NULL, uses astronomize().
 #' @param by Column name to group and process data. If included, the results will contain a column labelled "group".
@@ -226,9 +226,15 @@ extract_formula_components <- function(formula, data,
     lhs <- trimws(formula_parts[1])
     rhs <- trimws(formula_parts[2])
 
-    # Split RHS by '+' and trim whitespace
-    variant_names <- strsplit(rhs, "\\+")[[1]]
-    variant_names <- sapply(variant_names, trimws)
+    # Check if RHS is "." -> use all variants
+    if (rhs == ".") {
+        variant_names <- rownames(mutation_defs)
+    } else {
+        # Else filter variants by RHS
+        # Split RHS by '+' and trim whitespace
+        variant_names <- strsplit(rhs, "\\+")[[1]]
+        variant_names <- sapply(variant_names, trimws)
+    }
 
     # Extract necessary data based on LHS
     response_vars <- all.vars(formula[[2]])
