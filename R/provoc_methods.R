@@ -8,10 +8,8 @@
 #' @param provoc_obj Named list with `proportions` and `variant_matrix`.
 #' @param newdata Not yet implemented.
 #' @param type Not yet implemented.
-#' @param se.fit Not yet implemented.
 #' @param dispersion Not yet implemented.
 #' @param terms Not yet implemented.
-#' @param na.action Not yet implemented.
 #' @return Predicted values in the same order as the input data.
 #' @export
 #' @examples
@@ -24,17 +22,60 @@ predict.provoc <- function(provoc_obj,
         stop("Object must be of class 'provoc'")
     }
 
-    proportions <- as.numeric(provoc_obj$rho)
-    variant_matrix <- get_mutation_defs(provoc_obj)
-    if (any(!rownames(variant_matrix) %in% provoc_obj$variant)) {
-        stop("Variant matrix does not match variants in results")
+    # Process internal data
+    internal_data <- attributes(provoc_obj)$internal_data
+    by_col <- attributes(provoc_obj)$by_col
+    data_groups <- internal_data[, by_col]
+    if (!is.null(dim(data_groups))) {
+        data_groups <- rep(1, nrow(internal_data))
     }
 
-    results <- proportions %*% variant_matrix[provoc_obj$variant, ]
+    # Get matching lineage names
+    varind <- startsWith(names(internal_data), "var_")
+    varnames <- names(internal_data)[varind]
 
-    return(results)
+    # Reshape res and prepare for element-wise multiplication
+    res_wide <- tidyr::pivot_wider(
+        provoc_obj[, c("rho", "variant", "group")],
+        values_from = rho, names_from = variant,
+        names_prefix = "var_"
+    )
+    res_wide <- res_wide[match(data_groups, res_wide$group), ]
+
+    # Multiply the correct rows together, return as result
+    rowSums(as.matrix(res_wide[, varnames]) *
+            as.matrix(internal_data[, varnames]))
+
 }
 
-resids.provoc <- function(provoc_obj, type = "deviance") {
-    # TODO: Calculate deviance residuals
+#' Calculate the residuals of a provoc object
+#' 
+#' @param provoc_obj The result of provoc()
+#' @param type "deviance" or "raw"
+#' 
+#' @export
+resid.provoc <- function(provoc_obj, type = "deviance") {
+    counts <- attributes(provoc_obj)$internal_data$count
+    covs <- attributes(provoc_obj)$internal_data$coverage
+    covs <- ifelse(covs == 0, yes = 1, no = covs)
+    preds <- predict(provoc_obj)
+
+    raw_resids <- counts / covs - preds
+
+    if (startsWith(x = type, prefix = "d")) {
+        saturated <- dbinom(counts, size = covs,
+            prob = counts / covs, log = TRUE)
+        modelled <- dbinom(counts, size = covs, prob = preds)
+        return(sign(raw_resids) * 2 * (saturated - modelled))
+    } else {
+        return(raw_resids)
+    }
 }
+
+#' Calculate the residuals of a provoc object
+#' 
+#' @param provoc_obj The result of provoc()
+#' @param type "deviance" or "raw"
+#' 
+#' @export
+residuals.provoc <- resid.provoc

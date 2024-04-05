@@ -1,12 +1,27 @@
 #' Print the results of lineage abundance estimation
 #'
 #' @inherit summary.provoc
+#' @param provoc_obj The resulting object of class provoc to be used in printing.
 #' @param n The number of rows of the results dataframe to print
 #'
 #' @export
 print.provoc <- function(provoc_obj, n = 6) {
-    cat("Call: ", as.character(attributes(provoc_obj)$formula))
-    cat("\n\n")
+    cat("Call: ")
+    print(attributes(provoc_obj)$formula)
+    cat("\n")
+    minfo <- attributes(provoc_obj)$mutation_info
+    cat("Mutations in lineage definitions: ",
+        ncol(attributes(provoc_obj)$variant_matrix),
+        "\n")
+    if (length(minfo[[1]]) <= 10) {
+        cat("Mutations used in analysis/mutations in data:\n")
+        cat(paste(minfo[[1]], minfo[[2]], sep = "/", collapse = "\t"))
+        cat("\n\n")
+    } else {
+        cat("Summary of percent of mutations in data used:\n")
+        print(summary(minfo[[1]] / minfo[[2]]))
+        cat("\n")
+    }
     all_conv <- unlist(attributes(provoc_obj)$convergence)
     if (any(!all_conv)) {
         cat("Some models did not converge:\n")
@@ -31,35 +46,69 @@ print.provoc <- function(provoc_obj, n = 6) {
 #'
 #' @export
 summary.provoc <- function(provoc_obj) {
-    cat("Call: ")
+    cat("\nCall:\n")
     print(attributes(provoc_obj)$formula)
     cat("\n")
-    fitted <- predict(provoc_obj)
 
-    # TODO: Data summary
-    # Number of mutations used in the fitting,
-    # Similarity of variants (Jaccard, based on data used in model)
-    # Entropy of frequencies, or deviation from 0.5
-    # Five-number summary for coverage
-    # ...
+    # Deviance is intentionally misspelled by Devan
+    devance_res <- residuals(provoc_obj, type = "deviance")
+    cat("Deviance Residuals:\n")
+    print(summary(devance_res))
 
-    # TODO: Per-variant goodness of fit diagnostics
-    # | variant | total deviance | n_obs | ...
-    # |---------|----------------|-------| ...
-    # | Overall | ...
-    # | B.1.1.7 | ...
-    # | B.1.427 | ...
+    minfo <- attributes(provoc_obj)$mutation_info
+    cat("\nMutations in lineage definitions:",
+        ncol(attributes(provoc_obj)$variant_matrix),
+        "\n")
+    if (length(minfo[[1]]) <= 10) {
+        cat("Mutations used in analysis/mutations in data:\n")
+        cat(paste(minfo[[1]], minfo[[2]], sep = "/", collapse = "\t"))
+        cat("\n")
+    } else {
+        cat("Summary of percent of mutations in data used:\n")
+        print(summary(minfo[[1]] / minfo[[2]]))
+        cat("\n")
+    }
 
-    # TODO: Overall goodness of fit diagnostics
-    # R^2 analogue, Chi-squaretest for deviance, number of parameters
-    # convergence diagnostics, ...
+    cat("\nCoefficients:\n")
+    coef_table <- as.data.frame(provoc_obj)
+    coef_table_length <- seq_len(min(30,
+            nrow(coef_table)))
+    by_col <- attributes(provoc_obj)$by_col
+    if (is.null(by_col)) {
+        coef_table <- coef_table[, 1:4]
+    } else {
+        coef_table <- coef_table[, 1:5]
+    }
+    print(coef_table[
+            coef_table_length, ])
 
-    # TODO: return a summary.provoc object with associated print method.
-    # This is how summary.lm prints to the screen if not assigned to
-    # an object, and does not print if it is assigned to an object.
-    # This f'n to be split into one function to create the object
-    # and a print method.
-    return(invisible(list(formula = formula, resids = fitted)))
+    cat("\nCorrelation of coefficients:\n")
+    bootstraps <- attributes(provoc_obj)$bootstrap
+    if (length(bootstraps) > 1) {
+        cat("\nMultiple samples detected, see boot_corr() for info.\n")
+    } else {
+        boot_corr <- cor(bootstraps[[1]])
+        if (ncol(boot_corr) <= 6) {
+            print(boot_corr)
+        } else {
+            cat("Top 6 are shown; see coef_cor() for more.")
+            boot_corr[lower.tri(boot_corr)] <- 0
+            diag(boot_corr) <- 0
+            max_corrs <- apply(boot_corr, 2, max)
+            top_6 <- names(sort(-max_corrs))[1:6]
+            print(boot_corr[top_6, top_6])
+        }
+    }
+    return(
+        invisible(
+            list(
+                formula = formula,
+                resids = devance_res,
+                coef = coef_table,
+                boot_corr = boot_corr
+            )
+        )
+    )
 }
 
 #' Print the summary of a provoc object
@@ -70,12 +119,11 @@ print.summary.provoc <- function(summary.provoc) {
 #' Plot the results of model fitting
 #'
 #' @inherit summary.provoc
+#' @param provoc_obj Resulting object of class provoc to be used in plotting.
 #' @param plot_type Currently only "barplot" is implemented. Residual plots and other diagnostics are works in progress.
 #'
 #' @export
 plot.provoc <- function(provoc_obj, plot_type = c("barplot")) {
-    #plot_types <- c("b", "r")
-    #if(!all(plot_type %in% plot_types)) stop("Invalid plot choice.")
 
     mfrow <- switch(as.character(length(plot_type)),
         "1" = c(1, 1),
@@ -91,7 +139,7 @@ plot.provoc <- function(provoc_obj, plot_type = c("barplot")) {
                     length(unique(provoc_obj$group)),
                     1)),
             names.arg = unique(provoc_obj$group),
-            col = 1:length(unique(provoc_obj$variant)),
+            col = seq_along(unique(provoc_obj$variant)),
             horiz = TRUE,
             xlim = c(0, 1),
             xlab = "Proportion",
@@ -99,7 +147,7 @@ plot.provoc <- function(provoc_obj, plot_type = c("barplot")) {
             las = 1)
         legend("topright",
             legend = unique(provoc_obj$variant),
-            col = 1:length(unique(provoc_obj$variant)),
+            col = seq_along(unique(provoc_obj$variant)),
             pch = 15)
     }
 }
@@ -109,6 +157,7 @@ plot.provoc <- function(provoc_obj, plot_type = c("barplot")) {
 #' Plots the results of estimating wastewater prevalence of SARS-CoV-2. Optionally plots the results over time if given a date column.
 #'
 #' @inherit summary.provoc
+#' @param provoc_obj Resulting object of class provoc to be used in plotting.
 #' @param date_col Optional - if there's a date column, the results are plotted over time. This can be problematic if there are multiple samples at each time point.
 #'
 #' @importFrom ggplot2 autoplot
@@ -127,8 +176,6 @@ autoplot.provoc <- function(provoc_obj, date_col = NULL) {
         gg <- gg  +
             aes(x = date, y = rho, fill = variant, group = group) +
             labs(y = "Proportion", x = "Date", fill = "Lineage") +
-            scale_x_continuous(minor_breaks = NULL,
-                breaks = unique(provoc_obj$date)) +
             theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
     } else if (!"group" %in% colnames(provoc_obj)) {
@@ -154,6 +201,7 @@ autoplot.provoc <- function(provoc_obj, date_col = NULL) {
 #' Extract the mutation definitions used to fit the model
 #'
 #' @inherit summary.provoc
+#' @param provoc_obj Object of class provoc to be used to extract the mutation definitions.
 #'
 #' @export
 get_mutation_defs <- function(provoc_obj) {
@@ -164,6 +212,7 @@ get_mutation_defs <- function(provoc_obj) {
 #' Extract just the results of lineage estimation
 #'
 #' @inherit summary.provoc
+#' @param provoc_obj Object of class provoc to be used to extract the results.
 #'
 #' @export
 get_res <- function(provoc_obj) {
@@ -175,7 +224,7 @@ get_res <- function(provoc_obj) {
 #'
 #' If converged, returns True and prints a message. Otherwise, prints the samples and the note giving hints as to why it didn't converge.
 #'
-#' @param res The result of \code{provoc()}
+#' @param res The result of object provoc
 #' @param verbose Print a message to the screen?
 #'
 #' @return Invisbly returns TRUE if all samples converged, false otherwise.
@@ -195,4 +244,117 @@ get_convergence <- function(res, verbose = TRUE) {
         if (verbose) cat("All samples converged\n")
         return(invisible(TRUE))
     }
+}
+
+
+#' Summarise the similarities in variant matrices
+#'
+#' @inherit summary.provoc
+summarise_variants <- function(provoc_obj) {
+    similarities <- attributes(provoc_obj)$similarities |>
+        provoc:::simplify_similarity()
+
+    msg <- ""
+    if (length(similarities$Differ_by_one_or_less) > 0) {
+        msg <- paste0(msg,
+            "At least one pair of variants has a single difference.\n",
+            collapse = " ")
+    }
+    if (length(similarities$Jaccard_similarity) > 0) {
+        msg <- paste0(msg,
+            "At least one pair of variants has a Jaccard similarity > 0.99.\n",
+            collapse = " ")
+    }
+    if (length(similarities$is_subset) > 0) {
+        msg <- paste0(msg,
+            "At least one variant is a subset of another.\n",
+            collapse = " ")
+    }
+    if (length(similarities$is_almost_subset) > 0) {
+        msg <- paste0(msg,
+            "At least one variant is almost a subset of another.\n",
+            collapse = " ")
+    }
+
+    if (nchar(msg) > 0) {
+        msg <- paste0(msg, "See variants_similarity(res) for more info.\n",
+            collapse = "\n")
+    } else {
+        msg <- "No issues detected for mutation definition.\n"
+    }
+
+    msg
+}
+
+#' Plot the residuals, by variant
+#'
+#' @param provoc_obj Result of fitting provoc().
+#' @param type Deviance or raw residuals.
+#'
+#' @export
+plot_resids <- function(provoc_obj, type = "deviance", by_variant = TRUE) {
+    data <- attributes(provoc_obj)$internal_data
+    vardf <- data[, startsWith(colnames(data), "var_")]
+    varnames <- colnames(vardf)[startsWith(colnames(vardf), "var_")]
+    vardf$fitted <- as.numeric(predict(provoc_obj))
+    vardf$residuals <- provoc:::resid.provoc(provoc_obj, type = type)
+
+    plot(NA,
+        xlim = c(0, 1),
+        ylim = range(vardf$residuals, na.rm = TRUE),
+        xlab = "Fitted",
+        ylab = paste0(tools::toTitleCase(type), " Residuals"),
+        main = "Residuals versus Fitted"
+    )
+    abline(h = 0, col = "lightgrey", lty = 2, lwd = 2)
+    if (by_variant) {
+        for (i in seq_len(ncol(vardf) - 2)) {
+            points(residuals ~ fitted,
+                data = vardf[vardf[, i] == 1, ],
+                col = i, pch = 16)
+        }
+        legend("bottomright",
+            legend = gsub("var_", "", varnames),
+            col = seq_along(varnames),
+            pch = 16)
+    } else {
+        points(residuals ~ fitted, data = vardf, pch = 16)
+    }
+}
+
+#' plot the similarities of variants
+#' @export
+plot_variants <- function(provoc_obj,
+    type = "Jaccard_similarity", labels = TRUE) {
+    
+    old_par <- par()
+    similarities <- attributes(provoc_obj)$similarities[[type]]
+    similarities[upper.tri(similarities)] <- NA
+    diag(similarities) <- NA
+    similarities <- similarities[-1, -ncol(similarities)]
+    rownames <- gsub("var_", "", rownames(similarities))
+    colnames <- gsub("var_", "", colnames(similarities))
+    atseq <- (seq_along(rownames) - 1) / (length(rownames) - 1)
+
+    omar <- par()$mar
+    par(mar = c(6, 2, 2, 6))
+    image(similarities, xaxt = "n", yaxt = "n", bty = "n",
+        zlim = c(0, 1), main = type,
+        col = hcl.colors(
+            n = length(atseq)^4,
+            palette = "Spectral",
+            rev = TRUE))
+    axis(side = 1, at = atseq, las = 2,
+        labels = rownames)
+    axis(side = 4, at = atseq,
+        labels = colnames, las = 1)
+
+    if (labels) {
+        sims <- round(as.numeric(similarities), 3)
+        sims[is.na(sims)] <- ""
+        atseqy <- rep(atseq, each = length(atseq))
+        atseqx <- rep(atseq, times = length(atseq))
+        text(x = atseqx, y = atseqy, labels = sims)
+    }
+    par(mar = omar)
 }

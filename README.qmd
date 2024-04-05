@@ -1,9 +1,9 @@
 ---
 title: "ProVoC"
 format: gfm
+execute:
+  cache: true
 ---
-
-# ProVoC
 
 [![Lifecycle:
 development](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental-1)
@@ -27,6 +27,7 @@ There are two steps to using this software: create the mutation definitions and 
 If not specified, the mutation definitions uses hardcoded definitions from the [cov-lineages/constellations](https://github.com/cov-lineages/constellations) repo, which contains the representative mutations that were identified by the PANGO team. The mutation definitions must have names that match what exists in the data.
 
 ```{r}
+#| label: load_Baaijens
 #| echo: true
 #| eval: true
 library(provoc)
@@ -37,51 +38,82 @@ b1$mutation <- parse_mutations(b1$label)
 head(b1[, c("count", "coverage", "mutation", "label")])
 ```
 
-The main fitting function is designed to mimic `glm()`, with formula notation that emphasizes the connection to binomial GLM models.
+The main fitting function is designed to mimic `glm()`, with formula notation that emphasizes the connection to binomial GLM models. The `bootstrap_samples` argument is optional, and is used to calculate confidence intervals and correlation of the parameters.
 
 ```{r}
-res <- provoc(cbind(count, coverage) ~ B.1.1.7 + B.1.429 + B.1.617.2,
+#| label: fit one sample
+res <- provoc(
+    formula = count / coverage ~ B.1.1.7 + B.1.429 + B.1.617.2 + 
+        B.1.427 + AY.4 + P.1,
     data = b1,
-    verbose = FALSE)
+    bootstrap_samples = 100)
 res
 ```
 
 We have created a class for `provoc` objects with convenient methods. For example, plotting the results is achieved as follows:
 
 ```{r}
-#| fig-height: 4
 #| label: one-sample-res-base
+#| fig-height: 4
 plot(res)
 ```
 
 We use the convention of [`autoplot()`](https://ggplot2.tidyverse.org/reference/autoplot.html) as a function that creates a `ggplot2` plot based on a particular type of data. This allows for all of `ggplot2`'s fanciness on top of a pre-made plot.
 
 ```{r}
-#| fig-height: 4
 #| label: one-sample-res-ggplot
+#| fig-height: 4
 library(ggplot2)
 autoplot(res) +
     theme_bw() +
     labs(title = "Results for one sample")
 ```
 
+```{r}
+#| label: one-sample-resid-plot
+#| fig-height: 4
+plot_resids(res)
+summary(res)
+```
+
+```{r}
+#| label: one-sample-variant-plot
+plot_variants(res)
+```
+
 # Multiple Samples
 
 ```{r}
-# First two sampls from Baaijens
-b2 <- Baaijens [Baaijens$sra %in% unique(Baaijens$sra)[1:50], ]
+#| label: multi_sample
+# First two samples from Baaijens
+b2 <- Baaijens [Baaijens$sra %in% unique(Baaijens$sra)[1:30], ]
 b2$mutations <- parse_mutations(b2$label)
 head(b1[, c("count", "coverage", "mutation", "label", "sra")])
 ```
 
-Note the "by" argument below.
+Note the "`by`" argument below. This tells `provoc()` to fit the model separately to each sample defined by the `by` column. Since there are 30 samples, the model takes a while to run, hence why there are only 50 bootstrap samples here.
 
 ```{r}
-res <- provoc(cbind(count, coverage) ~ B.1.1.7 + B.1.429 + B.1.617.2,
-    data = b2, by = "sra",
-    verbose = FALSE)
+#| label: fit-multi-sample
+#| warning: false
+#| message: false
+system.time(
+    res <- provoc(
+        formula = count / coverage ~ B.1.1.7 + B.1.429 + B.1.617.2 +
+            B.1.427 + AY.4 + P.1,
+        data = b2, 
+        by = "sra",
+        bootstrap_samples = 0)
+)
 res
 ```
+
+
+```{r}
+#| label: multi-sample-variant-plot
+plot_variants(res)
+```
+
 
 The plotting functions above work as expected.
 
@@ -90,6 +122,14 @@ The plotting functions above work as expected.
 #| label: multi-sample-res-base
 plot(res)
 ```
+
+
+```{r}
+#| fig-height: 8
+#| label: multi-sample-resid-base
+plot_resids(res)
+```
+
 
 
 ```{r}
@@ -104,7 +144,50 @@ In addition, we've added special functionality for data with a "date" column:
 #| fig-height: 4
 #| label: multi-date-res-ggplot
 theme_set(theme_bw())
-res$date <- lubridate::ymd(b2$date[match(res$group, b2$sra)])
-autoplot(res, date_col = "date") + scale_x_date()
+res$date <- lubridate::ymd(res$date)
+autoplot(res, date_col = "date")
 ```
 
+
+```{r}
+#| label: multi-sample-resid-plot
+#| fig-height: 4
+plot_resids(res)
+```
+
+## Searching for Different Variants
+
+```{r}
+#| label: with-without
+library(patchwork)
+res_with <- provoc(cbind(count, coverage) ~ B.1.1.7 + B.1.429 + B.1.617.2 + B.1.427,
+    data = b2, by = "sra",
+    verbose = FALSE, bootstrap_samples = 0)
+res_with$date <- lubridate::ymd(res_with$date)
+
+res_without <- provoc(cbind(count, coverage) ~ B.1.429 + B.1.617.2 + B.1.427,
+    data = b2, by = "sra",
+    verbose = FALSE, bootstrap_samples = 0)
+res_without$date <- lubridate::ymd(res_without$date)
+
+g_with <- autoplot(res_with, date_col = "date") +
+    scale_fill_manual(values = 2:5)
+g_without <- autoplot(res_without, date_col = "date") +
+    scale_fill_manual(values = 3:5)
+
+g_with / g_without
+```
+
+# Roadmap
+
+- Soon
+    - [ ] Finish simplified versions of Freyja and Alcov models.
+    - [ ] Full suite of model diagnostic visualizations.
+    - [ ] Process data from iVar for use in models.
+        - [ ] Process a list or directory of iVar data into an appropriate object.
+    - [ ] Tools to investigate the effect of different lineage definitions.
+- Medium future
+    - [ ] Convert Freyja and Alcov outputs to R objects that can take advantage of the diagnostics.
+    - [ ] Allow lists of formulae, lists of mutation_defs, and lists of data.
+- Far future
+    - [ ] Make available on CRAN
