@@ -4,6 +4,8 @@ inst/doc
 working/
 *usher_barcodes*
 *pdf
+__pycache__/
 .Rproj.user
 README_cache/*
 provoc.Rproj
+.Rhistory
