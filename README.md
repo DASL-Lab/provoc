@@ -346,10 +346,9 @@ plot_lineages(res_all)
 
 - [x] 0.5: Current version
 - [ ] 0.6: Refactor and add methods
-  - [ ] Standardize to use “lineage” everywhere
-  - [ ] General ease of use for fitting multiple models, checking
-    lineage definitions, and checking diagnostics.
-  - [ ] Correct documentation errors and vestiges
+  - [x] Standardize to use "lineage" everywhere (except for "variant of concern")
+  - [ ] General ease of use for fitting multiple models, checking lineage definitions, and checking diagnostics.
+  - [x] Correct documentation errors and vestiges
 - [ ] 0.7: Better handling of multiple samples
   - [ ] Proper diagnostics, easily applied to all samples
   - [ ] `multiprovoc` class so functions know how to handle things?
