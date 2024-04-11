@@ -158,6 +158,15 @@ plot.provoc <- function(provoc_obj, plot_type = c("barplot")) {
 #' @param provoc_obj Resulting object of class provoc to be used in plotting.
 #' @param date_col Optional - if there's a date column, the results are plotted over time. This can be problematic if there are multiple samples at each time point.
 #'
+#' @examples
+#' data(Baaijens)
+#' b10 <- Baaijens[Baaijens$sra %in% unique(Baijens$sra)[1:10], ]
+#' b10$mutations <- parse_mutations(b10$label)
+#' res <- provoc(count / coverage ~ B.1.1.7 + B.1.617.2,
+#'     data = b10, by = "sra")
+#' res$date <- lubridate::ymd(res$date)
+#' autoplot(res, date_col = "date")
+#' 
 #' @importFrom ggplot2 autoplot
 #' @export
 autoplot.provoc <- function(provoc_obj, date_col = NULL) {
