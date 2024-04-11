@@ -129,14 +129,15 @@ plot.provoc <- function(provoc_obj, plot_type = c("barplot")) {
         c(2, 2))
     par(mfrow = mfrow)
 
+    by_col <- attributes(provoc_obj)$by_col
     # Barplot
     if (1 %in% plot_type || any(startsWith(plot_type, "b"))) {
         barplot(
-            height = matrix(provoc_obj$rho,
-                ncol = ifelse("group" %in% names(provoc_obj),
-                    length(unique(provoc_obj$group)),
-                    1)),
-            names.arg = unique(provoc_obj$group),
+            height = matrix(
+                data = provoc_obj$rho,
+                ncol = ifelse(is.null(by_col), 1,
+                    length(unique(provoc_obj[, by_col])))),
+            names.arg = unique(provoc_obj[, by_col]),
             col = seq_along(unique(provoc_obj$lineage)),
             horiz = TRUE,
             xlim = c(0, 1),
@@ -164,6 +165,8 @@ autoplot.provoc <- function(provoc_obj, date_col = NULL) {
         stop("Please load ggplot2 before using this function.")
     }
 
+    by_col <- attributes(provoc_obj)$by_col
+
     gg <- ggplot(provoc_obj) +
         geom_bar(stat = "identity", position = "stack") +
         lims(y = c(0, 1))
@@ -171,11 +174,11 @@ autoplot.provoc <- function(provoc_obj, date_col = NULL) {
         if (!inherits(provoc_obj[, date_col], "Date"))
             stop("Supplied date column does not include Date values. \nTry lubridate::ymd().")
         gg <- gg  +
-            aes(x = date, y = rho, fill = lineage, group = group) +
+            aes(x = date, y = rho, fill = lineage, group = !!ensym(by_col)) +
             labs(y = "Proportion", x = "Date", fill = "Lineage") +
             theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
-    } else if (!"group" %in% colnames(provoc_obj)) {
+    } else if (!by_col %in% colnames(provoc_obj)) {
         if (ncol(provoc_obj) > 4)
             warning("Detected extra information, but plotting results as if they're a single sample.")
         gg <- gg +
@@ -186,9 +189,9 @@ autoplot.provoc <- function(provoc_obj, date_col = NULL) {
 
     } else {
         gg <- gg +
-            aes(x = group, y = rho, fill = lineage) +
-            labs(y = "Proportion", x = "Group", fill = "Lineage") +
-            scale_x_discrete(breaks = sort(unique(provoc_obj$group))) +
+            aes(x = !!ensym(by_col), y = rho, fill = lineage) +
+            labs(y = "Proportion", x = by_col, fill = "Lineage") +
+            scale_x_discrete(breaks = sort(unique(provoc_obj[, by_col]))) +
             coord_flip()
 
     }

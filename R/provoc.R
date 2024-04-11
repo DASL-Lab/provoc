@@ -109,12 +109,12 @@ provoc <- function(formula, data, lineage_defs = NULL, by = NULL,
         if (i == 1) {
             final_results <- as.data.frame(res_list[[1]])
             if (!is.null(by)) {
-                final_results$group <- unique(data[, by])[1]
+                final_results[, by] <- unique(data[, by])[1]
             } else {
-                final_results$group <- 1
+                final_results[, by] <- 1
             }
         } else {
-            res_list[[i]]$group <- unique(data[, by])[i]
+            res_list[[i]][, by] <- unique(data[, by])[i]
             final_results <- rbind(final_results, res_list[[i]])
         }
     }
@@ -126,7 +126,7 @@ provoc <- function(formula, data, lineage_defs = NULL, by = NULL,
         final_results <- dplyr::left_join(
             final_results,
             constant_columns,
-            by = c("group" = "sra"))
+            by = by)
     }
 
     provoc_obj <- final_results
