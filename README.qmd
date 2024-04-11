@@ -218,20 +218,23 @@ plot_lineages(res_all)
     - [x] Standardize to use "lineage" everywhere (except for "variant of concern")
     - [x] Correct documentation errors and vestiges
     - [ ] Documentation overhaul and standardization
+    - [ ] Trim the fat! Many functions are deprecated but not marked as so.
 - [ ] 0.7: Better handling of multiple samples
     - [ ] General ease of use for fitting multiple models, checking lineage definitions, and checking diagnostics.
+    - [ ] Dealing with residuals (raw and deviance) from multiple samples.
     - [ ] Proper diagnostics, easily applied to all samples
-    - [ ] `multiprovoc` class so functions know how to handle things?
+    - [ ] Maybe add a `multiprovoc` class so functions know how to handle things? If not, add the relevant functionality based on whether the "by" column has more than one unique value.
 - [ ] 0.8: Multiple methods
     - [ ] Freyja and AlCoV (possibly others) as first-class objects, with access to methods for `provoc` objects.
         - Potentially loading in Freyja output files as `provoc` objects
     - [ ] Stacking (`cbind()`) models for ease of comparison
-    - [ ] Import and process iVar data.
+    - [ ] Import and process iVar data, more mutation processing functions.
     - [ ] Main function works for multiple methods and data sources.
     - [ ] Unified `parse_mutations()` function with minimal user input.
 - [ ] 0.9: The shiny minor version
     - [ ] Shiny app to interact with lineage defitions
     - [ ] Shiny app to interact with results
+    - [ ] Clean up all functions and attempt some computational speedups
 - [ ] 1.0: First major release
     - [ ] All functions unit-tested and debugged
     - [ ] Vignettes fully built

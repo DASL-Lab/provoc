@@ -80,12 +80,12 @@ res
     All models converged.
 
     Top 5 lineages:
-         rho   ci_low ci_high   lineage group
-    5  0.515 5.09e-01 0.52084      AY.4     1
-    2   0.33 3.23e-01 0.33823   B.1.429     1
-    4  0.124 1.18e-01 0.13045   B.1.427     1
-    1  0.008 7.08e-03 0.00805   B.1.1.7     1
-    3 <0.001 1.36e-09 0.00007 B.1.617.2     1
+         rho   ci_low  ci_high   lineage group
+    5  0.515 5.09e-01 5.20e-01      AY.4     1
+    2   0.33 3.23e-01 3.35e-01   B.1.429     1
+    4  0.124 1.20e-01 1.31e-01   B.1.427     1
+    1  0.008 7.21e-03 8.07e-03   B.1.1.7     1
+    3 <0.001 1.64e-09 7.31e-05 B.1.617.2     1
 
 We have created a class for `provoc` objects with convenient methods.
 For example, plotting the results is achieved as follows:
@@ -136,19 +136,19 @@ summary(res)
 
     Coefficients:
                rho       ci_low      ci_high   lineage
-    1 7.599439e-03 7.081703e-03 8.050048e-03   B.1.1.7
-    2 3.301205e-01 3.234749e-01 3.382267e-01   B.1.429
-    3 9.512833e-09 1.362086e-09 6.996912e-05 B.1.617.2
-    4 1.242872e-01 1.184034e-01 1.304502e-01   B.1.427
-    5 5.150303e-01 5.086749e-01 5.208370e-01      AY.4
+    1 7.599439e-03 7.213255e-03 8.070333e-03   B.1.1.7
+    2 3.301205e-01 3.230623e-01 3.348094e-01   B.1.429
+    3 9.512833e-09 1.637161e-09 7.306695e-05 B.1.617.2
+    4 1.242872e-01 1.196963e-01 1.307337e-01   B.1.427
+    5 5.150303e-01 5.091282e-01 5.202780e-01      AY.4
 
     Correlation of coefficients:
-                  B.1.1.7     B.1.429  B.1.617.2     B.1.427        AY.4
-    B.1.1.7    1.00000000  0.01371296  0.2091873 -0.02628246 -0.18810506
-    B.1.429    0.01371296  1.00000000  0.1868977 -0.89024937  0.03164538
-    B.1.617.2  0.20918734  0.18689767  1.0000000 -0.16716463 -0.11556907
-    B.1.427   -0.02628246 -0.89024937 -0.1671646  1.00000000  0.03870984
-    AY.4      -0.18810506  0.03164538 -0.1155691  0.03870984  1.00000000
+                  B.1.1.7     B.1.429   B.1.617.2     B.1.427        AY.4
+    B.1.1.7    1.00000000  0.10160769  0.09493602 -0.12713155 -0.07756476
+    B.1.429    0.10160769  1.00000000  0.14549301 -0.86749581 -0.09795299
+    B.1.617.2  0.09493602  0.14549301  1.00000000 -0.08779936 -0.06165950
+    B.1.427   -0.12713155 -0.86749581 -0.08779936  1.00000000  0.18566735
+    AY.4      -0.07756476 -0.09795299 -0.06165950  0.18566735  1.00000000
 
 ``` r
 plot_lineages(res)
@@ -189,11 +189,8 @@ system.time(
 )
 ```
 
-    [1] "Attempt 10 of 20."
-    [1] "Attempt 20 of 20."
-
        user  system elapsed 
-      1.819   0.020   1.848 
+      2.001   0.006   2.015 
 
 ``` r
 res
@@ -346,24 +343,33 @@ plot_lineages(res_all)
 
 - [x] 0.5: Current version
 - [ ] 0.6: Refactor and add methods
-  - [x] Standardize to use "lineage" everywhere (except for "variant of concern")
+  - [x] Standardize to use “lineage” everywhere (except for “variant of
+    concern”)
   - [x] Correct documentation errors and vestiges
   - [ ] Documentation overhaul and standardization
+  - [ ] Trim the fat! Many functions are deprecated but not marked as
+    so.
 - [ ] 0.7: Better handling of multiple samples
-  - [ ] General ease of use for fitting multiple models, checking lineage definitions, and checking diagnostics.
+  - [ ] General ease of use for fitting multiple models, checking
+    lineage definitions, and checking diagnostics.
+  - [ ] Dealing with residuals (raw and deviance) from multiple samples.
   - [ ] Proper diagnostics, easily applied to all samples
-  - [ ] `multiprovoc` class so functions know how to handle things?
+  - [ ] Maybe add a `multiprovoc` class so functions know how to handle
+    things? If not, add the relevant functionality based on whether the
+    “by” column has more than one unique value.
 - [ ] 0.8: Multiple methods
   - [ ] Freyja and AlCoV (possibly others) as first-class objects, with
     access to methods for `provoc` objects.
     - Potentially loading in Freyja output files as `provoc` objects
   - [ ] Stacking (`cbind()`) models for ease of comparison
-  - [ ] Import and process iVar data.
+  - [ ] Import and process iVar data, more mutation processing
+    functions.
   - [ ] Main function works for multiple methods and data sources.
   - [ ] Unified `parse_mutations()` function with minimal user input.
 - [ ] 0.9: The shiny minor version
   - [ ] Shiny app to interact with lineage defitions
   - [ ] Shiny app to interact with results
+  - [ ] Clean up all functions and attempt some computational speedups
 - [ ] 1.0: First major release
   - [ ] All functions unit-tested and debugged
   - [ ] Vignettes fully built
