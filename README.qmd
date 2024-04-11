@@ -214,10 +214,10 @@ plot_lineages(res_all)
 # Version Roadmap
 
 - [x] 0.5: Current version
-- [ ] 0.6: Refactor and add methods
+- [x] 0.6: Refactor and add methods
     - [x] Standardize to use "lineage" everywhere (except for "variant of concern")
     - [x] Correct documentation errors and vestiges
-    - [ ] Documentation overhaul and standardization
+    - [x] Documentation overhaul and standardization
     - [ ] Trim the fat! Many functions are deprecated but not marked as so.
 - [ ] 0.7: Better handling of multiple samples
     - [ ] General ease of use for fitting multiple models, checking lineage definitions, and checking diagnostics.

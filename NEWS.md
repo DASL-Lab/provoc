@@ -1,4 +1,9 @@
 
+## 0.5.2: 
+
+- Documentation has been significantly updated.
+- BREAKING CHANGE: If you use the argument `by = "sra"`, the result will have a column labelled `sra` (not `group`, as before).
+
 ## 0.5.1: "Lineages of Concern" doesn't have the same ring to it.
 
 - BREAKING CHANGE: All names changed from "variant" to "lineage" (except in "variant of concern").
