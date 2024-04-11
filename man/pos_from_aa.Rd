@@ -2,7 +2,7 @@
 % Please edit documentation in R/coverage.R
 \name{pos_from_aa}
 \alias{pos_from_aa}
-\title{Find position from aa}
+\title{Find position from amino acid string.}
 \usage{
 pos_from_aa(aa)
 }
@@ -10,5 +10,13 @@ pos_from_aa(aa)
 \item{aa}{A vector of mutations. aa:orf1a:I300V, ins:28215:3, del:27378:25, or C703T}
 }
 \description{
-Find position from aa
+Find position from amino acid string.
+}
+\details{
+Finds the 0-indexed position of the amino acid. Intended to aid in adding coverage for mutations that weren't observed.
+}
+\examples{
+pos_from_aa("aa:orf1a:I300V") #1166
+pos_from_aa("C703T") # 703
+
 }

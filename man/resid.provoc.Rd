@@ -7,7 +7,7 @@
 \method{resid}{provoc}(provoc_obj, type = "deviance")
 }
 \arguments{
-\item{provoc_obj}{The result of provoc()}
+\item{provoc_obj}{The result of \code{provoc()}}
 
 \item{type}{"deviance" or "raw"}
 }

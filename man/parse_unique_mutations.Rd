@@ -7,7 +7,7 @@
 parse_unique_mutations(muts)
 }
 \arguments{
-\item{muts}{A vector of mutations in the format "+50535C", "-43234.2", and "+342234.AC".}
+\item{muts}{A vector of mutations in the format "~50535C", "-43234.2", and "+342234.AC".}
 }
 \value{
 A data frame with columns \code{label} and \code{mutation}.

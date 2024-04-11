@@ -22,28 +22,32 @@ re_findall <- function(pat, s) {
 
 #' Extract mutation list from a directory of constellation files.
 #'
-#' "Constellations" are files produced from \url{https://github.com/cov-lineages/constellations}, which represent the cov-lineage team's best knowledge about which mutations define a lineage. These are updated frequently, please \code{git pull} in your cloned copy accordingly. See details.
+#' "Constellations" are files produced from \url{https://github.com/cov-lineages/constellations}, which represent the cov-lineage team's best knowledge about which mutations define a lineage. See details.
 #'
+#' The constellations repo is no longer updated to new variants.
+#' 
 #' Code is adapted from \code{scripts/estimate-freqs.R} in \url{https://github.com/PoonLab/gromstole}.
 #'
-#' @param path Path to the constellations folder in the cov-lineages/constellations repository. The default assumes that the current project and the constellations repo are in the same directory.
+#' @param path Path to the constellations folder in the cov-lineages/constellations repository. If NULL, built-in definitions are used. There is no need to clone the repo unless you want updated definitions.
 #'
-#' @return A lineage matrix for use with provoc.
-#' @export
+#' @return A lineage definition matrix for use with provoc.
 #'
 #' @details From the repo, a constellation "a collection of mutations which are functionally meaningful, but which may arise independently a number of times".
 #'
-#' This function requires a local clone of the constellations repository. By default, I assume that your current project is in the same parent directory as the constellation file (e.g. your working directory is \code{.../parent/current_project} and the constellations repo is cloned as \code{.../parent/constellations}).
+#' Updated as of version 0.5.0: constellation files are hardcoded into \code{provoc}, there is no longer a need to clone the repository. 
+#' 
+#' If a path is provided, the function uses that repository. This is useful if, say, you clone a historical version of the repo to ensure that you'r eworking with definitions that were known at the time.
 #'
-#' If this is not the case, a path to the root folder of the constellations repo is required. The path is to the root folder, not the folder with the constellation files.
-#'
-#' There are no options to specify which lineages to include. I am working on a \code{annihilate(coco, lineage_defs)} function to remove mutations that aren't shared between coco and lineage_defs and squash lineages that have too few observed mutations or are too similar to other lineages.
-#'
+#' @seealso [filter_lineages()] to subset according to a vector of variants.
+#' 
 #' @examples
-#' if(dir.exists("../constellations")) {
-#'     lineage_defs <- astronomize()
-#' }
-#'
+#' # After cloning the constellations repo
+#' lineage_defs <- astronomize(path = "../constellations")
+#' dim(lineage_defs)
+#' lineage_defs <- filter_lineages(lineage_defs, c("B.1.1.7", "B.1.617.2"))
+#' dim(lineage_defs) # rows and columns have changed
+#' 
+#' @export
 astronomize <- function(path = NULL) {
 
     if (is.null(path)) {
@@ -147,16 +151,18 @@ astronomize <- function(path = NULL) {
         sites <- unlist(sites, recursive = FALSE)
     })
 
-    lineage_defs <- as.matrix(dplyr::bind_rows(sapply(sitelist, function(sites) {
-        x <- rep(1, length(sites))
-        names(x) <- sites
-        x
-    })))
+    lineage_defs <- as.matrix(dplyr::bind_rows(sapply(sitelist,
+        function(sites) {
+            x <- rep(1, length(sites))
+            names(x) <- sites
+            x
+        })))
 
     lineage_defs[is.na(lineage_defs)] <- 0
-    rownames(lineage_defs) <- gsub(".json", "", list.files(path, full.names = FALSE))
-    rownames(lineage_defs) <- gsub("_constellation", "", rownames(lineage_defs),
-        fixed = TRUE)
+    rownames(lineage_defs) <- gsub(".json", "",
+        list.files(path, full.names = FALSE))
+    rownames(lineage_defs) <- gsub("_constellation", "",
+        rownames(lineage_defs), fixed = TRUE)
     rownames(lineage_defs) <- gsub("c", "", rownames(lineage_defs))
 
     lineage_defs <- lineage_defs[, colSums(lineage_defs) > 0]
@@ -189,12 +195,20 @@ astronomize <- function(path = NULL) {
 #' @param path Passed on to \code{astronomize} if \code{lineage_defs} is NULL.
 #' @param shared_order Put shared mutations first? Default TRUE.
 #'
-#' @return A lineage matrix with fewer rows and columns than \code{lineage_defs}. If \code{return_df}, the columns represent lineage names and a \code{mutations} column is added.
-#' @export
+#' @return A lineage definition matrix with fewer rows and columns than \code{lineage_defs}. If \code{return_df}, the columns represent lineage names and a \code{mutations} column is added.
 #'
 #' @details After removing some lineage, the remaining mutations might not be present in any of the remaining lineage. This function will remove mutations that no longer belong to any lineage.
 #'
-#' Note that return_df will
+#' \code{shared_order = TRUE} will result in the mutations that are present in the highest number of lineages to appear first. This is convenient for human inspection, but does not affect estimation.
+#' 
+#' @examples
+#' # After cloning the constellations repo
+#' lineage_defs <- astronomize(path = "../constellations")
+#' dim(lineage_defs)
+#' lineage_defs <- filter_lineages(lineage_defs, c("B.1.1.7", "B.1.617.2"))
+#' dim(lineage_defs) # rows and columns have changed
+#' 
+#' @export
 filter_lineages <- function(
     lineage_defs = NULL,
     lineages = c("B.1.526", "B.1.1.7", "B.1.351", "B.1.617.2",
@@ -225,12 +239,23 @@ filter_lineages <- function(
     return(lineage_defs)
 }
 
-#' Obtain and clean barcodes file from usher_barcores in Freyja (or elsewhere)
+#' Obtain and clean barcodes file from usher_barcores in Freyja (or from disk)
 #' 
-#' @param path The location to store the barcodes file. Tries data/clean, data/, then the current directory.
+#' The barcodes file is several hundred megabytes, so by default the function will attempt to save to disk for faster loading next time. 
+#' 
+#' @param path The location to store the barcodes file. Tries the provided path as well as data/clean, data/, then the current directory.
 #' @param write Should the file be written to disk to avoid downloading? If TRUE, uses the first path that exists.
-#' @param url The URL (or file path) for the barcodes file. Defaults 
-#' @param update If TRUE, overwrite the existing barcodes file
+#' @param url The URL (or file path) for the barcodes file. Defaults to the GISAID data, but the user can specify other barcode files (for example, Freyja also keeps a NextStrain version in the same repo folder). 
+#' @param update If TRUE, overwrite the existing barcodes file.
+#' 
+#' @details The function checks for a file called "usher_barcodes.csv" in the path provided. If not found, it also checks common locations data/clean/, data/, or the current working folder. The \code{here} package is recommended to ensure that the file is found no matter where the code is being run from.
+#' 
+#' @examples
+#' # To save data into current directory
+#' bar <- usher_barcodes(path = ".")
+#' 
+#' # Using the `here` package (if code is stored in a git repo or Rproject)
+#' bar <- usher_barcodes(path = here("data/clean/"))
 #' 
 #' @export
 usher_barcodes <- function(

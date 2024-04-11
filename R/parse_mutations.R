@@ -13,37 +13,37 @@ parse_mutation <- function(type, pos, alt,
     reffile = system.file("extdata/NC_045512.fa", package = "provoc")) {
 
     gcode <- list(
-        'TTT'= 'F', 'TTC'= 'F', 'TTA'= 'L', 'TTG'= 'L',
-        'TCT'= 'S', 'TCC'= 'S', 'TCA'= 'S', 'TCG'= 'S',
-        'TAT'= 'Y', 'TAC'= 'Y', 'TAA'= '*', 'TAG'= '*',
-        'TGT'= 'C', 'TGC'= 'C', 'TGA'= '*', 'TGG'= 'W',
-        'CTT'= 'L', 'CTC'= 'L', 'CTA'= 'L', 'CTG'= 'L',
-        'CCT'= 'P', 'CCC'= 'P', 'CCA'= 'P', 'CCG'= 'P',
-        'CAT'= 'H', 'CAC'= 'H', 'CAA'= 'Q', 'CAG'= 'Q',
-        'CGT'= 'R', 'CGC'= 'R', 'CGA'= 'R', 'CGG'= 'R',
-        'ATT'= 'I', 'ATC'= 'I', 'ATA'= 'I', 'ATG'= 'M',
-        'ACT'= 'T', 'ACC'= 'T', 'ACA'= 'T', 'ACG'= 'T',
-        'AAT'= 'N', 'AAC'= 'N', 'AAA'= 'K', 'AAG'= 'K',
-        'AGT'= 'S', 'AGC'= 'S', 'AGA'= 'R', 'AGG'= 'R',
-        'GTT'= 'V', 'GTC'= 'V', 'GTA'= 'V', 'GTG'= 'V',
-        'GCT'= 'A', 'GCC'= 'A', 'GCA'= 'A', 'GCG'= 'A',
-        'GAT'= 'D', 'GAC'= 'D', 'GAA'= 'E', 'GAG'= 'E',
-        'GGT'= 'G', 'GGC'= 'G', 'GGA'= 'G', 'GGG'= 'G',
-        '---'= '-', 'XXX'= '?'
+        "TTT" = "F", "TTC" = "F", "TTA" = "L", "TTG" = "L",
+        "TCT" = "S", "TCC" = "S", "TCA" = "S", "TCG" = "S",
+        "TAT" = "Y", "TAC" = "Y", "TAA" = "*", "TAG" = "*",
+        "TGT" = "C", "TGC" = "C", "TGA" = "*", "TGG" = "W",
+        "CTT" = "L", "CTC" = "L", "CTA" = "L", "CTG" = "L",
+        "CCT" = "P", "CCC" = "P", "CCA" = "P", "CCG" = "P",
+        "CAT" = "H", "CAC" = "H", "CAA" = "Q", "CAG" = "Q",
+        "CGT" = "R", "CGC" = "R", "CGA" = "R", "CGG" = "R",
+        "ATT" = "I", "ATC" = "I", "ATA" = "I", "ATG" = "M",
+        "ACT" = "T", "ACC" = "T", "ACA" = "T", "ACG" = "T",
+        "AAT" = "N", "AAC" = "N", "AAA" = "K", "AAG" = "K",
+        "AGT" = "S", "AGC" = "S", "AGA" = "R", "AGG" = "R",
+        "GTT" = "V", "GTC" = "V", "GTA" = "V", "GTG" = "V",
+        "GCT" = "A", "GCC" = "A", "GCA" = "A", "GCG" = "A",
+        "GAT" = "D", "GAC" = "D", "GAA" = "E", "GAG" = "E",
+        "GGT" = "G", "GGC" = "G", "GGA" = "G", "GGG" = "G",
+        "---" = "-", "XXX" = "?"
     )
     orfs <- list(
-        'orf1a'= c(265, 13468),
-        'orf1b'= c(13467, 21555),
-        'S'= c(21562, 25384),
-        'orf3a'= c(25392, 26220),
-        'E'= c(26244, 26472),
-        'M'= c(26522, 27191),
-        'orf6'= c(27201, 27387),
-        'orf7a'= c(27393, 27759),
-        'orf7b'= c(27755, 27887),
-        'orf8'= c(27893, 28259),
-        'N'= c(28273, 29533),
-        'orf10'= c(29557, 29674)
+        "orf1a" = c(265, 13468),
+        "orf1b" = c(13467, 21555),
+        "S" = c(21562, 25384),
+        "orf3a" = c(25392, 26220),
+        "E" = c(26244, 26472),
+        "M" = c(26522, 27191),
+        "orf6" = c(27201, 27387),
+        "orf7a" = c(27393, 27759),
+        "orf7b" = c(27755, 27887),
+        "orf8" = c(27893, 28259),
+        "N" = c(28273, 29533),
+        "orf10" = c(29557, 29674)
     )
 
     pos <- as.numeric(pos) - 1 # convert to 0-indexed
@@ -93,7 +93,7 @@ parse_mutation <- function(type, pos, alt,
 
 #' Parse all unique mutations in a vector
 #'
-#' @param muts A vector of mutations in the format "+50535C", "-43234.2", and "+342234.AC".
+#' @param muts A vector of mutations in the format "~50535C", "-43234.2", and "+342234.AC".
 #'
 #' @return A data frame with columns `label` and `mutation`.
 parse_unique_mutations <- function(muts) {

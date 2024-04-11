@@ -20,7 +20,7 @@ provoc(
 
 \item{data}{Data frame containing count, coverage, and lineage columns.}
 
-\item{lineage_defs}{Optional mutation definitions; if NULL, uses astronomize().}
+\item{lineage_defs}{Optional lineage definitions; if NULL, uses astronomize().}
 
 \item{by}{Column name to group and process data. If included, the results will contain a column labelled "group".}
 

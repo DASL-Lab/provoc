@@ -2,7 +2,7 @@
 % Please edit documentation in R/fuse.R
 \name{fuse}
 \alias{fuse}
-\title{Ensure mutations are present in both coco and lineage_defs}
+\title{Ensure mutations are present in the data and lineage_defs}
 \usage{
 fuse(coco, lineage_defs, min_perc = 0.01, verbose = FALSE)
 }
@@ -29,4 +29,13 @@ The columns of lineage_defs are subsetted according to this intersection. If thi
 After removing mutations, it's possible that some rows lose their distinctive mutations and become identical. In this case the names of the lineages are pasted together and only one of the rows are kept.
 
 Duplicate mutation names in coco are NOT removed. It is safe to use this function on a data frame that contains multiple samples.
+}
+\examples{
+data(Baaijens)
+b1 <- Baaijens[Baaijens$sra == Baaijens$sra[1], ]
+b1$mutation <- parse_mutations(b1$label)
+lineage_defs <- astronomize() |>
+    filter_variants(c("B.1.1.7", "B.1.429", "B.1.617.2"))
+fused <- fuse(b1, lineage_defs)
+head(fused)
 }

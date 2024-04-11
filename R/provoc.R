@@ -5,7 +5,7 @@
 #'
 #' @param formula A formula for the binomial model, like cbind(count, coverage) ~ .
 #' @param data Data frame containing count, coverage, and lineage columns.
-#' @param lineage_defs Optional mutation definitions; if NULL, uses astronomize().
+#' @param lineage_defs Optional lineage definitions; if NULL, uses astronomize().
 #' @param by Column name to group and process data. If included, the results will contain a column labelled "group".
 #' @param bootstrap_samples The number of bootstrap samples to use.
 #' @param update_interval Interval for progress messages (0 to suppress).

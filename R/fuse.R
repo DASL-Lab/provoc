@@ -1,4 +1,4 @@
-#' Ensure mutations are present in both coco and lineage_defs
+#' Ensure mutations are present in the data and lineage_defs
 #'
 #' Finds the intersection between the mutations present in coco and lineage_defs. Will squash lineages together if the resulting mutation list is too similar (see details).
 #'
@@ -17,6 +17,15 @@
 #' After removing mutations, it's possible that some rows lose their distinctive mutations and become identical. In this case the names of the lineages are pasted together and only one of the rows are kept.
 #'
 #' Duplicate mutation names in coco are NOT removed. It is safe to use this function on a data frame that contains multiple samples.
+#' 
+#' @examples
+#' data(Baaijens)
+#' b1 <- Baaijens[Baaijens$sra == Baaijens$sra[1], ]
+#' b1$mutation <- parse_mutations(b1$label)
+#' lineage_defs <- astronomize() |>
+#'     filter_variants(c("B.1.1.7", "B.1.429", "B.1.617.2"))
+#' fused <- fuse(b1, lineage_defs)
+#' head(fused)
 fuse <- function(coco, lineage_defs, min_perc = 0.01, verbose = FALSE) {
     if (any(colnames(coco) %in% paste0("lin_", rownames(lineage_defs)))) {
         stop("coco should not contain column names that are names of lineages. Is this object already fused?")
@@ -28,8 +37,8 @@ fuse <- function(coco, lineage_defs, min_perc = 0.01, verbose = FALSE) {
     coco <- coco[!is.na(coco$mutation), ]
     coco <- coco[coco$mutation %in% shared, ]
 
-    if (length(shared) < 3) {
-        stop("Too few shared mutations. Are they in the same format?")
+    if (length(shared) < 5) {
+        stop("Less than 5 shared mutations. Are colnames(lineage_defs) and the mutations column in the same format?")
     } else if (length(shared) <= 10 && ncol(lineage_defs) > 10 && verbose) {
         warning("Fewer than 10 shared mutations. Results may be very difficult to interpret.")
     } else if (length(shared) / pre < 0.1 && verbose) {
@@ -41,7 +50,8 @@ fuse <- function(coco, lineage_defs, min_perc = 0.01, verbose = FALSE) {
         print(paste0(100 * perc_rm,
                 "% of the rows of coco have been removed."))
         coco_only <- coco$mutation[!coco$mutation %in% shared]
-        lineage_defs_only <- colnames(lineage_defs)[!colnames(lineage_defs) %in% shared]
+        lineage_defs_only <- colnames(lineage_defs)[
+            !colnames(lineage_defs) %in% shared]
         print("coco-only mutations removed:")
         print(length(coco_only))
         print("lineage_defs-only mutations removed")
@@ -50,7 +60,6 @@ fuse <- function(coco, lineage_defs, min_perc = 0.01, verbose = FALSE) {
 
 
     # Lineages with too few mutations (less than 10% are 1s)
-    # TODO: Make this a parameter?
     lin2 <- lineage_defs[, shared]
     too_many_zeros <- apply(lin2, 1, sum) <= (ncol(lin2) * min_perc)
     lin2 <- lin2[!too_many_zeros, ]
@@ -78,12 +87,14 @@ fuse <- function(coco, lineage_defs, min_perc = 0.01, verbose = FALSE) {
 
 #' Un-fuse coco and lineage_defs.
 #'
-#' Fusion ensures that the mutation lists match and are in the correct order, but the two must be separated.
+#' Fusion ensures that the mutation lists match and are in the correct order, but the two are separated for analysis.
 #'
 #' @param fused The result of \code{fuse(coco, lineage_defs)}
 #' @param sample The name of the sample being used.
 #'
 #' @return A list containing coco and lineage_defs.
+#' 
+#' @details This function is mainly used internally, but can be useful to check if which mutations are actually used in model fitting.
 fission <- function(fused, sample = NULL) {
     if (!is.null(sample)) fused <- fused[fused$sample == sample, ]
     lineages <- startsWith(names(fused), "lin_")
@@ -101,15 +112,19 @@ fission <- function(fused, sample = NULL) {
 
 #' Finds and prints all similarities among lineage
 #'
-#' @param data A lineage matrix
+#' @param data The result of \code{fuse} or a lineage definition matrix.
 #'
 #' @return A list of length 4 containing information on which lineages differ by one,
 #' the Jaccard similarity between lineages, which lineages are subsets and almost subsets
 #' of each other. in is_subset and is_almost_subset a value is true if the lineages of the
 #' column name is a subset/almost a subset of the lineages of the row name.
+#' @export
 lineage_similarity <- function(data, simplify = FALSE, almost = 1) {
 
-    subset_of_lineages <- data[, startsWith(names(data), "lin_")]
+    if (any(startsWith(names(data), "lin_")))
+        subset_of_lineages <- data[, startsWith(names(data), "lin_")]
+    else
+        subset_of_lineages <- as.data.frame(t(data))
 
     similarities <- list()
 
@@ -177,8 +192,6 @@ lineage_similarity <- function(data, simplify = FALSE, almost = 1) {
 #' @param similarities Result of \code{lineage_similarity()}
 #' @param almost Degree of similarity.
 simplify_similarity <- function(similarities, almost) {
-
-
     keep_lins <- apply(X = similarities$Differ_by_one_or_less,
         MARGIN = 1,
         FUN = function(x) {

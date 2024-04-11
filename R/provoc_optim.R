@@ -130,7 +130,7 @@ provoc_optim <- function(coco, lineage_defs, bootstrap_samples = 0,
         converged <- FALSE
         while (i < 20 && !converged) {
             i <- i + 1
-            if (!i %% 10) print(paste0("Attempt ", i, " of 20."))
+            if (!i %% 10 && verbose) print(paste0("Attempt ", i, " of 20."))
 
             # Add noise to previous iteration
             rho_init <- res$par +

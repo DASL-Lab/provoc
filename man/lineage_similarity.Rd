@@ -7,7 +7,7 @@
 lineage_similarity(data, simplify = FALSE, almost = 1)
 }
 \arguments{
-\item{data}{A lineage matrix}
+\item{data}{The result of \code{fuse} or a lineage definition matrix.}
 }
 \value{
 A list of length 4 containing information on which lineages differ by one,

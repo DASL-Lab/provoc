@@ -4,7 +4,7 @@
 \alias{print.summary.provoc}
 \title{Print the summary of a provoc object}
 \usage{
-\method{print}{summary.provoc}(summary.provoc)
+\method{print}{summary.provoc}(summary_provoc)
 }
 \description{
 Print the summary of a provoc object

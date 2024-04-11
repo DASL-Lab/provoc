@@ -15,5 +15,8 @@ fission(fused, sample = NULL)
 A list containing coco and lineage_defs.
 }
 \description{
-Fusion ensures that the mutation lists match and are in the correct order, but the two must be separated.
+Fusion ensures that the mutation lists match and are in the correct order, but the two are separated for analysis.
+}
+\details{
+This function is mainly used internally, but can be useful to check if which mutations are actually used in model fitting.
 }

@@ -7,10 +7,13 @@
 coverage_at_aa(coverage, aa)
 }
 \arguments{
-\item{coverage}{A data frame with columns labelled position (1-indexed) and coverage.}
+\item{coverage}{A data frame with columns labelled "position" (0-indexed) and "coverage".}
 
 \item{aa}{A vector of mutations. aa:orf1a:I300V, ins:28215:3, del:27378:25, or C703T}
 }
 \description{
 Currently requires "aa" notation.
+}
+\details{
+Finds the maximum coverage for the three positions of the amino acid. This ensures that the number of observed mutations can never be larger than the coverage.
 }

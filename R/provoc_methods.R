@@ -5,11 +5,12 @@
 #' associated lineage matrix, performs matrix multiplication to
 #' predict outcomes, and returns results in the same order as the original data.
 #'
-#' @param provoc_obj Named list with `proportions` and `lineage_matrix`.
+#' @param provoc_obj Output of \code{provoc}
 #' @param newdata Not yet implemented.
 #' @param type Not yet implemented.
 #' @param dispersion Not yet implemented.
 #' @param terms Not yet implemented.
+#' 
 #' @return Predicted values in the same order as the input data.
 #' @export
 #' @examples
@@ -50,7 +51,7 @@ predict.provoc <- function(provoc_obj,
 
 #' Calculate the residuals of a provoc object
 #' 
-#' @param provoc_obj The result of provoc()
+#' @param provoc_obj The result of \code{provoc()}
 #' @param type "deviance" or "raw"
 #' 
 #' @export
@@ -74,7 +75,7 @@ resid.provoc <- function(provoc_obj, type = "deviance") {
 
 #' Calculate the residuals of a provoc object
 #' 
-#' @param provoc_obj The result of provoc()
+#' @param provoc_obj The result of \code{provoc()}
 #' @param type "deviance" or "raw"
 #' 
 #' @export

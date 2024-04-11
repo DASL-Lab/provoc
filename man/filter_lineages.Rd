@@ -24,7 +24,7 @@ filter_lineages(
 \item{shared_order}{Put shared mutations first? Default TRUE.}
 }
 \value{
-A lineage matrix with fewer rows and columns than \code{lineage_defs}. If \code{return_df}, the columns represent lineage names and a \code{mutations} column is added.
+A lineage definition matrix with fewer rows and columns than \code{lineage_defs}. If \code{return_df}, the columns represent lineage names and a \code{mutations} column is added.
 }
 \description{
 Filter lineage_defs for specific lineages, keeping mutations that are present in at least one lineage
@@ -32,5 +32,13 @@ Filter lineage_defs for specific lineages, keeping mutations that are present in
 \details{
 After removing some lineage, the remaining mutations might not be present in any of the remaining lineage. This function will remove mutations that no longer belong to any lineage.
 
-Note that return_df will
+\code{shared_order = TRUE} will result in the mutations that are present in the highest number of lineages to appear first. This is convenient for human inspection, but does not affect estimation.
+}
+\examples{
+# After cloning the constellations repo
+lineage_defs <- astronomize(path = "../constellations")
+dim(lineage_defs)
+lineage_defs <- filter_lineages(lineage_defs, c("B.1.1.7", "B.1.617.2"))
+dim(lineage_defs) # rows and columns have changed
+
 }

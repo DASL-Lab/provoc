@@ -9,13 +9,16 @@ add_coverage(coco, coverage, mutation_list)
 \arguments{
 \item{coco}{The data set.}
 
-\item{coverage}{The coverage filen with position as the first column and coverage as the second.}
+\item{coverage}{The coverage file, with position as the first column and coverage as the second.}
 
 \item{mutation_list}{The mutations to be added (usually \code{colnames(lineage_defs)}).}
 }
 \value{
-coco, but with added rows.
+coco, but with added rows. The counts are assumed to be 0 for mutations that aren't in the data.
 }
 \description{
-Add coverage of missing mutations to a data set
+An observation of 0 mutations out of 1 read is a different amount of information from 0 mutations out of 1,000 reads. This function adds the coverage for mutations used in \code{lineage_defs}, which benefits all models (but adds 0-inflation).
+}
+\details{
+Currently assumes that the data has a column labelled "mutation" in amino acid notation.
 }

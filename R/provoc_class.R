@@ -41,7 +41,7 @@ print.provoc <- function(provoc_obj, n = 6) {
 #'
 #' Prints the most useful diagnostics to the screen, invisibly returning them as a list.
 #'
-#' @param provoc_obj The result of provoc(), or an object coerced via as.provoc().
+#' @param provoc_obj The result of provoc().
 #'
 #' @export
 summary.provoc <- function(provoc_obj) {
@@ -79,7 +79,7 @@ summary.provoc <- function(provoc_obj) {
         coef_table <- coef_table[, 1:5]
     }
     print(coef_table[
-            coef_table_length, ])
+        coef_table_length, ])
 
     cat("\nCorrelation of coefficients:\n")
     bootstraps <- attributes(provoc_obj)$bootstrap
@@ -111,7 +111,7 @@ summary.provoc <- function(provoc_obj) {
 }
 
 #' Print the summary of a provoc object
-print.summary.provoc <- function(summary.provoc) {
+print.summary.provoc <- function(summary_provoc) {
     # TODO: All of it.
 }
 

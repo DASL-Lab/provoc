@@ -7,28 +7,33 @@
 astronomize(path = NULL)
 }
 \arguments{
-\item{path}{Path to the constellations folder in the cov-lineages/constellations repository. The default assumes that the current project and the constellations repo are in the same directory.}
+\item{path}{Path to the constellations folder in the cov-lineages/constellations repository. If NULL, built-in definitions are used. There is no need to clone the repo unless you want updated definitions.}
 }
 \value{
-A lineage matrix for use with provoc.
+A lineage definition matrix for use with provoc.
 }
 \description{
-"Constellations" are files produced from \url{https://github.com/cov-lineages/constellations}, which represent the cov-lineage team's best knowledge about which mutations define a lineage. These are updated frequently, please \code{git pull} in your cloned copy accordingly. See details.
+"Constellations" are files produced from \url{https://github.com/cov-lineages/constellations}, which represent the cov-lineage team's best knowledge about which mutations define a lineage. See details.
 }
 \details{
+The constellations repo is no longer updated to new variants.
+
 Code is adapted from \code{scripts/estimate-freqs.R} in \url{https://github.com/PoonLab/gromstole}.
 
 From the repo, a constellation "a collection of mutations which are functionally meaningful, but which may arise independently a number of times".
 
-This function requires a local clone of the constellations repository. By default, I assume that your current project is in the same parent directory as the constellation file (e.g. your working directory is \code{.../parent/current_project} and the constellations repo is cloned as \code{.../parent/constellations}).
+Updated as of version 0.5.0: constellation files are hardcoded into \code{provoc}, there is no longer a need to clone the repository.
 
-If this is not the case, a path to the root folder of the constellations repo is required. The path is to the root folder, not the folder with the constellation files.
-
-There are no options to specify which lineages to include. I am working on a \code{annihilate(coco, lineage_defs)} function to remove mutations that aren't shared between coco and lineage_defs and squash lineages that have too few observed mutations or are too similar to other lineages.
+If a path is provided, the function uses that repository. This is useful if, say, you clone a historical version of the repo to ensure that you'r eworking with definitions that were known at the time.
 }
 \examples{
-if(dir.exists("../constellations")) {
-    lineage_defs <- astronomize()
-}
+# After cloning the constellations repo
+lineage_defs <- astronomize(path = "../constellations")
+dim(lineage_defs)
+lineage_defs <- filter_lineages(lineage_defs, c("B.1.1.7", "B.1.617.2"))
+dim(lineage_defs) # rows and columns have changed
 
+}
+\seealso{
+\code{\link[=filter_lineages]{filter_lineages()}} to subset according to a vector of variants.
 }

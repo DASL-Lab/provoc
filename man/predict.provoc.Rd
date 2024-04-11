@@ -13,7 +13,7 @@
 )
 }
 \arguments{
-\item{provoc_obj}{Named list with \code{proportions} and \code{lineage_matrix}.}
+\item{provoc_obj}{Output of \code{provoc}}
 
 \item{newdata}{Not yet implemented.}
 
