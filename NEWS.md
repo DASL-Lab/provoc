@@ -1,5 +1,5 @@
 
-## 0.5.2: 
+## 0.5.2: Call it what you want.
 
 - Documentation has been significantly updated.
 - BREAKING CHANGE: If you use the argument `by = "sra"`, the result will have a column labelled `sra` (not `group`, as before).
