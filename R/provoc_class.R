@@ -176,28 +176,32 @@ autoplot.provoc <- function(provoc_obj, date_col = NULL) {
 
     by_col <- attributes(provoc_obj)$by_col
 
-    gg <- ggplot(provoc_obj) +
-        geom_bar(stat = "identity", position = "stack") +
-        lims(y = c(0, 1))
     if (!is.null(date_col)) {
         if (!inherits(provoc_obj[, date_col], "Date"))
             stop("Supplied date column does not include Date values. \nTry lubridate::ymd().")
-        gg <- gg  +
-            aes(x = date, y = rho, fill = lineage, group = !!ensym(by_col)) +
+        gg <- ggplot(provoc_obj) +
+            aes(x = lubridate::ymd(date), y = rho,
+                colour = lineage) +
+            geom_point() +
+            lims(y = c(0, 1)) +
             labs(y = "Proportion", x = "Date", fill = "Lineage") +
             theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
     } else if (!by_col %in% colnames(provoc_obj)) {
         if (ncol(provoc_obj) > 4)
             warning("Detected extra information, but plotting results as if they're a single sample.")
-        gg <- gg +
+        gg <- ggplot(provoc_obj) +
+            geom_bar(stat = "identity", position = "stack") +
+            lims(y = c(0, 1)) +
             aes(x = 1, y = rho, fill = lineage) +
             labs(y = "Proportion", x = NULL, fill = "Lineage") +
             scale_x_continuous(minor_breaks = NULL, breaks = NULL) +
             coord_flip()
 
     } else {
-        gg <- gg +
+        gg <- ggplot(provoc_obj) +
+            geom_bar(stat = "identity", position = "stack") +
+            lims(y = c(0, 1)) +
             aes(x = !!ensym(by_col), y = rho, fill = lineage) +
             labs(y = "Proportion", x = by_col, fill = "Lineage") +
             scale_x_discrete(breaks = sort(unique(provoc_obj[, by_col]))) +
