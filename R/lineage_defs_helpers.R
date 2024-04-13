@@ -19,7 +19,7 @@ lineage_defs_from_list <- function(lineage_list) {
     lineage_defs <- as.data.frame(t(1 * sapply(lineage_list,
                 function(x) all_mutations %in% x)))
     names(lineage_defs) <- all_mutations
-    lineage_defs
+    as.matrix(lineage_defs)
 }
 
 #' Filter lineages active on a given date.

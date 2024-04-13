@@ -55,6 +55,7 @@ astronomize <- function(path = NULL) {
     }
 
     if (!dir.exists(path)) {
+        warning("Path does not exist. Using built-in definitions.")
         return(provoc::lineage_defs_from_list(provoc::constellation_lists))
     }
 
@@ -184,7 +185,8 @@ astronomize <- function(path = NULL) {
     # ORF 1a starts at 265
     colnames(lineage_defs)[which(colnames(lineage_defs) == "aa:orf1a:SGF3675-")] <-
         paste0("del:", 265 + 3 * 3675 - 1, ":9")
-    as.matrix(lineage_defs)
+    lineage_defs <- as.matrix(lineage_defs)
+    return(lineage_defs)
 }
 
 #' Filter lineage_defs for specific lineages, keeping mutations that are present in at least one lineage

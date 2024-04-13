@@ -49,16 +49,17 @@ It allows flexible lineage and mutation definitions.
 library(provoc)
 # Load a dataset
 data("Baaijens")
+b1 <- Baaijens[Baaijens$sra == Baaijens$sra[1], ]
 # Prepare the dataset
-Baaijens$mutation <- parse_mutations(Baaijens$label)
+b1$mutation <- parse_mutations(b1$label)
 
 # Analyze the dataset using the default mutation definitions
-res <- provoc(formula = cbind(count, coverage) ~ B.1.1.7 + B.1.617.2, data = Baaijens, by = "sample_id")
-
-# Check for analysis convergence
-print(get_convergence(res))
-
-# Use the results for prediction
-predicted_values <- predict.provoc(res)
+res <- provoc(formula = count / coverage ~ B.1.1.7 + B.1.617.2, 
+    data = b1, by = "sra")
+res
+as.data.frame(res) |> head()
+summary(res)
+plot(res)
+predicted_values <- predict(res)
 
 }

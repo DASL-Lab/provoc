@@ -14,3 +14,13 @@
 \description{
 Plots the results of estimating wastewater prevalence of SARS-CoV-2. Optionally plots the results over time if given a date column.
 }
+\examples{
+data(Baaijens)
+b10 <- Baaijens[Baaijens$sra \%in\% unique(Baijens$sra)[1:10], ]
+b10$mutations <- parse_mutations(b10$label)
+res <- provoc(count / coverage ~ B.1.1.7 + B.1.617.2,
+    data = b10, by = "sra")
+res$date <- lubridate::ymd(res$date)
+autoplot(res, date_col = "date")
+
+}
