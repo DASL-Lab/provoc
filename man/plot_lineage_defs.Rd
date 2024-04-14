@@ -11,9 +11,9 @@ plot_lineage_defs(
 )
 }
 \arguments{
-\item{lineage_defs}{A valid lineage definition matrix (rownames must be lineages)}
+\item{lineage_defs}{Lineage definition matrix, such as those produced by \code{astronomize()} and \code{usher_barcodes()}.Alternatively the output of \code{provoc()}, from which the lineage definition matrix will be extracted.}
 
-\item{col}{A function that takes argument \code{n} and returns a vector of colours of length \code{n}, such as \ode{colorRampPallette(c("white", "dodgerblue4"))}}
+\item{col}{A function that takes argument \code{n} and returns a vector of colours of length \code{n}, such as \code{colorRampPallette(c("white", "dodgerblue4"))}}
 
 \item{main}{a main title for the plot.}
 }
@@ -21,7 +21,7 @@ plot_lineage_defs(
 Plot a lineage definition matrix
 }
 \details{
-Every other column in the display has a slight grey background to make it easier to read which mutation is in which lineage.
+Every second column in the display has a slight grey background to make it easier to read which mutation is in which lineage.
 
 The final column summarises the number of mutations that are unique to a given variant, with the darker colour representing a variant with more unique mutations. The number in the brackets gives the exact number of unique mutations.
 }

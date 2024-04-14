@@ -12,7 +12,7 @@ plot_lineage_defs2(
 )
 }
 \arguments{
-\item{left_def, right_def}{Lineage definition matrice, such as those produced by \code{astronomize()} and \code{usher_barcodes()}.}
+\item{left_def, right_def}{Lineage definition matrices, such as those produced by \code{astronomize()} and \code{usher_barcodes()}.Alternatively the output of \code{provoc()}, from which the lineage definition matrix will be extracted (one may be a lineage definition matrix and the other may be the result of fitting provoc, allowing for comparison of which lineages/mutations were actually used).}
 
 \item{col}{A vector of three colours (left, middle, right). For a mutation present in \code{left_def} only, the colour will be the first colour in the vector, while a mutation not present will be 80\% of the way between the left colour and the middle colour (similar for \code{right_def}). Optionally, the user can specify a vector of length 6, where the colours define left, middle, right, NA, neither, and both.}
 
@@ -39,6 +39,17 @@ plot_lineage_defs2(left_def, right_def,
 plot_lineage_defs2(left_def, right_def,
     main = "Constellations (without B.1.1.7) vs. Usher Barcodes (without P.1)",
     col = c(2, 0, 3))
+
+# See which mutations/lineages were actually used
+lineage_defs <- astronomize() |>
+    filter_lineages(c("B.1.617.1", "B.1.617.2", "B.1.617.2+K417N",
+    "B.1.427", "B.1.429", "B.1.1.7"))
+res <- provoc(count / coverage ~ ., data = b1,
+    lineage_defs = lineage_defs)
+# B.1.617.2 and B.1.617.2+K417N were "squashed" because they're identical.
+# We can also see which mutations were *not* used in the analysis.
+# They are the ones defined in the left_def but not present in right_def.
+plot_lineage_defs2(lineage_defs, res)
 
 }
 \seealso{

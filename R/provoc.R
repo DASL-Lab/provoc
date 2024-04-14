@@ -133,6 +133,7 @@ provoc <- function(formula, data,
 
     provoc_obj <- final_results
     attr(provoc_obj, "lineage_defs") <- lineage_defs
+    attr(provoc_obj, "lineage_defs_actual") <- res$lineage_defs
     attr(provoc_obj, "formula") <- formula
     attr(provoc_obj, "convergence") <- res$convergence_list
     attr(provoc_obj, "bootstrap") <- res$boot_list
@@ -353,6 +354,8 @@ process_optim <- function(grouped_data, lineage_defs, by, bootstrap_samples, ver
     names(convergence_list) <- names(grouped_data)
     boot_list <- vector("list", length = length(grouped_data))
     names(boot_list) <- names(grouped_data)
+    lin_list <- vector("list", length = length(grouped_data))
+    names(lin_list) <- names(grouped_data)
 
     for (group_name in names(grouped_data)) {
         group_data <- grouped_data[[group_name]]
@@ -369,11 +372,15 @@ process_optim <- function(grouped_data, lineage_defs, by, bootstrap_samples, ver
         res_list[[group_name]] <- optim_results$res_df
         convergence_list[[group_name]] <- optim_results$convergence
         boot_list[[group_name]] <- optim_results$bootstrap_samples
+        lin_list[[group_name]] <- lineage_defs
     }
 
-    return(list(res_list = res_list,
-            convergence_list = convergence_list,
-            boot_list = boot_list))
+    return(list(
+        res_list = res_list,
+        convergence_list = convergence_list,
+        boot_list = boot_list,
+        lineage_defs = lin_list
+    ))
 }
 
 #' Finds all columns of the data that are constant with the specified by group

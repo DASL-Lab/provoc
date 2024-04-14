@@ -211,7 +211,7 @@ autoplot.provoc <- function(provoc_obj, date_col = NULL) {
     return(gg)
 }
 
-#' Extract the mutation definitions used to fit the model
+#' Extract the lineage definitions used as input for the model
 #'
 #' @param provoc_obj Object of class provoc to be used to extract the mutation definitions.
 #'
@@ -220,6 +220,18 @@ get_lineage_defs <- function(provoc_obj) {
     attributes(provoc_obj)$lineage_defs
 }
 
+#' Extract the actual lineage defitions used when fitting the models.
+#' 
+#' Returns a list if \code{by_col} was specified.
+#' 
+#' @export
+get_actual_defs <- function(provoc_obj) {
+    ldef <- attributes(provoc_obj)$lineage_defs_actual
+    if (length(ldef) == 1) {
+        ldef <- ldef[[1]]
+    }
+    ldef
+}
 
 #' Extract just the results of lineage estimation
 #'

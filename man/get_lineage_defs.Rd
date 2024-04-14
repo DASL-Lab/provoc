@@ -2,7 +2,7 @@
 % Please edit documentation in R/provoc_class.R
 \name{get_lineage_defs}
 \alias{get_lineage_defs}
-\title{Extract the mutation definitions used to fit the model}
+\title{Extract the lineage definitions used as input for the model}
 \usage{
 get_lineage_defs(provoc_obj)
 }
@@ -10,5 +10,5 @@ get_lineage_defs(provoc_obj)
 \item{provoc_obj}{Object of class provoc to be used to extract the mutation definitions.}
 }
 \description{
-Extract the mutation definitions used to fit the model
+Extract the lineage definitions used as input for the model
 }
