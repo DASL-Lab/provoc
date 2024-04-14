@@ -77,17 +77,14 @@ left_both_right <- function(left, right) {
 #' Compare two lineage definition matrices
 #' 
 #' @param left_def,right_def Lineage definition matrice, such as those produced by \code{astronomize()} and \code{usher_barcodes()}.
-#' @param col A named vector of colours, or a function with a single argument (n) that creates a colour scheme, such as \code{colorRampPalette()}. See Details and Examples.
-#' @param  n_colours The number of colours to be used in the function that creates a diverging colour scheme.
-#' @param ... Arguments passed on to \code{heatmap()}, such as \code{main} and \code{mar}.
+#' @param col A vector of three colours (left, middle, right). For a mutation present in \code{left_def} only, the colour will be the first colour in the vector, while a mutation not present will be 80% of the way between the left colour and the middle colour (similar for \code{right_def}). Optionally, the user can specify a vector of length 6, where the colours define left, middle, right, NA, neither, and both. 
+#' @param ... Arguments passed on to \code{heatmap()}, such as \code{main} for a title and \code{mar} to give the title space.
 #' 
 #' @details A darker colour means that the mutation is present in that lineage, whereas a lighter colour means it's absent. 
 #' 
-#' Purple represents mutation/lineage combinations that are only present in the left definitions, and orange means it's only in the right.
+#' The first colour in col represents mutation/lineage combinations that are only present in the left definitions, and the third color in col means it's only in the right.
 #' 
 #' The center square represents mutations and lineages that are present in both lineage definitions, with white indicating that the mutation is not present for that particular lineage and black indicating that it is present.
-#' 
-#' The colours can be a named vector, with names "NA_col", "left_0", "left_1", "NA_col", "right_0", "right_1", "neither", "left_1", "right_1", and "both". Alternatively, a diverging colour scale can be provided (the colour scale must hae a single argument that determines the number of colours).
 #' 
 #' @examples
 #' 
@@ -97,15 +94,15 @@ left_both_right <- function(left, right) {
 #' plot_lineage_defs2(left_def, right_def,
 #'     main = "Constellations (without B.1.1.7) vs. Usher Barcodes (without P.1)")
 #' 
-#' my_cols <- colorRampPalette(c("dodgerblue", "white", "forestgreen"))
 #' plot_lineage_defs2(left_def, right_def,
 #'     main = "Constellations (without B.1.1.7) vs. Usher Barcodes (without P.1)",
-#'     col = my_cols)
+#'     col = c(2, 0, 3))
 #' 
 #' @seealso heatmap()
 #' @export
 plot_lineage_defs2 <- function(left_def, right_def,
-    col = NULL, n_colours = 20, ...) {
+    col = c("#b2182b", "#f7f7f7", "#2166ac", "grey90", "white", "grey40"),
+    ...) {
     muts_lmr <- left_both_right(colnames(left_def), colnames(right_def))
     lins_lmr <- left_both_right(rownames(left_def), rownames(right_def))
 
@@ -141,42 +138,36 @@ plot_lineage_defs2 <- function(left_def, right_def,
         2 * right_def[lins_lmr$mid, muts_lmr$mid] +
         6
 
-    if (is.null(col)) {
-        col <- c(
-            "NA_col" = "grey90",
-            "left_0" = "darkorchid1",
-            "left_1" = "darkorchid3",
-            "right_0" = "chocolate1",
-            "right_1" = "chocolate3",
-            "neither" = "white",
-            "both" = "grey40"
-        )
-    } else if (is.function(col)) {
-        cols <- col(n_colours)
-        col_breaks <- round(quantile(
-            x = seq_len(n_colours),
-            probs = c(0, 0.3, 0.5, 0.7, 1)
-        ))
-        col <- c(
-            "NA_col" = "grey90",
-            "left_0" = cols[col_breaks[2]],
-            "left_1" = cols[col_breaks[1]],
-            "right_0" = cols[col_breaks[4]],
-            "right_1" = cols[col_breaks[5]],
-            "neither" = cols[col_breaks[3]],
-            "both" = "grey40"
-        )
+    if (any(col == 0)) {
+        col[which(col == 0)] <- "white"
     }
-    col_side_colours <- rep(col[c("left_1", "both", "right_1")],
+    lmr <- colorRampPalette(col[1:3])(21)
+    left_0 <- lmr[9]
+    left_1 <- lmr[1]
+    right_0 <- lmr[13]
+    right_1 <- lmr[21]
+    if (length(col) == 3) {
+        na_col <- "grey90"
+        neither <- "white"
+        both <- "grey40"
+    } else if (length(col) == 6) {
+        na_col <- col[4]
+        neither <- col[5]
+        both <- col[6]
+    } else {
+        stop("col must be either 3 or 6 values")
+    }
+
+    col_side_colours <- rep(c(left_1, both, right_1),
         sapply(muts_lmr, length))
-    row_side_colours <- rep(col[c("left_1", "both", "right_1")],
+    row_side_colours <- rep(c(left_1, both, right_1),
         sapply(lins_lmr, length))
 
     heatmap(total_def, Rowv = NA, Colv = NA,
         scale = "none",
-        col = col[c("NA_col", "left_0", "left_1",
-                "NA_col", "right_0", "right_1",
-                "neither", "left_1", "right_1", "both")],
+        col = c(na_col, left_0, left_1,
+                na_col, right_0, right_1,
+                neither, left_1, right_1, both),
         ColSideColors = col_side_colours,
         RowSideColors = row_side_colours,
         revC = TRUE,

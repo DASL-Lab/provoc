@@ -4,16 +4,19 @@
 \alias{plot_lineage_defs2}
 \title{Compare two lineage definition matrices}
 \usage{
-plot_lineage_defs2(left_def, right_def, col = NULL, n_colours = 20, ...)
+plot_lineage_defs2(
+  left_def,
+  right_def,
+  col = c("#b2182b", "#f7f7f7", "#2166ac", "grey90", "white", "grey40"),
+  ...
+)
 }
 \arguments{
 \item{left_def, right_def}{Lineage definition matrice, such as those produced by \code{astronomize()} and \code{usher_barcodes()}.}
 
-\item{col}{A named vector of colours, or a function with a single argument (n) that creates a colour scheme, such as \code{colorRampPalette()}. See Details and Examples.}
+\item{col}{A vector of three colours (left, middle, right). For a mutation present in \code{left_def} only, the colour will be the first colour in the vector, while a mutation not present will be 80\% of the way between the left colour and the middle colour (similar for \code{right_def}). Optionally, the user can specify a vector of length 6, where the colours define left, middle, right, NA, neither, and both.}
 
-\item{n_colours}{The number of colours to be used in the function that creates a diverging colour scheme.}
-
-\item{...}{Arguments passed on to \code{heatmap()}, such as \code{main} and \code{mar}.}
+\item{...}{Arguments passed on to \code{heatmap()}, such as \code{main} for a title and \code{mar} to give the title space.}
 }
 \description{
 Compare two lineage definition matrices
@@ -21,11 +24,9 @@ Compare two lineage definition matrices
 \details{
 A darker colour means that the mutation is present in that lineage, whereas a lighter colour means it's absent.
 
-Purple represents mutation/lineage combinations that are only present in the left definitions, and orange means it's only in the right.
+The first colour in col represents mutation/lineage combinations that are only present in the left definitions, and the third color in col means it's only in the right.
 
 The center square represents mutations and lineages that are present in both lineage definitions, with white indicating that the mutation is not present for that particular lineage and black indicating that it is present.
-
-The colours can be a named vector, with names "NA_col", "left_0", "left_1", "NA_col", "right_0", "right_1", "neither", "left_1", "right_1", and "both". Alternatively, a diverging colour scale can be provided (the colour scale must hae a single argument that determines the number of colours).
 }
 \examples{
 
@@ -35,10 +36,9 @@ right_def <- usher_barcodes() |> filter_lineages(lineages[-2])
 plot_lineage_defs2(left_def, right_def,
     main = "Constellations (without B.1.1.7) vs. Usher Barcodes (without P.1)")
 
-my_cols <- colorRampPalette(c("dodgerblue", "white", "forestgreen"))
 plot_lineage_defs2(left_def, right_def,
     main = "Constellations (without B.1.1.7) vs. Usher Barcodes (without P.1)",
-    col = my_cols)
+    col = c(2, 0, 3))
 
 }
 \seealso{
