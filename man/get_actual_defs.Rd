@@ -4,8 +4,13 @@
 \alias{get_actual_defs}
 \title{Extract the actual lineage defitions used when fitting the models.}
 \usage{
-get_actual_defs(provoc_obj)
+get_actual_defs(provoc_obj, which = NULL)
+}
+\arguments{
+\item{provoc_obj}{Object of class provoc to be used to extract the mutation definitions.}
+
+\item{which}{Which lineage definition to extract. If NULL, extracts all. If there's only one lineage definition matrix, then it will return that matrix. Otherwise returns a list of matrices.}
 }
 \description{
-Returns a list if \code{by_col} was specified.
+Extract the actual lineage defitions used when fitting the models.
 }

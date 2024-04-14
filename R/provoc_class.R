@@ -226,13 +226,16 @@ get_lineage_defs <- function(provoc_obj) {
 
 #' Extract the actual lineage defitions used when fitting the models.
 #' 
-#' Returns a list if \code{by_col} was specified.
+#' @param provoc_obj Object of class provoc to be used to extract the mutation definitions.
+#' @param which Which lineage definition to extract. If NULL, extracts all. If there's only one lineage definition matrix, then it will return that matrix. Otherwise returns a list of matrices.
 #' 
 #' @export
-get_actual_defs <- function(provoc_obj) {
+get_actual_defs <- function(provoc_obj, which = NULL) {
     ldef <- attributes(provoc_obj)$lineage_defs_actual
     if (length(ldef) == 1) {
         ldef <- ldef[[1]]
+    } else if (!is.null(which)) {
+        ldef <- ldef[[which]]
     }
     ldef
 }

@@ -196,3 +196,137 @@ plot_lineage_defs2 <- function(left_def, right_def,
         revC = TRUE,
         ...)
 }
+
+#' Adds a list of lineage definition matrices together.
+#' 
+#' Entries represent the total number of times that lineage/mutation combination were used during fitting. Useful for checking whether a mutation was not present in a given sample.
+#' 
+#' @param ldef_list A list of lineage definition matrices, such as those extracted by \code{get_actual_defs}.
+total_lineage_defs <- function(ldef_list) {
+    all_muts <- sapply(ldef_list, colnames) |> as.character() |> unique()
+    all_lins <- sapply(ldef_list, rownames) |> as.character() |> unique()
+
+    total_def <- matrix(0, ncol = length(all_muts),
+        nrow = length(all_lins))
+    colnames(total_def) <- all_muts
+    rownames(total_def) <- all_lins
+
+    for (i in seq_along(ldef_list)) {
+        these_muts <- colnames(ldef_list[[i]])
+        these_lins <- rownames(ldef_list[[i]])
+        total_def[these_lins, these_muts] <-
+            total_def[these_lins, these_muts] +
+            ldef_list[[i]][these_lins, these_muts]
+    }
+
+    zero_cols <- which(apply(total_def, 2, sum) == 0)
+    length(zero_cols)
+
+    total_def
+}
+
+
+#' Summarise coverage by lineage/mutation combo
+#' 
+#' Useful for finding whether some calls were based on less information
+#' 
+#' @param provoc_obj Result of `provoc()`.
+#' @param fun The function used to summarise the coverage information.
+#' @param ... Further arguments passed onto \code{fun()}, such as \code{prob = 0.5} to find the median when fun = \code{quantile}.
+#' 
+#' @return A matrix with the total column and row names of all lineage defs, and entries indicating the number of analyses which used that mutation in that lineage.
+coverage_by_lineage_defs <- function(provoc_obj, fun = mean, ...) {
+    fused <- attributes(provoc_obj)$internal_data
+
+    all_muts <- unique(fused$mutation)
+    all_lins <- colnames(fused)[startsWith(colnames(fused), "lin")]
+
+    total_def <- matrix(0, ncol = length(all_muts),
+        nrow = length(all_lins))
+    colnames(total_def) <- all_muts
+    rownames(total_def) <- all_lins
+
+    for (mut in all_muts) {
+        for (lin in all_lins) {
+            cond <- (fused$mutation == mut) &
+                (fused[, lin] == 1)
+            if (sum(cond) == 0) {
+                total_def[lin, mut] <- NA
+            } else {
+                total_def[lin, mut] <- fun(
+                    fused$coverage[fused$mutation == mut &
+                            fused[, lin] == 1],
+                    ...
+                )
+            }
+        }
+    }
+
+    rownames(total_def) <- gsub("lin_", "", rownames(total_def))
+    total_def
+}
+
+#' Visualize how lineage definitions were used in analysis
+#' 
+#' @param provoc_obj The result of calling \code{provoc}.
+#' @param type "used" for the total number of times a mutation was used in the analysis and "coverage" for information about the coverage. Default \code{"coverage"}.
+#' @param fun The function used to summarise coverage (when type = "coverage"). Default \code{mean}.
+#' @param ... Further arguments passed on to \code{fun}
+#' @param col Colours to be used in plotting. Default \code{hcl.colors(n = 21, palette = "Dark Mint", rev = TRUE)}. Single-hue sequential colour palettes recommended. 
+#' @param main A main title for the plot.
+#' 
+#' @examples
+#' 
+#' data(Baaijens)
+#' b2 <- Baaijens [Baaijens$sra %in% unique(Baaijens$sra)[1:30], ]
+#' b2$mutations <- parse_mutations(b2$label)
+#' 
+#' lineage_defs <- astronomize() |>
+#'     filter_lineages(c("B.1.617.1", "B.1.617.2", "B.1.617.2+K417N",
+#'         "B.1.427", "B.1.429", "B.1.1.7"))
+#' res <- provoc(
+#'     formula = count / coverage ~ .,
+#'     lineage_defs = lineage_defs,
+#'     data = b2, 
+#'     by = "sra",
+#'     bootstrap_samples = 0)
+#' plot_actual_defs(res, type = "coverage", fun = max, na.rm = TRUE)
+#' @export
+plot_actual_defs <- function(provoc_obj,
+    type = "coverage", fun = mean, ..., main = NULL,
+    col = hcl.colors(n = 21, palette = "Dark Mint", rev = TRUE)) {
+    if (type == "used") {
+        total_def <- total_lineage_defs(get_actual_defs(provoc_obj))
+    } else if (type == "coverage") {
+        total_def <- coverage_by_lineage_defs(provoc_obj, fun = fun, ...)
+    }
+
+    rowmax <- apply(total_def, 1, max, na.rm = TRUE) |> round(2)
+    rowmed <- apply(
+        X = total_def,
+        MARGIN = 1,
+        FUN = function(x) quantile(x[x > 0], 0.5, na.rm = TRUE)
+    ) |>
+        round(2)
+    rowmin <- apply(total_def, 1, function(x) min(x[x > 0], na.rm = TRUE)) |>
+        round(2)
+
+    rownames(total_def)[1] <- paste0(rownames(total_def)[1],
+        "\n(min, median, max) = ")
+    rownames(total_def) <- paste0(
+        rownames(total_def),
+        "\n(", rowmin, ", ", rowmed, ", ", rowmax, ")"
+    )
+
+    if (is.null(main)) {
+        if (type == "coverage") {
+            main <- paste0(as.character(substitute(fun)),
+                " of coverage within each sample.")
+        } else {
+            main <- "Total times each definition was used."
+        }
+    }
+
+    heatmap(total_def, Rowv = NA, Colv = NA, scale = "none",
+        revC = TRUE, col = col, main = main)
+}
