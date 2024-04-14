@@ -48,7 +48,7 @@ data.frame(
 ```{R}
 # Analyze the dataset using the default mutation definitions
 res <- provoc(formula = cbind(count, coverage) ~ B.1.1.7 + B.1.617.2,
-              data = baaijens1, by = "sample_name",
+              data = baaijens1, by = "sra",
               lineage_defs = as.matrix(lineage_defs), verbose = FALSE)
 res
 
