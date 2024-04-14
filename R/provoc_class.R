@@ -137,7 +137,8 @@ plot.provoc <- function(provoc_obj, plot_type = c("barplot")) {
                 data = provoc_obj$rho,
                 ncol = ifelse(is.null(by_col), 1,
                     length(unique(provoc_obj[, by_col])))),
-            names.arg = unique(provoc_obj[, by_col]),
+            names.arg = ifelse(is.null(by_col), "",
+                unique(provoc_obj[, by_col])),
             col = seq_along(unique(provoc_obj$lineage)),
             horiz = TRUE,
             xlim = c(0, 1),
@@ -175,6 +176,9 @@ autoplot.provoc <- function(provoc_obj, date_col = NULL) {
     }
 
     by_col <- attributes(provoc_obj)$by_col
+    # NULLs do not play well with "if"; change to something that
+    # will definitely not be a column name.
+    if (is.null(by_col)) by_col <- "By col is not present in columns"
 
     if (!is.null(date_col)) {
         if (!inherits(provoc_obj[, date_col], "Date"))
