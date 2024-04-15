@@ -35,7 +35,7 @@ lineage_defs_from_list <- function(lineage_list) {
 #'
 #' @examples
 #' # BA.1 was only observed as of January 2021
-#' extant_lineages(c("B.1.1.7", "B.1.617.2", "BA.1"), start_date = "2020-12-01")
+#' provoc:::extant_lineages(c("B.1.1.7", "B.1.617.2", "BA.1"), start_date = "2020-12-01")
 #' 
 #' # Subset lineage defs by date:
 #' data(Baaijens)
