@@ -121,9 +121,15 @@ plot_lineage_defs2 <- function(left_def, right_def,
 
     if (inherits(left_def, "provoc")) {
         left_def <- get_actual_defs(left_def)
+        if (!inherits(left_def, "matrix")) {
+            left_def <- total_lineage_defs(left_def, summarise = "or")
+        }
     }
     if (inherits(right_def, "provoc")) {
         right_def <- get_actual_defs(right_def)
+        if (!inherits(right_def, "matrix")) {
+            right_def <- total_lineage_defs(right_def, summarise = "or")
+        }
     }
 
     muts_lmr <- left_both_right(colnames(left_def), colnames(right_def))
@@ -202,7 +208,7 @@ plot_lineage_defs2 <- function(left_def, right_def,
 #' Entries represent the total number of times that lineage/mutation combination were used during fitting. Useful for checking whether a mutation was not present in a given sample.
 #' 
 #' @param ldef_list A list of lineage definition matrices, such as those extracted by \code{get_actual_defs}.
-total_lineage_defs <- function(ldef_list) {
+total_lineage_defs <- function(ldef_list, summarise = "add") {
     all_muts <- sapply(ldef_list, colnames) |> as.character() |> unique()
     all_lins <- sapply(ldef_list, rownames) |> as.character() |> unique()
 
@@ -214,9 +220,15 @@ total_lineage_defs <- function(ldef_list) {
     for (i in seq_along(ldef_list)) {
         these_muts <- colnames(ldef_list[[i]])
         these_lins <- rownames(ldef_list[[i]])
-        total_def[these_lins, these_muts] <-
-            total_def[these_lins, these_muts] +
-            ldef_list[[i]][these_lins, these_muts]
+        if (summarise == "add") {
+            total_def[these_lins, these_muts] <-
+                total_def[these_lins, these_muts] +
+                ldef_list[[i]][these_lins, these_muts]
+        } else {
+            total_def[these_lins, these_muts] <-
+                total_def[these_lins, these_muts] |
+                ldef_list[[i]][these_lins, these_muts]
+        }
     }
 
     zero_cols <- which(apply(total_def, 2, sum) == 0)
