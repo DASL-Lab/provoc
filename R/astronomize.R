@@ -269,11 +269,10 @@ usher_barcodes <- function(
     source = c("usher_barcodes", "usher_barcodes_with_gisaid")[1],
     update = FALSE) {
 
-    filepath <- paste0(pathname, filename)
-
     if (substr(path, nchar(path), nchar(path)) != "/") {
         path <- paste0(path, "/")
     }
+    filepath <- paste0(path, filename)
 
     if (source == "usher_barcodes") {
         source <- "https://raw.githubusercontent.com/andersen-lab/Freyja/main/freyja/data/usher_barcodes.csv" # nolint
@@ -320,4 +319,87 @@ usher_barcodes <- function(
             substr(x, 2, nchar(x))
         })) |> provoc:::parse_mutations()
     barcodes
+}
+
+#' Gather CoVariants defintions
+#' 
+#' CoVariants are stored as a python script, so this code downloads the file, runs it via \code{reticulate}, then parses the output.
+#' 
+#' @param filename Save to disk so that the python needn't be run every time. If file exists, it is loaded rather than re-downloaded.
+#' @param path Path to which to read or write file.
+#' @param update If TRUE, downloads the data no matter what.
+#' @param url Useful if the url ever changes.
+covariants <- function(filename = "covariants.csv",
+    path = c("data/clean/", "data/", "./")[1],
+    update = FALSE,
+    url = "https://raw.githubusercontent.com/hodcroftlab/covariants/master/scripts/clusters.py") {
+
+    if (!requireNamespace("reticulate", quietly = TRUE)) {
+        stop("The `reticulate` package is required for this function.")
+    }
+
+    if (substr(path, nchar(path), nchar(path)) != "/") {
+        path <- paste0(path, "/")
+    }
+    filepath <- paste0(path, filename)
+    if (file.exists(filepath) && !update) {
+        lineage_defs <- read.csv(filepath)
+        return(as.matrix(lineage_defs))
+    }
+    for (pathname in c(path, "data/clean/", "data/", "./")) {
+        if (file.exists(paste0(pathname, filename)) && !update) {
+            lineage_defs <- read.csv(paste0(pathname, filename))
+            return(as.matrix(lineage_defs))
+        }
+    }
+
+    raw_file <- readLines(url)
+    py_file <- tempfile()
+    writeLines(raw_file, con = py_file)
+
+    reticulate::source_python(py_file)
+    unlink(py_file)
+
+    lineage_defs <- lapply(clusters, function(clust) {
+        if (length(clust$mutations[[1]]) > 0)
+            nonsym <- sapply(clust$mutations[[1]], function(x) {
+                paste0("aa:", tolower(x[1]), ":",
+                    paste0(x[2:length(x)], collapse = ""))
+            }) |>
+                gsub(":s:", ":S:", x = _, fixed = TRUE) |>
+                gsub(":n:", ":N:", x = _, fixed = TRUE) |>
+                gsub(":e:", ":E:", x = _, fixed = TRUE)
+
+        if (length(clust$mutations) > 1)
+            if (length(clust$mutations[[2]]) > 0)
+                sym <- sapply(clust$mutations[[2]], paste, collapse = "")
+
+        c(nonsym, sym) |> sort()
+    })
+    lineage_names <- sapply(clusters, function(x) {
+        lin_name <- x$pango_lineages
+        if (!is.null(lin_name)) {
+            if (length(lin_name) > 0) {
+                lin_name <- lin_name[[1]]$name
+            } else {
+                lin_name <- gsub(" ", "", x$display_name)
+            }
+        } else {
+            lin_name <- gsub(" ", "", x$display_name)
+        }
+        lin_name
+    })
+    names(lineage_defs) <- lineage_names
+
+    lineage_defs <- lineage_defs_from_list(lineage_defs)
+    for (pathname in c(path, "data/clean/", "data/", "./")) {
+        if (dir.exists(pathname)) {
+            cat("Writing to", paste0(pathname, filename), "\n")
+            write.csv(lineage_defs,
+                paste0(pathname, filename),
+                row.names = TRUE)
+            break
+        }
+    }
+    lineage_defs
 }
