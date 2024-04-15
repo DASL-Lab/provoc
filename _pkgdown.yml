@@ -35,6 +35,7 @@ reference:
   - astronomize
   - constellation_lists
   - usher_barcodes
+  - covariants
   - lineage_defs_from_list
   - filter_lineages
   - extant_lineages

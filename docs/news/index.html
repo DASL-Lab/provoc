@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">provoc</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,6 +51,19 @@
       <small>Source: <a href="https://github.com/DASL-Lab/provoc/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.5.5" id="version-055-now-that-i-can-handle-them-i-want-more-lineage-definitions">Version 0.5.5: Now that I can handle them, I want more lineage definitions!<a class="anchor" aria-label="anchor" href="#version-055-now-that-i-can-handle-them-i-want-more-lineage-definitions"></a></h2>
+<ul><li>
+<code><a href="../reference/usher_barcodes.html">usher_barcodes()</a></code> can now download <code>usher_barcodes_with_gisaid.csv</code>.</li>
+<li>
+<code><a href="../reference/covariants.html">covariants()</a></code> runs a python script to get lineage definitions from <a href="https://github.com/hodcroftlab/covariants" class="external-link">Hodcroft Lab</a>, the data behind <a href="covariants.org">covariants.org</a>.
+<ul><li>Requires the <code>reticulate</code> package and an installation of python (the lineage definitions are stored in a python file, and I’m not a good enough programmer to parse it).</li>
+</ul></li>
+<li>
+<code><a href="../reference/plot_lineage_defs2.html">plot_lineage_defs2()</a></code> can handle cases where mutations/lineages are completely missing from one of the defs.</li>
+<li>
+<code>pkgdown()</code> site complete.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.5.4" id="version-054-what-will-i-do-with-all-these-lineage-definitions">Version 0.5.4: What will I do with all these lineage definitions?<a class="anchor" aria-label="anchor" href="#version-054-what-will-i-do-with-all-these-lineage-definitions"></a></h2>
 <ul><li>Visualize which mutations were used the most with <code>plot_actual_defs(res, type = "used")</code>!</li>
