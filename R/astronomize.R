@@ -247,9 +247,10 @@ filter_lineages <- function(
 #' The barcodes file is several hundred megabytes, so by default the function will attempt to save to disk for faster loading next time. 
 #' 
 #' @param path The location to store the barcodes file. Tries the provided path as well as data/clean, data/, then the current directory.
+#' @param filename The name of the file that should be read (or written to, if \code{write} is true and the file doesn't already exist).
 #' @param write Should the file be written to disk to avoid downloading? If TRUE, uses the first path that exists.
-#' @param url The URL (or file path) for the barcodes file. Defaults to the GISAID data, but the user can specify other barcode files (for example, Freyja also keeps a NextStrain version in the same repo folder). 
 #' @param update If TRUE, overwrite the existing barcodes file.
+#' @param source Either "usher_barcodes" for the Freyja barcodes file built with open data, "usher_barcodes_with_gisaid" for the one built with GISAID data, or a URL that points to a valid barcodes file (such as a previous version of the barcodes).
 #' 
 #' @details The function checks for a file called "usher_barcodes.csv" in the path provided. If not found, it also checks common locations data/clean/, data/, or the current working folder. The \code{here} package is recommended to ensure that the file is found no matter where the code is being run from.
 #' 
@@ -263,35 +264,45 @@ filter_lineages <- function(
 #' @export
 usher_barcodes <- function(
     path = c("data/clean/", "data/", "./")[1],
+    filename = "usher_barcodes.csv",
     write = TRUE,
-    url = "https://raw.githubusercontent.com/andersen-lab/Freyja/main/freyja/data/usher_barcodes.csv",
+    source = c("usher_barcodes", "usher_barcodes_with_gisaid")[1],
     update = FALSE) {
+
+    filepath <- paste0(pathname, filename)
 
     if (substr(path, nchar(path), nchar(path)) != "/") {
         path <- paste0(path, "/")
     }
 
+    if (source == "usher_barcodes") {
+        source <- "https://raw.githubusercontent.com/andersen-lab/Freyja/main/freyja/data/usher_barcodes.csv" # nolint
+    } else if (source == "usher_barcodes_with_gisaid") {
+        source <- "https://github.com/andersen-lab/Freyja/raw/main/freyja/data/usher_barcodes_with_gisaid.csv" # nolint
+    }
+
     barcodes_exists <- FALSE
     for (pathname in c(path, "data/clean/", "data/", "./")) {
-        if (file.exists(paste0(pathname, "usher_barcodes.csv")) && !update) {
-            barcodes <- read.csv(paste0(pathname, "usher_barcodes.csv"))
+        if (file.exists(paste0(pathname, filename)) && !update) {
+            barcodes <- read.csv(paste0(pathname, filename))
             barcodes_exists <- TRUE
             break
         }
     }
 
     if (!barcodes_exists) {
-        cat(ifelse(update, "", "usher_barcodes.csv not found."),
-            "Downloading from Freyja repository.\n")
-        barcodes <- read.csv(url)
+        cat(ifelse(update, "",
+                paste0(filename, " not found. ",
+                    "Downloading from.", source, "\n")))
+        barcodes <- read.csv(source)
         # First column is lineage names
         rownames(barcodes) <- barcodes[, 1]
         barcodes <- barcodes[, -1]
         for (pathname in c(path, "data/clean/", "data/", "./")) {
             if (dir.exists(pathname)) {
-                cat("Writing to", paste0(pathname, "usher_barcodes.csv"), "\n")
+                cat("Writing to", paste0(pathname, filename), "\n")
                 write.csv(barcodes,
-                    paste0(pathname, "usher_barcodes.csv"),
+                    paste0(pathname, filename),
                     row.names = TRUE)
                 break
             }
