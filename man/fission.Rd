@@ -20,3 +20,4 @@ Fusion ensures that the mutation lists match and are in the correct order, but t
 \details{
 This function is mainly used internally, but can be useful to check if which mutations are actually used in model fitting.
 }
+\keyword{internal}

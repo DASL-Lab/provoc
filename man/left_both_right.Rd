@@ -12,3 +12,4 @@ left_both_right(left, right)
 \description{
 Calculate the set differences for two character vectors
 }
+\keyword{internal}

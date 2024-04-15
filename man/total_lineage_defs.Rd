@@ -12,3 +12,4 @@ total_lineage_defs(ldef_list, summarise = "add")
 \description{
 Entries represent the total number of times that lineage/mutation combination were used during fitting. Useful for checking whether a mutation was not present in a given sample.
 }
+\keyword{internal}

@@ -20,3 +20,4 @@ To ensure the predictor matrix is singular, if annihilate is TRUE the function r
 \examples{
 # This function is internally used and not typically called by the user.
 }
+\keyword{internal}

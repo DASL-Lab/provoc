@@ -26,3 +26,4 @@ Processes each group or the entire dataset through \code{provoc_optim} and colle
 \examples{
 # This function is internally used and not typically called by the user.
 }
+\keyword{internal}

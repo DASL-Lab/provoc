@@ -14,3 +14,4 @@ simplify_similarity(similarities, almost)
 \description{
 Simplifies lineage similarity matrices for easier interpretation
 }
+\keyword{internal}

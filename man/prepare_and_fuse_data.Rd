@@ -24,3 +24,4 @@ Prepares the data based on the grouping variable and applies the \code{fuse} fun
 \examples{
 # This function is internally used and not typically called by the user.
 }
+\keyword{internal}

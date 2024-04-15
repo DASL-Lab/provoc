@@ -26,3 +26,4 @@ e.g. aa:orf1a:K856R
 \description{
 As with many things in this repo, lovingly stolen from the \code{seq_utils.py} script in \url{https://github.com/PoonLab/gromstole} (as well as PoonLab/covizu).
 }
+\keyword{internal}

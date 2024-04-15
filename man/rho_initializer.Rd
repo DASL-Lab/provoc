@@ -15,3 +15,4 @@ lineage_defs a vector with the same length as the number of rows of lineage_defs
 \description{
 Initialize a vector of proportions for the lineages of concern, prioritizing current (March 2022) most probable VoCs.
 }
+\keyword{internal}

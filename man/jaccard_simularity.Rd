@@ -17,3 +17,4 @@ The Jaccard simularity
 \description{
 Finds the Jaccard similarity between two vectors
 }
+\keyword{internal}

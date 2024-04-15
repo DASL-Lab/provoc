@@ -9,6 +9,7 @@
 #' @param reffile The path to the reference file that was used to define mutations. Usually NC_045512.fa except in very particular circumstances.
 #' 
 #' @return e.g. aa:orf1a:K856R
+#' @keywords internal
 parse_mutation <- function(type, pos, alt,
     reffile = system.file("extdata/NC_045512.fa", package = "provoc")) {
 
@@ -96,6 +97,7 @@ parse_mutation <- function(type, pos, alt,
 #' @param muts A vector of mutations in the format "~50535C", "-43234.2", and "+342234.AC".
 #'
 #' @return A data frame with columns `label` and `mutation`.
+#' @keywords internal
 parse_unique_mutations <- function(muts) {
     unique_muts <- unique(muts)
     new_muts <- vector("character", length(unique_muts))  # new_muts vector
@@ -153,6 +155,7 @@ parse_mutations <- function(labels) {
 #' @param pos The position on the genome
 #' @param alt The alternate genotype
 #' 
+#' @keywords internal
 parse_one_ivar <- function(pos, alt) {
     if (substr(alt, 1, 1) == "-") {
         type <- "-"

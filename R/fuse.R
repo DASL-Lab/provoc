@@ -26,6 +26,7 @@
 #'     filter_variants(c("B.1.1.7", "B.1.429", "B.1.617.2"))
 #' fused <- fuse(b1, lineage_defs)
 #' head(fused)
+#' @keywords internal
 fuse <- function(coco, lineage_defs, min_perc = 0.01, verbose = FALSE) {
     if (any(colnames(coco) %in% paste0("lin_", rownames(lineage_defs)))) {
         stop("coco should not contain column names that are names of lineages. Is this object already fused?")
@@ -95,6 +96,7 @@ fuse <- function(coco, lineage_defs, min_perc = 0.01, verbose = FALSE) {
 #' @return A list containing coco and lineage_defs.
 #' 
 #' @details This function is mainly used internally, but can be useful to check if which mutations are actually used in model fitting.
+#' @keywords internal
 fission <- function(fused, sample = NULL) {
     if (!is.null(sample)) fused <- fused[fused$sample == sample, ]
     lineages <- startsWith(names(fused), "lin_")
@@ -191,6 +193,7 @@ lineage_similarity <- function(data, simplify = FALSE, almost = 1) {
 #' 
 #' @param similarities Result of \code{lineage_similarity()}
 #' @param almost Degree of similarity.
+#' @keywords internal
 simplify_similarity <- function(similarities, almost) {
     keep_lins <- apply(X = similarities$Differ_by_one_or_less,
         MARGIN = 1,
@@ -252,6 +255,7 @@ simplify_similarity <- function(similarities, almost) {
 #' @param v2 vector for comparison
 #'
 #' @return TRUE, if they only differ by one mutation
+#' @keywords internal
 differ_by_one_or_less <- function(v1, v2) {
     lineage_difference <- v1 == v2
     if (sum(lineage_difference) %in% c(length(v1) - 1, length(v1))) {
@@ -267,6 +271,7 @@ differ_by_one_or_less <- function(v1, v2) {
 #' @param v2 vector for comparison
 #'
 #' @return The Jaccard simularity
+#' @keywords internal
 jaccard_simularity <- function(v1, v2) {
     lineage_difference <- v1 == v2
     return(sum(lineage_difference) / length(v1))
@@ -278,6 +283,7 @@ jaccard_simularity <- function(v1, v2) {
 #' @param v2 vector for comparison
 #'
 #' @return Result, TRUE if v2 is a subset of v1
+#' @keywords internal
 is_subset <- function(v1, v2) {
     result <- TRUE
     i <- 1
@@ -296,6 +302,7 @@ is_subset <- function(v1, v2) {
 #' @param v2 vector for comparison
 #'
 #' @return Result, TRUE if v2 is almost a subset of v1
+#' @keywords internal
 is_almost_subset <- function(v1, v2) {
     result <- FALSE
     not_subset_count <- 0

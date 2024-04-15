@@ -20,3 +20,4 @@ pos_from_aa("aa:orf1a:I300V") #1166
 pos_from_aa("C703T") # 703
 
 }
+\keyword{internal}

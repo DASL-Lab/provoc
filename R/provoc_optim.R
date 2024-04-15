@@ -3,6 +3,7 @@
 #' @param x A vector of numbers
 #' 
 #' @return A vector with the same length of x such that the sum of the values is larger than 0 but less than 1 and all values are between 0 and 1
+#' @keywords internal
 to_feasible <- function(x) {
     x <- x - min(x, na.rm = TRUE) + 0.0001
     x <- 0.99 * x / sum(x, na.rm = TRUE)
@@ -15,6 +16,7 @@ to_feasible <- function(x) {
 #' @param lineage_defs The lineage matrix to be used in the study; only used for the rownames (which should be VOCs in the expected format)
 #' 
 #' @return lineage_defs a vector with the same length as the number of rows of lineage_defs, such that the values sum to less than one and each value is between 0 and 1
+#' @keywords internal
 rho_initializer <- function(lineage_defs) {
     rho_init <- rep(10, length = nrow(lineage_defs))
     # Omicron
@@ -68,6 +70,7 @@ rho_initializer <- function(lineage_defs) {
 #' coco <- simulate_coco(lineage_defs, rel_counts = c(100, 200, 300)) # expect 1/6, 2/6, and 3/6
 #' res <- copt_binom(coco, lineage_defs)
 #' res$res_df
+#' @keywords internal
 provoc_optim <- function(coco, lineage_defs, bootstrap_samples = 0,
     verbose = TRUE, rho_init = NULL) {
     muts <- coco$mutation[coco$coverage > 0]

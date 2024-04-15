@@ -10,6 +10,7 @@
 #' pos_from_aa("C703T") # 703
 #'
 #' @export
+#' @keywords internal
 pos_from_aa <- function(aa) {
     gcodes <- grepl("aa", aa)
     dels <- grepl("del", aa)
@@ -64,6 +65,7 @@ pos_from_aa <- function(aa) {
 #' @details Finds the maximum coverage for the three positions of the amino acid. This ensures that the number of observed mutations can never be larger than the coverage.
 #'
 #' @export
+#' @keywords internal
 coverage_at_aa <- function(coverage, aa) {
     pos <- pos_from_aa(aa)
     get_three <- grepl("aa", aa)

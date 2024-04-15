@@ -17,3 +17,4 @@ Currently requires "aa" notation.
 \details{
 Finds the maximum coverage for the three positions of the amino acid. This ensures that the number of observed mutations can never be larger than the coverage.
 }
+\keyword{internal}

@@ -18,3 +18,4 @@ Handles mutation definitions by using the provided matrix or generating it using
 \examples{
 # This function is internally used and not typically called by the user.
 }
+\keyword{internal}

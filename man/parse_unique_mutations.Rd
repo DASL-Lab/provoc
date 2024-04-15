@@ -15,3 +15,4 @@ A data frame with columns \code{label} and \code{mutation}.
 \description{
 Parse all unique mutations in a vector
 }
+\keyword{internal}

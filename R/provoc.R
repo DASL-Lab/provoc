@@ -157,6 +157,7 @@ provoc <- function(formula, data,
 #' @return None
 #' @examples
 #' # This function is internally used and not typically called by the user.
+#' @keywords internal
 validate_inputs <- function(formula, data) {
     if (!inherits(formula, "formula"))
         stop("Argument 'formula' must be a formula.")
@@ -174,6 +175,7 @@ validate_inputs <- function(formula, data) {
 #'
 #' @return A list of length 2 containing the possibly transposed lineage_defs and
 #' the right mutation column.
+#' @keywords internal
 find_mutation_column <- function(data, lineage_defs) {
     mutation_col <- NULL
     for (col in colnames(data)) {
@@ -200,6 +202,7 @@ find_mutation_column <- function(data, lineage_defs) {
 #' @return A data frame with no mutations that have a duplicate combination of lineages
 #' @examples
 #' # This function is internally used and not typically called by the user.
+#' @keywords internal
 remove_identical_lineages <- function(fused_df, annihilate) {
     subset_of_lineages <- dplyr::select(fused_df, contains("lin_"))
     if (annihilate) {
@@ -245,6 +248,7 @@ remove_identical_lineages <- function(fused_df, annihilate) {
 #' and `lineage_defs`, a matrix filtered to only include mutations on the formula's RHS
 #' @examples
 #' # This function is internally used and not typically called by the user.
+#' @keywords internal
 extract_formula_components <- function(formula, data,
     lineage_defs, mutation_col, by_col) {
     # Extract LHS and RHS of the formula
@@ -294,6 +298,7 @@ extract_formula_components <- function(formula, data,
 #' @return A matrix of mutation definitions ready for analysis.
 #' @examples
 #' # This function is internally used and not typically called by the user.
+#' @keywords internal
 process_lineage_defs <- function(lineage_defs) {
     if (is.null(lineage_defs)) {
         return(provoc:::astronomize())
@@ -320,6 +325,7 @@ process_lineage_defs <- function(lineage_defs) {
 #' @return A list containing the fused data frame and the grouped data as a list (if applicable).
 #' @examples
 #' # This function is internally used and not typically called by the user.
+#' @keywords internal
 prepare_and_fuse_data <- function(data, lineage_defs, by, verbose) {
     if (!is.null(by)) {
         if (!by %in% names(data))
@@ -347,6 +353,7 @@ prepare_and_fuse_data <- function(data, lineage_defs, by, verbose) {
 #' @return A list of results for each group, including point estimates and convergence information.
 #' @examples
 #' # This function is internally used and not typically called by the user.
+#' @keywords internal
 process_optim <- function(grouped_data, lineage_defs, by, bootstrap_samples, verbose) {
     res_list <- vector("list", length = length(grouped_data))
     names(res_list) <- names(grouped_data)
@@ -389,6 +396,7 @@ process_optim <- function(grouped_data, lineage_defs, by, bootstrap_samples, ver
 #' @param by Column name to group and process data.
 #'
 #' @return A dataframe with the columns by and all that are constant with by
+#' @keywords internal
 constant_with_by <- function(data, by) {
     if (is.null(by)) {
         return(NULL)

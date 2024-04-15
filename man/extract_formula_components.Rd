@@ -27,3 +27,4 @@ Extracts and processes components from the formula provided to the provoc functi
 \examples{
 # This function is internally used and not typically called by the user.
 }
+\keyword{internal}

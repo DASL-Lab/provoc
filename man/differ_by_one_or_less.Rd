@@ -17,3 +17,4 @@ TRUE, if they only differ by one mutation
 \description{
 Finds if two vectors only differ between one mutation
 }
+\keyword{internal}

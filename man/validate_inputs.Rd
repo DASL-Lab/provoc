@@ -20,3 +20,4 @@ Checks if the provided formula and data frame are valid for analysis.
 \examples{
 # This function is internally used and not typically called by the user.
 }
+\keyword{internal}

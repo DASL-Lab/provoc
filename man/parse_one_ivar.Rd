@@ -14,3 +14,4 @@ parse_one_ivar(pos, alt)
 \description{
 Parse mutations from ivar pipeline
 }
+\keyword{internal}

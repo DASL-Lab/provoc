@@ -39,3 +39,4 @@ lineage_defs <- astronomize() |>
 fused <- fuse(b1, lineage_defs)
 head(fused)
 }
+\keyword{internal}

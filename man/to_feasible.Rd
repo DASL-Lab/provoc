@@ -15,3 +15,4 @@ A vector with the same length of x such that the sum of the values is larger tha
 \description{
 Transform a vector to the interior of the feasible region to be used as inits for constrOptim
 }
+\keyword{internal}

@@ -4,6 +4,7 @@
 #'
 #' @param pat:  regex pattern
 #' @param s:  character, a single string
+#' @keywords internal
 #' @return character, vector of all matching substrings
 re_findall <- function(pat, s) {
     if (!is.character(s)) {

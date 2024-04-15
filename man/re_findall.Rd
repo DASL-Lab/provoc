@@ -17,3 +17,4 @@ character, vector of all matching substrings
 \description{
 Emulate behaviour of Python's re.findall() function. Lovingly stolen from \url{https://github.com/PoonLab/gromstole}.
 }
+\keyword{internal}

@@ -50,3 +50,4 @@ res$res_df
 \seealso{
 \code{\link[stats]{constrOptim}}
 }
+\keyword{internal}

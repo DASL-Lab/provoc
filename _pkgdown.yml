@@ -1,4 +1,72 @@
-url: ~
+url: https://dasl-lab.github.io/provoc
+
 template:
   bootstrap: 5
 
+reference:
+- title: Fitting a Model
+  contents:
+  - provoc
+  - coverage_by_lineage_defs
+  - get_convergence
+  - get_res
+  - Baaijens
+  - add_coverage
+  - parse_ivar
+  - parse_mutations
+  - simulate_coco
+  - simulate_lineage_defs
+
+- title: Model diagnostics
+  contents:
+  - autoplot.provoc
+  - plot.provoc
+  - residuals.provoc
+  - resid.provoc
+  - plot_resids
+  - plot_lineages
+  - lineage_similarity
+  - predict.provoc
+  - print.provoc
+  - summary.provoc
+  - print.summary.provoc
+  - summarise_lineages
+
+- title: Making and managing lineage definitions
+  contents:
+  - astronomize
+  - constellation_lists
+  - usher_barcodes
+  - lineage_defs_from_list
+  - filter_lineages
+  - extant_lineages
+  - get_actual_defs
+  - get_lineage_defs
+  - get_lineage_info
+  - lineage_facts
+
+- title: Helper functions for mutations
+  content:
+  - parse_ivar
+  - parse_mutations
+  - pos_from_aa
+
+- title: Viewing lineage definitions
+  contents:
+  - plot_lineage_defs
+  - plot_lineage_defs2
+  - plot_actual_defs
+
+- title: Managing data
+  content:
+  - add_coverage
+  - coverage_at_aa
+
+- title: Data
+  content:
+  - Baaijens
+
+- title: Simulating data (deprecated)
+  content:
+  - simulate_coco
+  - simulate_lineage_defs

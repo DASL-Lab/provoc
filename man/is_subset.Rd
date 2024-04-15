@@ -17,3 +17,4 @@ Result, TRUE if v2 is a subset of v1
 \description{
 Finds if one lineage is a subset of another
 }
+\keyword{internal}

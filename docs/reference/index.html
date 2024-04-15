@@ -45,7 +45,7 @@
     </div>
 
     <div class="section level2">
-      <h2 id="all-functions">All functions<a class="anchor" aria-label="anchor" href="#all-functions"></a></h2>
+      <h2 id="fitting-a-model">Fitting a Model<a class="anchor" aria-label="anchor" href="#fitting-a-model"></a></h2>
       
       
 
@@ -57,6 +57,26 @@
 
       <dl><dt>
           
+          <code><a href="provoc.html">provoc()</a></code> 
+        </dt>
+        <dd>Proportions of Variants of Concern (provoc) Analysis</dd>
+      </dl><dl><dt>
+          
+          <code><a href="coverage_by_lineage_defs.html">coverage_by_lineage_defs()</a></code> 
+        </dt>
+        <dd>Summarise coverage by lineage/mutation combo</dd>
+      </dl><dl><dt>
+          
+          <code><a href="get_convergence.html">get_convergence()</a></code> 
+        </dt>
+        <dd>Check if provoc converged</dd>
+      </dl><dl><dt>
+          
+          <code><a href="get_res.html">get_res()</a></code> 
+        </dt>
+        <dd>Extract just the results of lineage estimation</dd>
+      </dl><dl><dt>
+          
           <code><a href="Baaijens.html">Baaijens</a></code> 
         </dt>
         <dd>Data from bioproject PRJNA741211 (Baaijens et al. (2022))</dd>
@@ -67,19 +87,111 @@
         <dd>Add coverage of missing mutations to a data set</dd>
       </dl><dl><dt>
           
-          <code><a href="astronomize.html">astronomize()</a></code> 
+          <code><a href="parse_ivar.html">parse_ivar()</a></code> 
         </dt>
-        <dd>Extract mutation list from a directory of constellation files.</dd>
+        <dd>Parse Mutations from the ivar pipeline</dd>
       </dl><dl><dt>
+          
+          <code><a href="parse_mutations.html">parse_mutations()</a></code> 
+        </dt>
+        <dd>Parse output of the Gromstole pipeline, from SNVs to AAs</dd>
+      </dl><dl><dt>
+          
+          <code><a href="simulate_coco.html">simulate_coco()</a></code> 
+        </dt>
+        <dd>Simulate counts and coverage from a lineage definition matrix</dd>
+      </dl><dl><dt>
+          
+          <code><a href="simulate_lineage_defs.html">simulate_lineage_defs()</a></code> 
+        </dt>
+        <dd>Simulate a small lineage matrix for testing</dd>
+      </dl></div><div class="section level2">
+      <h2 id="model-diagnostics">Model diagnostics<a class="anchor" aria-label="anchor" href="#model-diagnostics"></a></h2>
+      
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
           
           <code><a href="autoplot.provoc.html">autoplot(<i>&lt;provoc&gt;</i>)</a></code> 
         </dt>
         <dd>Plot a provoc object using ggplot2</dd>
       </dl><dl><dt>
           
-          <code><a href="constant_with_by.html">constant_with_by()</a></code> 
+          <code><a href="plot.provoc.html">plot(<i>&lt;provoc&gt;</i>)</a></code> 
         </dt>
-        <dd>Finds all columns of the data that are constant with the specified by group</dd>
+        <dd>Plot the results of model fitting</dd>
+      </dl><dl><dt>
+          
+          <code><a href="residuals.provoc.html">residuals(<i>&lt;provoc&gt;</i>)</a></code> 
+        </dt>
+        <dd>Calculate the residuals of a provoc object</dd>
+      </dl><dl><dt>
+          
+          <code><a href="resid.provoc.html">resid(<i>&lt;provoc&gt;</i>)</a></code> 
+        </dt>
+        <dd>Calculate the residuals of a provoc object</dd>
+      </dl><dl><dt>
+          
+          <code><a href="plot_resids.html">plot_resids()</a></code> 
+        </dt>
+        <dd>Plot the residuals, by lineage</dd>
+      </dl><dl><dt>
+          
+          <code><a href="plot_lineages.html">plot_lineages()</a></code> 
+        </dt>
+        <dd>plot the similarities of lineage</dd>
+      </dl><dl><dt>
+          
+          <code><a href="lineage_similarity.html">lineage_similarity()</a></code> 
+        </dt>
+        <dd>Finds and prints all similarities among lineage</dd>
+      </dl><dl><dt>
+          
+          <code><a href="predict.provoc.html">predict(<i>&lt;provoc&gt;</i>)</a></code> 
+        </dt>
+        <dd>Predict using Proportions of Lineages</dd>
+      </dl><dl><dt>
+          
+          <code><a href="print.provoc.html">print(<i>&lt;provoc&gt;</i>)</a></code> 
+        </dt>
+        <dd>Print the results of lineage abundance estimation</dd>
+      </dl><dl><dt>
+          
+          <code><a href="summary.provoc.html">summary(<i>&lt;provoc&gt;</i>)</a></code> 
+        </dt>
+        <dd>Summarise results of model fitting</dd>
+      </dl><dl><dt>
+          
+          <code><a href="print.summary.provoc.html">print(<i>&lt;summary.provoc&gt;</i>)</a></code> 
+        </dt>
+        <dd>Print the summary of a provoc object</dd>
+      </dl><dl><dt>
+          
+          <code><a href="summarise_lineages.html">summarise_lineages()</a></code> 
+        </dt>
+        <dd>Summarise the similarities in lineage matrices</dd>
+      </dl></div><div class="section level2">
+      <h2 id="making-and-managing-lineage-definitions">Making and managing lineage definitions<a class="anchor" aria-label="anchor" href="#making-and-managing-lineage-definitions"></a></h2>
+      
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="astronomize.html">astronomize()</a></code> 
+        </dt>
+        <dd>Extract mutation list from a directory of constellation files.</dd>
       </dl><dl><dt>
           
           <code><a href="constellation_lists.html">constellation_lists</a></code> 
@@ -87,29 +199,14 @@
         <dd>Lists of mutations per lineage, as per Constellations</dd>
       </dl><dl><dt>
           
-          <code><a href="coverage_at_aa.html">coverage_at_aa()</a></code> 
+          <code><a href="usher_barcodes.html">usher_barcodes()</a></code> 
         </dt>
-        <dd>Get coverage at mutation positions.</dd>
+        <dd>Obtain and clean barcodes file from usher_barcores in Freyja (or from disk)</dd>
       </dl><dl><dt>
           
-          <code><a href="coverage_by_lineage_defs.html">coverage_by_lineage_defs()</a></code> 
+          <code><a href="lineage_defs_from_list.html">lineage_defs_from_list()</a></code> 
         </dt>
-        <dd>Summarise coverage by lineage/mutation combo</dd>
-      </dl><dl><dt>
-          
-          <code><a href="differ_by_one_or_less.html">differ_by_one_or_less()</a></code> 
-        </dt>
-        <dd>Finds if two vectors only differ between one mutation</dd>
-      </dl><dl><dt>
-          
-          <code><a href="extant_lineages.html">extant_lineages()</a></code> 
-        </dt>
-        <dd>Filter lineages active on a given date.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="extract_formula_components.html">extract_formula_components()</a></code> 
-        </dt>
-        <dd>Extract Formula Components</dd>
+        <dd>Create a lineage definition matrix from a list of lineages with their mutations</dd>
       </dl><dl><dt>
           
           <code><a href="filter_lineages.html">filter_lineages()</a></code> 
@@ -117,29 +214,14 @@
         <dd>Filter lineage_defs for specific lineages, keeping mutations that are present in at least one lineage</dd>
       </dl><dl><dt>
           
-          <code><a href="find_mutation_column.html">find_mutation_column()</a></code> 
+          <code><a href="extant_lineages.html">extant_lineages()</a></code> 
         </dt>
-        <dd>Finds the right mutation column in lineage_defs.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="fission.html">fission()</a></code> 
-        </dt>
-        <dd>Un-fuse coco and lineage_defs.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="fuse.html">fuse()</a></code> 
-        </dt>
-        <dd>Ensure mutations are present in the data and lineage_defs</dd>
+        <dd>Filter lineages active on a given date.</dd>
       </dl><dl><dt>
           
           <code><a href="get_actual_defs.html">get_actual_defs()</a></code> 
         </dt>
         <dd>Extract the actual lineage defitions used when fitting the models.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="get_convergence.html">get_convergence()</a></code> 
-        </dt>
-        <dd>Check if provoc converged</dd>
       </dl><dl><dt>
           
           <code><a href="get_lineage_defs.html">get_lineage_defs()</a></code> 
@@ -152,80 +234,27 @@
         <dd>Gather information about lineages</dd>
       </dl><dl><dt>
           
-          <code><a href="get_res.html">get_res()</a></code> 
-        </dt>
-        <dd>Extract just the results of lineage estimation</dd>
-      </dl><dl><dt>
-          
-          <code><a href="is_almost_subset.html">is_almost_subset()</a></code> 
-        </dt>
-        <dd>Finds if one lineage is almost a subset of another</dd>
-      </dl><dl><dt>
-          
-          <code><a href="is_subset.html">is_subset()</a></code> 
-        </dt>
-        <dd>Finds if one lineage is a subset of another</dd>
-      </dl><dl><dt>
-          
-          <code><a href="jaccard_simularity.html">jaccard_simularity()</a></code> 
-        </dt>
-        <dd>Finds the Jaccard similarity between two vectors</dd>
-      </dl><dl><dt>
-          
-          <code><a href="left_both_right.html">left_both_right()</a></code> 
-        </dt>
-        <dd>Calculate the set differences for two character vectors</dd>
-      </dl><dl><dt>
-          
-          <code><a href="lineage_defs_from_list.html">lineage_defs_from_list()</a></code> 
-        </dt>
-        <dd>Create a lineage definition matrix from a list of lineages with their mutations</dd>
-      </dl><dl><dt>
-          
           <code><a href="lineage_facts.html">lineage_facts</a></code> 
         </dt>
         <dd>Facts about the lineages</dd>
-      </dl><dl><dt>
-          
-          <code><a href="lineage_similarity.html">lineage_similarity()</a></code> 
-        </dt>
-        <dd>Finds and prints all similarities among lineage</dd>
-      </dl><dl><dt>
-          
-          <code><a href="parse_ivar.html">parse_ivar()</a></code> 
-        </dt>
-        <dd>Parse Mutations from the ivar pipeline</dd>
-      </dl><dl><dt>
-          
-          <code><a href="parse_mutation.html">parse_mutation()</a></code> 
-        </dt>
-        <dd>Parse mutations from (type, pos, alt) to amino acid</dd>
-      </dl><dl><dt>
-          
-          <code><a href="parse_mutations.html">parse_mutations()</a></code> 
-        </dt>
-        <dd>Parse output of the Gromstole pipeline, from SNVs to AAs</dd>
-      </dl><dl><dt>
-          
-          <code><a href="parse_one_ivar.html">parse_one_ivar()</a></code> 
-        </dt>
-        <dd>Parse mutations from ivar pipeline</dd>
-      </dl><dl><dt>
-          
-          <code><a href="parse_unique_mutations.html">parse_unique_mutations()</a></code> 
-        </dt>
-        <dd>Parse all unique mutations in a vector</dd>
-      </dl><dl><dt>
-          
-          <code><a href="plot.provoc.html">plot(<i>&lt;provoc&gt;</i>)</a></code> 
-        </dt>
-        <dd>Plot the results of model fitting</dd>
-      </dl><dl><dt>
-          
-          <code><a href="plot_actual_defs.html">plot_actual_defs()</a></code> 
-        </dt>
-        <dd>Visualize how lineage definitions were used in analysis</dd>
-      </dl><dl><dt>
+      </dl></div><div class="section level2">
+      <h2 id="helper-functions-for-mutations">Helper functions for mutations<a class="anchor" aria-label="anchor" href="#helper-functions-for-mutations"></a></h2>
+      
+      
+
+      
+    </div><div class="section level2">
+      <h2 id="viewing-lineage-definitions">Viewing lineage definitions<a class="anchor" aria-label="anchor" href="#viewing-lineage-definitions"></a></h2>
+      
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
           
           <code><a href="plot_lineage_defs.html">plot_lineage_defs()</a></code> 
         </dt>
@@ -237,131 +266,30 @@
         <dd>Compare two lineage definition matrices</dd>
       </dl><dl><dt>
           
-          <code><a href="plot_lineages.html">plot_lineages()</a></code> 
+          <code><a href="plot_actual_defs.html">plot_actual_defs()</a></code> 
         </dt>
-        <dd>plot the similarities of lineage</dd>
-      </dl><dl><dt>
-          
-          <code><a href="plot_resids.html">plot_resids()</a></code> 
-        </dt>
-        <dd>Plot the residuals, by lineage</dd>
-      </dl><dl><dt>
-          
-          <code><a href="pos_from_aa.html">pos_from_aa()</a></code> 
-        </dt>
-        <dd>Find position from amino acid string.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="predict.provoc.html">predict(<i>&lt;provoc&gt;</i>)</a></code> 
-        </dt>
-        <dd>Predict using Proportions of Lineages</dd>
-      </dl><dl><dt>
-          
-          <code><a href="prepare_and_fuse_data.html">prepare_and_fuse_data()</a></code> 
-        </dt>
-        <dd>Prepare and Fuse Data</dd>
-      </dl><dl><dt>
-          
-          <code><a href="print.provoc.html">print(<i>&lt;provoc&gt;</i>)</a></code> 
-        </dt>
-        <dd>Print the results of lineage abundance estimation</dd>
-      </dl><dl><dt>
-          
-          <code><a href="print.summary.provoc.html">print(<i>&lt;summary.provoc&gt;</i>)</a></code> 
-        </dt>
-        <dd>Print the summary of a provoc object</dd>
-      </dl><dl><dt>
-          
-          <code><a href="process_lineage_defs.html">process_lineage_defs()</a></code> 
-        </dt>
-        <dd>Process Mutation Definitions</dd>
-      </dl><dl><dt>
-          
-          <code><a href="process_optim.html">process_optim()</a></code> 
-        </dt>
-        <dd>Process Optimization</dd>
-      </dl><dl><dt>
-          
-          <code><a href="provoc.html">provoc()</a></code> 
-        </dt>
-        <dd>Proportions of Variants of Concern (provoc) Analysis</dd>
-      </dl><dl><dt>
-          
-          <code><a href="provoc_optim.html">provoc_optim()</a></code> 
-        </dt>
-        <dd>Estimate the proportions of VOCs using Constrained Optimization</dd>
-      </dl><dl><dt>
-          
-          <code><a href="re_findall.html">re_findall()</a></code> 
-        </dt>
-        <dd>re_findall</dd>
-      </dl><dl><dt>
-          
-          <code><a href="remove_identical_lineages.html">remove_identical_lineages()</a></code> 
-        </dt>
-        <dd>Remove Identical Lineages</dd>
-      </dl><dl><dt>
-          
-          <code><a href="resid.provoc.html">resid(<i>&lt;provoc&gt;</i>)</a></code> 
-        </dt>
-        <dd>Calculate the residuals of a provoc object</dd>
-      </dl><dl><dt>
-          
-          <code><a href="residuals.provoc.html">residuals(<i>&lt;provoc&gt;</i>)</a></code> 
-        </dt>
-        <dd>Calculate the residuals of a provoc object</dd>
-      </dl><dl><dt>
-          
-          <code><a href="rho_initializer.html">rho_initializer()</a></code> 
-        </dt>
-        <dd>Initialize a vector of proportions for the lineages of concern, prioritizing current (March 2022) most probable VoCs.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="simplify_similarity.html">simplify_similarity()</a></code> 
-        </dt>
-        <dd>Simplifies lineage similarity matrices for easier interpretation</dd>
-      </dl><dl><dt>
-          
-          <code><a href="simulate_coco.html">simulate_coco()</a></code> 
-        </dt>
-        <dd>Simulate counts and coverage from a lineage definition matrix</dd>
-      </dl><dl><dt>
-          
-          <code><a href="simulate_lineage_defs.html">simulate_lineage_defs()</a></code> 
-        </dt>
-        <dd>Simulate a small lineage matrix for testing</dd>
-      </dl><dl><dt>
-          
-          <code><a href="summarise_lineages.html">summarise_lineages()</a></code> 
-        </dt>
-        <dd>Summarise the similarities in lineage matrices</dd>
-      </dl><dl><dt>
-          
-          <code><a href="summary.provoc.html">summary(<i>&lt;provoc&gt;</i>)</a></code> 
-        </dt>
-        <dd>Summarise results of model fitting</dd>
-      </dl><dl><dt>
-          
-          <code><a href="to_feasible.html">to_feasible()</a></code> 
-        </dt>
-        <dd>Transform a vector to the interior of the feasible region to be used as inits for constrOptim</dd>
-      </dl><dl><dt>
-          
-          <code><a href="total_lineage_defs.html">total_lineage_defs()</a></code> 
-        </dt>
-        <dd>Adds a list of lineage definition matrices together.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="usher_barcodes.html">usher_barcodes()</a></code> 
-        </dt>
-        <dd>Obtain and clean barcodes file from usher_barcores in Freyja (or from disk)</dd>
-      </dl><dl><dt>
-          
-          <code><a href="validate_inputs.html">validate_inputs()</a></code> 
-        </dt>
-        <dd>Validate Inputs for provoc</dd>
-      </dl></div>
-  </main></div>
+        <dd>Visualize how lineage definitions were used in analysis</dd>
+      </dl></div><div class="section level2">
+      <h2 id="managing-data">Managing data<a class="anchor" aria-label="anchor" href="#managing-data"></a></h2>
+      
+      
+
+      
+    </div><div class="section level2">
+      <h2 id="data">Data<a class="anchor" aria-label="anchor" href="#data"></a></h2>
+      
+      
+
+      
+    </div><div class="section level2">
+      <h2 id="simulating-data-deprecated-">Simulating data (deprecated)<a class="anchor" aria-label="anchor" href="#simulating-data-deprecated-"></a></h2>
+      
+      
+
+      
+    </div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">

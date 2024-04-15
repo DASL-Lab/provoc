@@ -70,6 +70,7 @@ plot_lineage_defs <- function(lineage_defs,
 #' Calculate the set differences for two character vectors
 #'
 #' @param left,right Two character vectors
+#' @keywords internal
 left_both_right <- function(left, right) {
     left_only <- setdiff(left, right)
     right_only <- setdiff(right, left)
@@ -208,6 +209,7 @@ plot_lineage_defs2 <- function(left_def, right_def,
 #' Entries represent the total number of times that lineage/mutation combination were used during fitting. Useful for checking whether a mutation was not present in a given sample.
 #' 
 #' @param ldef_list A list of lineage definition matrices, such as those extracted by \code{get_actual_defs}.
+#' @keywords internal
 total_lineage_defs <- function(ldef_list, summarise = "add") {
     all_muts <- sapply(ldef_list, colnames) |> as.character() |> unique()
     all_lins <- sapply(ldef_list, rownames) |> as.character() |> unique()
