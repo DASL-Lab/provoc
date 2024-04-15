@@ -4,7 +4,7 @@ author: "Devan Becker"
 bibliography: provoc_package.bib
 execute:
   cache: true
-format: pdf
+format: html
 ---
 
 ## Introduction
@@ -24,6 +24,7 @@ To make the code run faster, I'll look at every third day of data.
 #library(provoc)
 devtools::load_all()
 library(lubridate) # ymd()
+library(here) # all paths relative to .git folder
 data(Baaijens)
 
 Baaijens$date <- ymd(Baaijens$date)
@@ -55,6 +56,15 @@ In this matrix, the rows represent the lineages and the columns represent the mu
 
 Notice the use of `filter_lineages()`. This function gets the rows corresponding to the lineages, but it also ensures that we are only dealing with columns that have at least one "1". In other words, it only uses mutations that are present in at least one lineage. 
 
+I have written a function to visualize this matrix:
+
+```{r}
+#| label: astro-defs
+plot_lineage_defs(astro)
+```
+
+Only the shared mutations are shown, with the last column indicating how many unique mutations remain in each definition. Every other mutation gets a grey background to make it easier to follow a mutation when the matrices are larger. 
+
 ## Usher Barcodes
 
 The [Freyja](https://github.com/andersen-lab/Freyja) [@karthikeyanWastewaterSequencingReveals2022; @AndersenlabFreyja2024] repository keeps an up-to-date barcodes file, which serves the same purpose as the definitions in constellations.
@@ -70,29 +80,15 @@ dim(bar)
 
 ## Constellations versus Barcodes
 
-Let's quickly look at the mutations present in `astro` but not `bar`, then the mutations present in `bar` but not `astro` (all other mutations are in both).
+Let's quickly look at the mutations present in `astro` but not `bar`, then the mutations present in `bar` but not `astro`, as well as mutations that are in both.
 
 ```{r}
 #| label: def-compare-setdiff
-# In astro but not bar
-setdiff(colnames(astro), colnames(bar))
-# In bar but not astro
-setdiff(colnames(bar), colnames(astro))
+plot_lineage_defs2(astro, bar,
+    main = "Constellations (red) versus Usher Barcodes (blue)")
 ```
 
-Okay, so there are some differences. But, surely, the mutations that are present in both definition files are the same across all lineages! 
-
-```{r}
-#| label: def-compare-same
-# Mutations in both
-same_names <- intersect(colnames(astro), colnames(bar))
-length(same_names)
-
-# Percent disagreement among mutations that are in both
-mean(astro[, same_names] == bar[, same_names])
-```
-
-**Only 53\% of the mutations are the same between the two!** Even when the mutations are the same, the definitions are different. (This is possibly an issue with the code I wrote to process the constellations file.)
+From this plot, we can see that there are quite a few mutations defined in `astro` but not in `bar`. The blue bars indicate that the mutation is used in the lineage definition in `bar` but not `astro`; there are four mutations defined in both B.1.1.7 and B.1.617.2 by usher barcodes that are not present in the constellations file, and two of those mutations were also present in B.1.429. The barcodes seem to be a little bit more lenient about what mutations to include; constellations tried to get more-or-less "unique" mutations. 
 
 ## Results
 
@@ -123,7 +119,25 @@ gg_astro / gg_bar + plot_layout(guides = "collect") &
     facet_wrap(~ lineage, nrow = 1)
 ```
 
-Those are two *very* different looking plots! I'm really hoping it's not a problem with my code. 
+Those are two *very* different looking plots! We saw before that the lineage definitions are different, but let's check how they were actually used in the data. The same function can be used from before, which extracts the lineage definitions that were actually used (ignoring any mutations that were part of the definition but not present in the data).
+
+```{r}
+#| label: plot_lineage_defs2_with_data
+plot_lineage_defs2(res_astro, res_bar,
+    main = "Constellations (red) versus Usher Barcodes (blue)")
+```
+
+From this result, we can see that constellations only used four mutations to define B.1.617.2! The barcodes used 6! This is because there were only 4 (or 6) mutations in B.1.617.2 that were also present in the data. Let's dig a little deeper into this.
+
+```{r}
+#| label: plot-actual-defs
+plot_actual_defs(res_astro, main = "Constellations")
+plot_actual_defs(res_bar, main = "Usher Barcodes")
+```
+
+The two different matrices have very different definitions of B.1.617.2, and this explains the difference in results.
+
+Furthermore, B.1.427 and B.1.429 had important differences - the barcodes have more mutations that overlap, meaning that the "de-mixing" algorithm must choose between one or the other. I'll expand on this in a "Choosing Lineages to Search For" vignette.
 
 ## LAPIS (CoV-Spectrum)
 
@@ -135,7 +149,7 @@ The following code is very very hopefully going to change very soon. An API key 
 #| label: get-lapis
 lineages <- c("B.1.1.7", "B.1.427", "B.1.429", "B.1.526", "B.1.617.2")
 lapis_list <- lapply(lineages, function(x) {
-    file <- read.csv(paste0("../working/", x, ".csv"))
+    file <- read.csv(here("working", paste0(x, ".csv")))
     file$mutation[file$proportion > 0.8]
 })
 names(lapis_list) <- lineages
@@ -151,18 +165,18 @@ colnames(lapis) <- sapply(colnames(lapis), function(x) {
         alt = substr(x, nchar(x), nchar(x)))
 })
 
-# In lapis but not bar
-setdiff(colnames(lapis), colnames(bar))
-# In bar but not lapis
-setdiff(colnames(bar), colnames(lapis))
-# In both bar and lapis
-bar_lapis <- intersect(colnames(lapis), colnames(bar))
-length(bar_lapis)
-
-mean(bar[, bar_lapis] == lapis[, bar_lapis])
+plot_lineage_defs(lapis)
 ```
 
-87% the same is workable!
+This looks a little different from before. There are 4 mutations that seem to be in every lineage, which doesn't give the de-mixing algorithm any information about which lineages are present. B.1.1.7 seems to have a lot of unique mutations, which might make the results more accurate (if the mutations truly are unique to B.1.1.7).
+
+Let's quickly check how this compares to the barcodes:
+
+```{r}
+plot_lineage_defs2(bar, astro)
+```
+
+There are a couple mutations in astro but not bar, and a couple in bar but not astro. This is to be expected. However, those red bars in the shared mutation section are noteworthy! They are the same four mutations that we saw in the plot before, which told us that the de-mixing algorithm will have a hard time differentiating the lineages. Let's check the results.
 
 ```{r}
 #| label: gg-astro-bar-lapis
@@ -173,14 +187,25 @@ res_lapis <- provoc(count / coverage ~ .,
 res_lapis$date <- ymd(res_lapis$date)
 
 gg_lapis <- autoplot(res_lapis, date_col = "date") +
-    labs(title = "CoV-Spectrum")
+    labs(title = "LAPIS (CoV-Spectrum)")
 
 gg_astro / gg_bar / gg_lapis + plot_layout(guides = "collect") &
     theme_bw() &
     facet_grid(~ lineage)
 ```
 
-Usher Barcodes and Cov-Spectrum generally agree, but what's going on with B.1.617.2??? It sort of looks like B.1.429 has taken some of the weight from B.1.617.2, but this is worth looking into. For example, did B.1.429 have mutations that are in B.1.617.2? Is there a
+Usher Barcodes and Cov-Spectrum generally agree, but what's going on with B.1.617.2??? It sort of looks like B.1.429 has taken some of the weight from B.1.617.2, but this is worth looking into. For example, did B.1.429 have mutations that are in B.1.617.2? From the comparison plot, there appear to be a lot of mutations that differentiate B.1.429 and B.1.617.2, so that can't be it. Maybe it's the coverage?
+
+```{r}
+#| label: lapis-coverage
+plot_actual_defs(res_lapis)
+```
+
+It doesn't look like the mutations that differentiate B.1.617.2 and B.1.429 had low coverage. The minimum of the average coverages across samples^[That is, for each mutation and lineage, I found the average coverage across samples. The numbers on the plot below the lineage names represent the minimum, median, and maximum of the coverages shown in the plot.] isn't low for the shared mutations.
+
+I think the primary conclusion here is that the difference in mutations between the barcodes and the lapis definitions is important enough to the demixing algorithm to give the differences in results. Perhaps the next plotting function I make should show something about the frequencies of the mutations in each lineage.
+
+# Conclusion
 
 Hopefully this vignette has successfully completed its two goals:
 
