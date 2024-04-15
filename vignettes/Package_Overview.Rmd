@@ -1,5 +1,5 @@
 ---
-title: "ProVoC Features"
+title: "ProVoC Mission Statement"
 author: "Devan Becker"
 format: 
     pdf:
@@ -96,7 +96,7 @@ head(f1) |> knitr::kable(caption = "Data format useful for basic linear regressi
 
 The regression equation from a linear regression becomes:
 $$
-f = \beta_\alpha B.1.1.7 + \beta_\delta B.1.617.2 + \beta_\gamma P.1
+f = count / coverage = \beta_\alpha B.1.1.7 + \beta_\delta B.1.617.2 + \beta_\gamma P.1
 $$
 In other words, a mutation that is present in only B.1.1.7 (i.e., when B.1.617.2 and P.1 are both 0) is estimated to have a frequency equal to $\beta_\alpha$, which amounts to saying that $\beta_\alpha$ represents the proportion of B.1.1.7 in the sample. The linear modelling framework accounts for shared mutations, adjusting the estimates of proportions appropriately. Note that there is no intercept in this model - there is no physical interpretation of an intercept, and no model should include it.
 
