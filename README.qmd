@@ -3,6 +3,9 @@ title: "ProVoC"
 format: gfm
 execute:
   cache: true
+knitr:
+  opts_chunk:
+    fig.path: man/figures/README-
 ---
 
 [![Lifecycle: development](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental-1) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)

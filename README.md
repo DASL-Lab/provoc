@@ -80,12 +80,12 @@ res
     All models converged.
 
     Top 5 lineages:
-         rho   ci_low  ci_high   lineage group
-    5  0.515 5.09e-01 5.20e-01      AY.4     1
-    2   0.33 3.23e-01 3.35e-01   B.1.429     1
-    4  0.124 1.20e-01 1.31e-01   B.1.427     1
-    1  0.008 7.21e-03 8.07e-03   B.1.1.7     1
-    3 <0.001 1.64e-09 7.31e-05 B.1.617.2     1
+         rho   ci_low  ci_high   lineage
+    5  0.515 5.09e-01 5.20e-01      AY.4
+    2   0.33 3.23e-01 3.38e-01   B.1.429
+    4  0.124 1.18e-01 1.30e-01   B.1.427
+    1  0.008 7.17e-03 8.05e-03   B.1.1.7
+    3 <0.001 1.06e-09 9.55e-05 B.1.617.2
 
 We have created a class for `provoc` objects with convenient methods.
 For example, plotting the results is achieved as follows:
@@ -94,7 +94,7 @@ For example, plotting the results is achieved as follows:
 plot(res)
 ```
 
-![](README_files/figure-commonmark/one-sample-res-base-1.png)
+![](man/figures/README-one-sample-res-base-1.png)
 
 We use the convention of
 [`autoplot()`](https://ggplot2.tidyverse.org/reference/autoplot.html) as
@@ -109,13 +109,13 @@ autoplot(res) +
     labs(title = "Results for one sample")
 ```
 
-![](README_files/figure-commonmark/one-sample-res-ggplot-1.png)
+![](man/figures/README-one-sample-res-ggplot-1.png)
 
 ``` r
 plot_resids(res)
 ```
 
-![](README_files/figure-commonmark/one-sample-resid-plot-1.png)
+![](man/figures/README-one-sample-resid-plot-1.png)
 
 ``` r
 summary(res)
@@ -136,25 +136,25 @@ summary(res)
 
     Coefficients:
                rho       ci_low      ci_high   lineage
-    1 7.599439e-03 7.213255e-03 8.070333e-03   B.1.1.7
-    2 3.301205e-01 3.230623e-01 3.348094e-01   B.1.429
-    3 9.512833e-09 1.637161e-09 7.306695e-05 B.1.617.2
-    4 1.242872e-01 1.196963e-01 1.307337e-01   B.1.427
-    5 5.150303e-01 5.091282e-01 5.202780e-01      AY.4
+    1 7.599439e-03 7.173164e-03 8.049933e-03   B.1.1.7
+    2 3.301205e-01 3.233184e-01 3.375335e-01   B.1.429
+    3 9.512833e-09 1.061044e-09 9.550969e-05 B.1.617.2
+    4 1.242872e-01 1.178179e-01 1.301443e-01   B.1.427
+    5 5.150303e-01 5.094964e-01 5.196631e-01      AY.4
 
     Correlation of coefficients:
                   B.1.1.7     B.1.429   B.1.617.2     B.1.427        AY.4
-    B.1.1.7    1.00000000  0.10160769  0.09493602 -0.12713155 -0.07756476
-    B.1.429    0.10160769  1.00000000  0.14549301 -0.86749581 -0.09795299
-    B.1.617.2  0.09493602  0.14549301  1.00000000 -0.08779936 -0.06165950
-    B.1.427   -0.12713155 -0.86749581 -0.08779936  1.00000000  0.18566735
-    AY.4      -0.07756476 -0.09795299 -0.06165950  0.18566735  1.00000000
+    B.1.1.7    1.00000000  0.02244543  0.17031546  0.06300633 -0.16706950
+    B.1.429    0.02244543  1.00000000  0.14322947 -0.90597430 -0.08516734
+    B.1.617.2  0.17031546  0.14322947  1.00000000 -0.10752381 -0.07479276
+    B.1.427    0.06300633 -0.90597430 -0.10752381  1.00000000  0.14240372
+    AY.4      -0.16706950 -0.08516734 -0.07479276  0.14240372  1.00000000
 
 ``` r
 plot_lineages(res)
 ```
 
-![](README_files/figure-commonmark/one-sample-lineage-plot-1.png)
+![](man/figures/README-one-sample-lineage-plot-1.png)
 
 # Multiple Samples
 
@@ -190,7 +190,7 @@ system.time(
 ```
 
        user  system elapsed 
-      2.001   0.006   2.015 
+      1.446   0.017   1.482 
 
 ``` r
 res
@@ -207,7 +207,7 @@ res
     All models converged.
 
     Top 6 lineages:
-          rho ci_low ci_high lineage       group avg_spot_len sample_name     bases
+          rho ci_low ci_high lineage         sra avg_spot_len sample_name     bases
     61  0.899     NA      NA B.1.1.7 SRR15505114          302         FX2 385650980
     15  0.846     NA      NA    AY.4 SRR15505104          302         DR2 412520222
     139  0.84     NA      NA B.1.427 SRR15505129          302         FE1 339620744
@@ -226,7 +226,7 @@ res
 plot_lineages(res)
 ```
 
-![](README_files/figure-commonmark/multi-sample-lineage-plot-1.png)
+![](man/figures/README-multi-sample-lineage-plot-1.png)
 
 The plotting functions above work as expected.
 
@@ -234,19 +234,19 @@ The plotting functions above work as expected.
 plot(res)
 ```
 
-![](README_files/figure-commonmark/multi-sample-res-base-1.png)
+![](man/figures/README-multi-sample-res-base-1.png)
 
 ``` r
 plot_resids(res)
 ```
 
-![](README_files/figure-commonmark/multi-sample-resid-base-1.png)
+![](man/figures/README-multi-sample-resid-base-1.png)
 
 ``` r
 autoplot(res)
 ```
 
-![](README_files/figure-commonmark/multi-sample-res-ggplot-1.png)
+![](man/figures/README-multi-sample-res-ggplot-1.png)
 
 In addition, we’ve added special functionality for data with a “date”
 column:
@@ -257,7 +257,7 @@ res$date <- lubridate::ymd(res$date)
 autoplot(res, date_col = "date")
 ```
 
-![](README_files/figure-commonmark/multi-date-res-ggplot-1.png)
+![](man/figures/README-multi-date-res-ggplot-1.png)
 
 Since `autoplot()` returns a `ggplot2` object, you can use all your
 knowledge of ggplot2:
@@ -269,7 +269,7 @@ autoplot(res, date_col = "date") +
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
-![](README_files/figure-commonmark/faceting-1.png)
+![](man/figures/README-faceting-1.png)
 
 Finally, the residual plot still works (although it’s a bunch of samples
 stuffed into one plot, so its use is limited.)
@@ -278,7 +278,7 @@ stuffed into one plot, so its use is limited.)
 plot_resids(res)
 ```
 
-![](README_files/figure-commonmark/multi-sample-resid-plot-1.png)
+![](man/figures/README-multi-sample-resid-plot-1.png)
 
 ## Searching for Different Lineages
 
@@ -302,7 +302,7 @@ g_without <- autoplot(res_without, date_col = "date") +
 g_with / g_without
 ```
 
-![](README_files/figure-commonmark/with-without-1.png)
+![](man/figures/README-with-without-1.png)
 
 Notice two important points:
 
@@ -337,16 +337,16 @@ res_all <- provoc(count / coverage ~ ., data = b1,
 plot_lineages(res_all)
 ```
 
-![](README_files/figure-commonmark/run-barcodes-1.png)
+![](man/figures/README-run-barcodes-1.png)
 
 # Version Roadmap
 
 - [x] 0.5: Current version
-- [ ] 0.6: Refactor and add methods
+- [x] 0.6: Refactor and add methods
   - [x] Standardize to use “lineage” everywhere (except for “variant of
     concern”)
   - [x] Correct documentation errors and vestiges
-  - [ ] Documentation overhaul and standardization
+  - [x] Documentation overhaul and standardization
   - [ ] Trim the fat! Many functions are deprecated but not marked as
     so.
 - [ ] 0.7: Better handling of multiple samples
