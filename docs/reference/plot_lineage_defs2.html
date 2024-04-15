@@ -6,7 +6,7 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-primary"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">provoc</a>
 
@@ -91,15 +91,16 @@
 <span class="r-in"><span><span class="va">lineages</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B.1.1.7"</span>, <span class="st">"P.1"</span>, <span class="st">"B.1.617.1"</span>, <span class="st">"B.1.617.2"</span>, <span class="st">"B.1.617.3"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">left_def</span> <span class="op">&lt;-</span> <span class="fu"><a href="astronomize.html">astronomize</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="filter_lineages.html">filter_lineages</a></span><span class="op">(</span><span class="va">lineages</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">right_def</span> <span class="op">&lt;-</span> <span class="fu"><a href="usher_barcodes.html">usher_barcodes</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="filter_lineages.html">filter_lineages</a></span><span class="op">(</span><span class="va">lineages</span><span class="op">[</span><span class="op">-</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in usher_barcodes():</span> could not find function "usher_barcodes"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> usher_barcodes.csv not found. Downloading from Freyja repository.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Writing to ./usher_barcodes.csv </span>
 <span class="r-in"><span><span class="fu">plot_lineage_defs2</span><span class="op">(</span><span class="va">left_def</span>, <span class="va">right_def</span>,</span></span>
 <span class="r-in"><span>    main <span class="op">=</span> <span class="st">"Constellations (without B.1.1.7) vs. Usher Barcodes (without P.1)"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in plot_lineage_defs2(left_def, right_def, main = "Constellations (without B.1.1.7) vs. Usher Barcodes (without P.1)"):</span> object 'right_def' not found</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in total_def[lins_lmr$mid, muts_lmr$right] &lt;- right_def[lins_lmr$mid,     muts_lmr$right] + 4:</span> incorrect number of subscripts on matrix</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">plot_lineage_defs2</span><span class="op">(</span><span class="va">left_def</span>, <span class="va">right_def</span>,</span></span>
 <span class="r-in"><span>    main <span class="op">=</span> <span class="st">"Constellations (without B.1.1.7) vs. Usher Barcodes (without P.1)"</span>,</span></span>
 <span class="r-in"><span>    col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in plot_lineage_defs2(left_def, right_def, main = "Constellations (without B.1.1.7) vs. Usher Barcodes (without P.1)",     col = c(2, 0, 3)):</span> object 'right_def' not found</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in total_def[lins_lmr$mid, muts_lmr$right] &lt;- right_def[lins_lmr$mid,     muts_lmr$right] + 4:</span> incorrect number of subscripts on matrix</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># See which mutations/lineages were actually used</span></span></span>
 <span class="r-in"><span><span class="va">lineage_defs</span> <span class="op">&lt;-</span> <span class="fu"><a href="astronomize.html">astronomize</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
@@ -107,12 +108,11 @@
 <span class="r-in"><span>    <span class="st">"B.1.427"</span>, <span class="st">"B.1.429"</span>, <span class="st">"B.1.1.7"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="provoc.html">provoc</a></span><span class="op">(</span><span class="va">count</span> <span class="op">/</span> <span class="va">coverage</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">b1</span>,</span></span>
 <span class="r-in"><span>    lineage_defs <span class="op">=</span> <span class="va">lineage_defs</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in provoc(count/coverage ~ ., data = b1, lineage_defs = lineage_defs):</span> object 'b1' not found</span>
 <span class="r-in"><span><span class="co"># B.1.617.2 and B.1.617.2+K417N were "squashed" because they're identical.</span></span></span>
 <span class="r-in"><span><span class="co"># We can also see which mutations were *not* used in the analysis.</span></span></span>
 <span class="r-in"><span><span class="co"># They are the ones defined in the left_def but not present in right_def.</span></span></span>
 <span class="r-in"><span><span class="fu">plot_lineage_defs2</span><span class="op">(</span><span class="va">lineage_defs</span>, <span class="va">res</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in plot_lineage_defs2(lineage_defs, res):</span> object 'res' not found</span>
+<span class="r-plt img"><img src="plot_lineage_defs2-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
