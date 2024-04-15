@@ -132,41 +132,58 @@ plot_lineage_defs2 <- function(left_def, right_def,
             right_def <- total_lineage_defs(right_def, summarise = "or")
         }
     }
+    left_def <- as.matrix(left_def)
+    right_def <- as.matrix(right_def)
 
-    muts_lmr <- left_both_right(colnames(left_def), colnames(right_def))
-    lins_lmr <- left_both_right(rownames(left_def), rownames(right_def))
 
-    total_def <- matrix(ncol = length(unlist(muts_lmr)),
-        nrow = length(unlist(lins_lmr)))
-    colnames(total_def) <- unlist(muts_lmr)
-    rownames(total_def) <- unlist(lins_lmr)
+    mutsets <- left_both_right(colnames(left_def), colnames(right_def))
+    linsets <- left_both_right(rownames(left_def), rownames(right_def))
+
+    total_def <- matrix(ncol = length(unlist(mutsets)),
+        nrow = length(unlist(linsets)))
+    colnames(total_def) <- unlist(mutsets)
+    rownames(total_def) <- unlist(linsets)
     defs <- c("left", "right", "neither", "left_only", "right_only", "both")
     # Left: 0 = NA, 1 = no, 2 = yes
     # Right: 3 = NA, 4 = no, 5 = yes
     # Both: 6 = neither, 7 = left_only,
     #     8 = right_only, 9 = both
     total_def <- matrix(0,
-        ncol = length(unlist(muts_lmr)),
-        nrow = length(unlist(lins_lmr)))
-    colnames(total_def) <- unlist(muts_lmr)
-    rownames(total_def) <- unlist(lins_lmr)
+        ncol = length(unlist(mutsets)),
+        nrow = length(unlist(linsets)))
+    colnames(total_def) <- unlist(mutsets)
+    rownames(total_def) <- unlist(linsets)
+
     # Lineages in left only
-    total_def[lins_lmr$left, c(muts_lmr$mid, muts_lmr$left)] <-
-        left_def[lins_lmr$left, c(muts_lmr$mid, muts_lmr$left)] + 1
+    if (length(linsets$left) > 0 && length(c(mutsets$mid, mutsets$left)) > 0)
+        total_def[linsets$left, c(mutsets$mid, mutsets$left)] <-
+            left_def[linsets$left, c(mutsets$mid, mutsets$left)] +
+            1
+
     # Lineages in both mutations in left
-    total_def[lins_lmr$mid, muts_lmr$left] <-
-        left_def[lins_lmr$mid, muts_lmr$left] + 1
+    if (length(linsets$mid) > 0 && length(mutsets$left) > 0)
+        total_def[linsets$mid, mutsets$left] <-
+            left_def[linsets$mid, mutsets$left] +
+            1
+
     # Lineages in right only
-    total_def[lins_lmr$right, c(muts_lmr$mid, muts_lmr$right)] <-
-        right_def[lins_lmr$right, c(muts_lmr$mid, muts_lmr$right)] + 4
+    if (length(linsets$right) > 0 && length(c(mutsets$mid, mutsets$right)) > 0)
+        total_def[linsets$right, c(mutsets$mid, mutsets$right)] <-
+            right_def[linsets$right, c(mutsets$mid, mutsets$right)] +
+            4
+
     # Lineages in both, mutations in right
-    total_def[lins_lmr$mid, muts_lmr$right] <-
-        right_def[lins_lmr$mid, muts_lmr$right] + 4
+    if (length(linsets$mid) > 0 && length(mutsets$right) > 0)
+        total_def[linsets$mid, mutsets$right] <-
+            right_def[linsets$mid, mutsets$right] +
+            4
+
     # Lineages in both, mutations in both
-    total_def[lins_lmr$mid, muts_lmr$mid] <-
-        left_def[lins_lmr$mid, muts_lmr$mid] +
-        2 * right_def[lins_lmr$mid, muts_lmr$mid] +
-        6
+    if (length(linsets$mid) > 0 && length(mutsets$mid) > 0)
+        total_def[linsets$mid, mutsets$mid] <-
+            left_def[linsets$mid, mutsets$mid] +
+            2 * right_def[linsets$mid, mutsets$mid] +
+            6
 
     if (any(col == 0)) {
         col[which(col == 0)] <- "white"
@@ -189,15 +206,15 @@ plot_lineage_defs2 <- function(left_def, right_def,
     }
 
     col_side_colours <- rep(c(left_1, both, right_1),
-        sapply(muts_lmr, length))
+        sapply(mutsets, length))
     row_side_colours <- rep(c(left_1, both, right_1),
-        sapply(lins_lmr, length))
+        sapply(linsets, length))
 
     heatmap(total_def, Rowv = NA, Colv = NA,
         scale = "none",
         col = c(na_col, left_0, left_1,
-                na_col, right_0, right_1,
-                neither, left_1, right_1, both),
+            na_col, right_0, right_1,
+            neither, left_1, right_1, both),
         ColSideColors = col_side_colours,
         RowSideColors = row_side_colours,
         revC = TRUE,
