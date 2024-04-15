@@ -231,6 +231,3 @@ We end this document with some notes on the implementation of the methods descri
 For example, results of Freyja can be loaded into our as a object of type `provoc`, then all of the model-based diagnostics can be applied as expected. We have implemented simplified versions of other modeling approaches so that we can get approximate results using the exact same methodology, including bootstrap confidence intervals and measures of influence.
 
 In conclusion, this package will make it easy to investigate the input and output for models of lineage abundances from wastewater data. This extends to models beyond the ones that we have developed, and the package will be maintained and extended according to user feedback.
-
-
-

@@ -230,7 +230,7 @@ from the team that defined the PANGO lineages, and there is a function
 to download and store the Usher Barcodes used by Freyja.</p>
 <p>The user can specify their own definitions as well. For most of the
 functions and all estimation techniques, the values can be fractional.
-That is, a mutation can be in 30% of all B.1.1.7 cases. This is not
+That is, a mutation can be in 30% of B.1.1.7 cases. This is not
 discussed in this document, but a future version of the package will
 account for this.</p>
 </div>
@@ -334,7 +334,7 @@ linear regression tools for checking our model’s fits.</li>
 </ol>
 </div>
 <div class="section level3">
-<h3 id="provoc-alcov-and-freyja">ProVoC, Alcov, and Freyja<a class="anchor" aria-label="anchor" href="#provoc-alcov-and-freyja"></a>
+<h3 id="de-mixing-provoc-alcov-and-freyja">“De-mixing”: ProVoC, Alcov, and Freyja<a class="anchor" aria-label="anchor" href="#de-mixing-provoc-alcov-and-freyja"></a>
 </h3>
 <p>The extensions to linear models are as follows:</p>
 <ul>
@@ -411,18 +411,20 @@ lineage Y contains mutations m2, m3, and m4. These two lineages both
 contain m2 and m3, so we need to know about m1 and m4 to distinguish
 them. If mutations m1 and m4 have no coverage in the data, then lineages
 X and Y are indistinguishable.</p>
-<p><code>provoc</code> includes a function <code><a href="../reference/fuse.html">fuse()</a></code> that
-presents this information to the user to help them make informed
-decisions about the modelling process.</p>
+<p><code>provoc</code> includes a function
+<code><a href="../reference/plot_lineage_defs.html">plot_lineage_defs()</a></code> that visually presents this information
+to the user to help them make informed decisions about the modelling
+process.</p>
 </div>
 </div>
 <div class="section level3">
 <h3 id="model-and-data">Model and Data<a class="anchor" aria-label="anchor" href="#model-and-data"></a>
 </h3>
 <p>The methods in this section apply if we have access to the data and
-can re-run the analyses as needed. Note that the <code><a href="../reference/provoc.html">provoc()</a></code>
-function works similarly to other methods and can be used for many of
-these investigations even if other methods are used.</p>
+can re-run the analyses as needed. Note that the model used in the
+<code><a href="../reference/provoc.html">provoc()</a></code> function works similarly to other de-mixing
+methods and can be used for many of these investigations even if other
+methods are used.</p>
 <div class="section level4">
 <h4 id="confidence-intervals-for-model-parameters">Confidence Intervals for Model Parameters<a class="anchor" aria-label="anchor" href="#confidence-intervals-for-model-parameters"></a>
 </h4>
@@ -648,11 +650,11 @@ well also extending the analysis to the diagnostics that are particular
 to lineage abundance estimation. We have created our own classes so that
 methods work as expected and can easily be interoperated.</p>
 <p>For example, results of Freyja can be loaded into our as a object of
-type provoc, then all of the model-based diagnostics can be applied as
-expected. We have implemented simplified versions of other modeling
-approaches so that we can get approximate results using the exact same
-methodology, including bootstrap confidence intervals and measures of
-influence.</p>
+type <code>provoc</code>, then all of the model-based diagnostics can be
+applied as expected. We have implemented simplified versions of other
+modeling approaches so that we can get approximate results using the
+exact same methodology, including bootstrap confidence intervals and
+measures of influence.</p>
 <p>In conclusion, this package will make it easy to investigate the
 input and output for models of lineage abundances from wastewater data.
 This extends to models beyond the ones that we have developed, and the
