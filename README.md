@@ -8,9 +8,6 @@ development](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](ht
 MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 <!-- badges: end -->
 
-See [online documentation
-here](https://dasl-lab.github.io/provoc/index.html).
-
 PROportions of Variants of Concern using counts, coverage, and a lineage
 definition matrix.
 
@@ -380,4 +377,3 @@ plot_lineages(res_all)
   - [ ] All functions unit-tested and debugged
   - [ ] Vignettes fully built
   - [ ] All documentation up-to-date and built via `pkgdown`
-  - \[ \]

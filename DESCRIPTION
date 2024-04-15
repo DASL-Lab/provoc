@@ -8,7 +8,9 @@ Authors@R: c(
     person("Daner", "Yasin")
     )
 Description: Given a data frame with columns counts, coverage, and mutation, along with a matrix with rows representing Variants of Concern and columns representing mutations for those variants (entries being 1 if the mutation exists, 0 otherwise), this package provides an method to estimate the proportions of each variant of concern.
-License: MIT + file LICENSE
+URL: https://github.com/DASL-Lab/provoc, https://dasl-lab.github.io/provoc/
+BugReports: https://github.com/DASL-Lab/provoc/issues
+License: MIT
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3

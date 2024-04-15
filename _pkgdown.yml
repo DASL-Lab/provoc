@@ -2,6 +2,12 @@ url: https://dasl-lab.github.io/provoc
 
 template:
   bootstrap: 5
+  bootswatch: sandstone
+  theme: arrow-light
+
+navbar:
+  structure:
+    right: [search, github]
 
 reference:
 - title: Fitting a Model
