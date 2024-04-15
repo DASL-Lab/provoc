@@ -129,7 +129,11 @@ plot.provoc <- function(provoc_obj, plot_type = c("barplot")) {
         c(2, 2))
     par(mfrow = mfrow)
 
+    groups <- ""
     by_col <- attributes(provoc_obj)$by_col
+    if (!is.null(by_col)) {
+        groups <- unique(provoc_obj[, by_col])
+    }
     # Barplot
     if (1 %in% plot_type || any(startsWith(plot_type, "b"))) {
         barplot(
@@ -137,8 +141,7 @@ plot.provoc <- function(provoc_obj, plot_type = c("barplot")) {
                 data = provoc_obj$rho,
                 ncol = ifelse(is.null(by_col), 1,
                     length(unique(provoc_obj[, by_col])))),
-            names.arg = ifelse(is.null(by_col), "",
-                unique(provoc_obj[, by_col])),
+            names.arg = groups,
             col = seq_along(unique(provoc_obj$lineage)),
             horiz = TRUE,
             xlim = c(0, 1),

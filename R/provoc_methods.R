@@ -37,11 +37,18 @@ predict.provoc <- function(provoc_obj,
 
     # Reshape res and prepare for element-wise multiplication
     res_wide <- tidyr::pivot_wider(
-        provoc_obj[, c("rho", "lineage", by_col)],
+        as.data.frame(provoc_obj)[, c("rho", "lineage", by_col)],
         values_from = rho, names_from = lineage,
         names_prefix = "lin_"
-    )
-    res_wide <- res_wide[match(data_groups, res_wide[, by_col]), ]
+    ) |> as.data.frame()
+    if (!is.null(by_col)) {
+        res_wide <- res_wide[match(data_groups, res_wide[, by_col]), ]
+    } else {
+        res_wide <- matrix(
+            data = rep(as.numeric(res_wide), length(data_groups)),
+            ncol = length(lin_names), byrow = TRUE)
+        colnames(res_wide) <- lin_names
+    }
 
     # Multiply the correct rows together, return as result
     rowSums(as.matrix(res_wide[, lin_names]) *
