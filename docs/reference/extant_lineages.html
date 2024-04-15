@@ -24,7 +24,7 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/Package_Overview.html">ProVoC Features</a>
+    <a class="dropdown-item" href="../articles/Package_Overview.html">ProVoC Mission Statement</a>
     <a class="dropdown-item" href="../articles/mutation_definitions.html">Lineage Definitions in ProVoC</a>
   </div>
 </li>
@@ -91,7 +91,22 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># BA.1 was only observed as of January 2021</span></span></span>
+<span class="r-in"><span><span class="fu">provoc</span><span class="fu">:::</span><span class="fu">extant_lineages</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B.1.1.7"</span>, <span class="st">"B.1.617.2"</span>, <span class="st">"BA.1"</span><span class="op">)</span>, start_date <span class="op">=</span> <span class="st">"2020-12-01"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "B.1.1.7"   "B.1.617.2"</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Subset lineage defs by date:</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">Baaijens</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">b1</span> <span class="op">&lt;-</span> <span class="va">Baaijens</span><span class="op">[</span><span class="va">Baaijens</span><span class="op">$</span><span class="va">sra</span> <span class="op">==</span> <span class="va">Baaijens</span><span class="op">$</span><span class="va">sra</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">max_date</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">b1</span><span class="op">$</span><span class="va">date</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lineage_defs</span> <span class="op">&lt;-</span> <span class="fu"><a href="astronomize.html">astronomize</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lins_to_check</span> <span class="op">&lt;-</span> <span class="fu">provoc</span><span class="fu">:::</span><span class="fu">extant_lineages</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">lineage_defs</span><span class="op">)</span>, <span class="va">max_date</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lineage_defs</span> <span class="op">&lt;-</span> <span class="fu">provoc</span><span class="fu">::</span><span class="fu"><a href="filter_lineages.html">filter_lineages</a></span><span class="op">(</span><span class="va">lineage_defs</span>, <span class="va">lins_tocheck</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in provoc::filter_lineages(lineage_defs, lins_tocheck):</span> object 'lins_tocheck' not found</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">lineage_defs</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  37 325</span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>

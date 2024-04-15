@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   Package_Overview: Package_Overview.html
   mutation_definitions: mutation_definitions.html
-last_built: 2024-04-15T03:50Z
+last_built: 2024-04-15T13:05Z
 urls:
   reference: https://dasl-lab.github.io/provoc/reference
   article: https://dasl-lab.github.io/provoc/articles

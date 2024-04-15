@@ -10,13 +10,6 @@ reference:
   - coverage_by_lineage_defs
   - get_convergence
   - get_res
-  - Baaijens
-  - add_coverage
-  - parse_ivar
-  - parse_mutations
-  - simulate_coco
-  - simulate_lineage_defs
-
 - title: Model diagnostics
   contents:
   - autoplot.provoc
@@ -31,7 +24,6 @@ reference:
   - summary.provoc
   - print.summary.provoc
   - summarise_lineages
-
 - title: Making and managing lineage definitions
   contents:
   - astronomize
@@ -44,29 +36,22 @@ reference:
   - get_lineage_defs
   - get_lineage_info
   - lineage_facts
-
-- title: Helper functions for mutations
-  content:
+- title: Example data
+  contents:
+  - Baaijens
+- title: Helper functions
+  contents: 
   - parse_ivar
   - parse_mutations
   - pos_from_aa
-
+  - add_coverage
+  - coverage_at_aa
 - title: Viewing lineage definitions
   contents:
   - plot_lineage_defs
   - plot_lineage_defs2
   - plot_actual_defs
-
-- title: Managing data
-  content:
-  - add_coverage
-  - coverage_at_aa
-
-- title: Data
-  content:
-  - Baaijens
-
-- title: Simulating data (deprecated)
-  content:
+- title: Simulating data (deprecated for now)
+  contents:
   - simulate_coco
   - simulate_lineage_defs
