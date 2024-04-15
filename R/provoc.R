@@ -367,7 +367,20 @@ process_optim <- function(grouped_data, lineage_defs, by, bootstrap_samples, ver
     for (group_name in names(grouped_data)) {
         group_data <- grouped_data[[group_name]]
         coco <- group_data[, c("count", "coverage", "mutation", by)]
-        fused <- provoc:::fuse(coco, lineage_defs, verbose = FALSE)
+        fused <- tryCatch(
+            provoc:::fuse(coco, lineage_defs, verbose = FALSE),
+            error = function(e) e
+        )
+        if (inherits(fused, "error")) {
+            res_list[[group_name]] <- data.frame(
+                rho = NA, ci_low = NA,
+                ci_high = NA, lineage = NA)
+            res_list[[group_name]][, by] <- NA
+            convergence_list[[group_name]] <- FALSE
+            boot_list[[group_name]] <- NA
+            lin_list[[group_name]] <- lineage_defs
+            next
+        }
         fissed <- fission(fused)
         coco <- fissed$coco
         lineage_defs <- fissed$lineage_defs
