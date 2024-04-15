@@ -38,8 +38,8 @@ data(Baaijens)
 b1 <- Baaijens[Baaijens$sra == Baaijens$sra[1], ]
 max_date <- max(b1$date)
 lineage_defs <- astronomize()
-lins_to_check <- extant_lineages(rownames(lineage_defs), max_date)
-lineage_defs <- filter_lineages(lineage_defs, lins_to check)
+lins_to_check <- provoc:::extant_lineages(rownames(lineage_defs), max_date)
+lineage_defs <- provoc::filter_lineages(lineage_defs, lins_to check)
 dim(lineage_defs)
 
 }

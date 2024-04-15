@@ -25,5 +25,5 @@ and \code{lineage_defs}, a matrix filtered to only include mutations on the form
 Extracts and processes components from the formula provided to the provoc function.
 }
 \examples{
-This function is internally used and not typically called by the user.
+# This function is internally used and not typically called by the user.
 }

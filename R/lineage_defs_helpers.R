@@ -42,11 +42,12 @@ lineage_defs_from_list <- function(lineage_list) {
 #' b1 <- Baaijens[Baaijens$sra == Baaijens$sra[1], ]
 #' max_date <- max(b1$date)
 #' lineage_defs <- astronomize()
-#' lins_to_check <- extant_lineages(rownames(lineage_defs), max_date)
-#' lineage_defs <- filter_lineages(lineage_defs, lins_to check)
+#' lins_to_check <- provoc:::extant_lineages(rownames(lineage_defs), max_date)
+#' lineage_defs <- provoc::filter_lineages(lineage_defs, lins_to check)
 #' dim(lineage_defs)
 #' 
 #' @return A character vector.
+#' @export
 extant_lineages <- function(lineage_names, start_date,
     check_after = TRUE, check_canada = FALSE) {
 

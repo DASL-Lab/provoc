@@ -4,7 +4,7 @@
 \alias{total_lineage_defs}
 \title{Adds a list of lineage definition matrices together.}
 \usage{
-total_lineage_defs(ldef_list)
+total_lineage_defs(ldef_list, summarise = "add")
 }
 \arguments{
 \item{ldef_list}{A list of lineage definition matrices, such as those extracted by \code{get_actual_defs}.}

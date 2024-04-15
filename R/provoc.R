@@ -244,7 +244,7 @@ remove_identical_lineages <- function(fused_df, annihilate) {
 #' @return A list containing `data`, a dataframe filtered based on the formula's LHS
 #' and `lineage_defs`, a matrix filtered to only include mutations on the formula's RHS
 #' @examples
-#' This function is internally used and not typically called by the user.
+#' # This function is internally used and not typically called by the user.
 extract_formula_components <- function(formula, data,
     lineage_defs, mutation_col, by_col) {
     # Extract LHS and RHS of the formula
