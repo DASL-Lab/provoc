@@ -356,12 +356,19 @@ plot_resids <- function(provoc_obj, type = "deviance", by_lineage = TRUE) {
 }
 
 #' plot the similarities of lineage
+#' 
+#' @param provoc_obj Either the result of \code{provoc} or a lineage definition matrix.
+#' @param type One of "Jaccard_similarity", "Differ_by_one_or_less", "is_subset", or "is_almost_subset". Default Jaccard_similiarity.
+#' @param labels Add the actual value to the plot? Default TRUE.
 #' @export
 plot_lineages <- function(provoc_obj,
     type = "Jaccard_similarity", labels = TRUE) {
     
-    old_par <- par()
-    similarities <- attributes(provoc_obj)$similarities[[type]]
+    if (inherits(provoc_obj, "provoc")) {
+        similarities <- attributes(provoc_obj)$similarities[[type]]
+    } else {
+        similarities <- lineage_similarity(provoc_obj)[[type]]
+    }
     similarities[upper.tri(similarities)] <- NA
     diag(similarities) <- NA
     similarities <- similarities[-1, -ncol(similarities)]

@@ -123,7 +123,7 @@ fission <- function(fused, sample = NULL) {
 #' @export
 lineage_similarity <- function(data, simplify = FALSE, almost = 1) {
 
-    if (any(startsWith(names(data), "lin_")))
+    if (any(startsWith(colnames(data), "lin_")))
         subset_of_lineages <- data[, startsWith(names(data), "lin_")]
     else
         subset_of_lineages <- as.data.frame(t(data))
