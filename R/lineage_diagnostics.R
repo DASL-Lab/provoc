@@ -376,16 +376,16 @@ pairwise_lineage_plot <- function(left_def, right_def,
     shared_muts <- intersect(colnames(left_def), colnames(right_def))
     # Rows are left_def, cols are right_def
     lineage_similarity <- matrix(0,
-        ncol = nrow(left_def),
-        nrow = nrow(right_def))
+        nrow = nrow(left_def),
+        ncol = nrow(right_def))
     rownames(lineage_similarity) <- paste0(prefix[2],
-        rownames(right_def))
+        rownames(left_def))
     colnames(lineage_similarity) <- paste0(prefix[1],
         rownames(right_def))
     for (lin1 in seq_along(rownames(lineage_similarity))) {
         for (lin2 in seq_along(colnames(lineage_similarity))) {
-            l1 <- right_def[rownames(right_def)[lin1], shared_muts]
-            l2 <- left_def[rownames(left_def)[lin2], shared_muts]
+            l2 <- right_def[rownames(right_def)[lin2], shared_muts]
+            l1 <- left_def[rownames(left_def)[lin1], shared_muts]
             intersection <- as.logical(l1) & as.logical(l2)
             lineage_similarity[lin1, lin2] <- sum(intersection) /
                 length(shared_muts)
