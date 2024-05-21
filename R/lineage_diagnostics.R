@@ -378,9 +378,9 @@ pairwise_lineage_plot <- function(left_def, right_def,
     lineage_similarity <- matrix(0,
         nrow = nrow(left_def),
         ncol = nrow(right_def))
-    rownames(lineage_similarity) <- paste0(prefix[2],
+    rownames(lineage_similarity) <- paste0(prefix[1],
         rownames(left_def))
-    colnames(lineage_similarity) <- paste0(prefix[1],
+    colnames(lineage_similarity) <- paste0(prefix[2],
         rownames(right_def))
     for (lin1 in seq_along(rownames(lineage_similarity))) {
         for (lin2 in seq_along(colnames(lineage_similarity))) {
@@ -392,5 +392,5 @@ pairwise_lineage_plot <- function(left_def, right_def,
         }
     }
     heatmap(lineage_similarity,
-        Rowv = NA, Colv = NA, scale = "none")
+        Rowv = NA, Colv = NA, scale = "none", ...)
 }
