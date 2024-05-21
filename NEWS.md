@@ -5,6 +5,7 @@
     - Requires the `reticulate` package and an installation of python (the lineage definitions are stored in a python file, and I'm not a good enough programmer to parse it).
 - `plot_lineage_defs2()` can handle cases where mutations/lineages are completely missing from one of the defs. 
 - `pkgdown()` site complete.
+- `pairwise_lineage_plot()` will plot two arbitrary lineage definitions. This is useful for when lineages are defined according to clustering (without clinical sequences to define pangolineages), such as with NMF.
 
 ## Version 0.5.4: What will I do with all these lineage definitions?
 

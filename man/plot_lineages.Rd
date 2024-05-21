@@ -6,6 +6,13 @@
 \usage{
 plot_lineages(provoc_obj, type = "Jaccard_similarity", labels = TRUE)
 }
+\arguments{
+\item{provoc_obj}{Either the result of \code{provoc} or a lineage definition matrix.}
+
+\item{type}{One of "Jaccard_similarity", "Differ_by_one_or_less", "is_subset", or "is_almost_subset". Default Jaccard_similiarity.}
+
+\item{labels}{Add the actual value to the plot? Default TRUE.}
+}
 \description{
 plot the similarities of lineage
 }

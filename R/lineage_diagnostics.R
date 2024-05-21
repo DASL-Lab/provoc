@@ -361,3 +361,36 @@ plot_actual_defs <- function(provoc_obj,
     heatmap(total_def, Rowv = NA, Colv = NA, scale = "none",
         revC = TRUE, col = col, main = main)
 }
+
+#' Pairwise Jaccard similarity of all lineages from two separate definitions
+#' 
+#' Especially useful for arbitrary or made-up definitions, such as those from clustering of mutations.
+#' 
+#' @param left_def,right_def Lineage definition matrices. Column names must be mutations in the same format, rownames can be arbitrary.
+#' @param prefix Optional character vector of length 2. Add a prefix to the lineage names to better differentiate them. The first entry is taken to be the prefix for left_def, the second is for right_def.
+#' @param ... Options to be passed to \code{heatmap}, especially, main, col, margins
+#' 
+#' @export
+pairwise_lineage_plot <- function(left_def, right_def,
+    prefix = c("", ""), ...) {
+    shared_muts <- intersect(colnames(left_def), colnames(right_def))
+    # Rows are left_def, cols are right_def
+    lineage_similarity <- matrix(0,
+        ncol = nrow(left_def),
+        nrow = nrow(right_def))
+    rownames(lineage_similarity) <- paste0(prefix[2],
+        rownames(right_def))
+    colnames(lineage_similarity) <- paste0(prefix[1],
+        rownames(right_def))
+    for (lin1 in seq_along(rownames(lineage_similarity))) {
+        for (lin2 in seq_along(colnames(lineage_similarity))) {
+            l1 <- right_def[rownames(right_def)[lin1], shared_muts]
+            l2 <- left_def[rownames(left_def)[lin2], shared_muts]
+            intersection <- as.logical(l1) & as.logical(l2)
+            lineage_similarity[lin1, lin2] <- sum(intersection) /
+                length(shared_muts)
+        }
+    }
+    heatmap(lineage_similarity,
+        Rowv = NA, Colv = NA, scale = "none")
+}
