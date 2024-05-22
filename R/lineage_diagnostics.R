@@ -2,7 +2,7 @@
 #'
 #' @param lineage_defs Lineage definition matrix, such as those produced by \code{astronomize()} and \code{usher_barcodes()}.Alternatively the output of \code{provoc()}, from which the lineage definition matrix will be extracted.
 #' @param col A function that takes argument \code{n} and returns a vector of colours of length \code{n}, such as \code{colorRampPallette(c("white", "dodgerblue4"))}
-#' @param main a main title for the plot.
+#' @param ... Further arguments to be passed to \code{heatmap}, especially \code{main} and \code{margins}.
 #'
 #' @details Every second column in the display has a slight grey background to make it easier to read which mutation is in which lineage.
 #'
@@ -19,8 +19,7 @@
 #'
 #' @export
 plot_lineage_defs <- function(lineage_defs,
-    col = colorRampPalette(colors = c("white", "dodgerblue4")),
-    main = NULL) {
+    col = colorRampPalette(colors = c("white", "dodgerblue4")), ...) {
 
     if (inherits(lineage_defs, "provoc")) {
         lineage_defs <- get_actual_defs(lineage_defs)
@@ -64,7 +63,7 @@ plot_lineage_defs <- function(lineage_defs,
     max(ldef_processed)
 
     heatmap(ldef_processed, Rowv = NA, Colv = NA, scale = "none",
-        col = colours, main = main)
+        col = colours, main = main, ...)
 }
 
 #' Calculate the set differences for two character vectors
@@ -305,6 +304,7 @@ coverage_by_lineage_defs <- function(provoc_obj, fun = mean, ...) {
 #' @param ... Further arguments passed on to \code{fun}
 #' @param col Colours to be used in plotting. Default \code{hcl.colors(n = 21, palette = "Dark Mint", rev = TRUE)}. Single-hue sequential colour palettes recommended. 
 #' @param main A main title for the plot.
+#' @param margins The margins of the plot, as used by \code{heatmap()}.
 #' 
 #' @examples
 #' 
@@ -325,7 +325,8 @@ coverage_by_lineage_defs <- function(provoc_obj, fun = mean, ...) {
 #' @export
 plot_actual_defs <- function(provoc_obj,
     type = "coverage", fun = mean, ..., main = NULL,
-    col = hcl.colors(n = 21, palette = "Dark Mint", rev = TRUE)) {
+    col = hcl.colors(n = 21, palette = "Dark Mint", rev = TRUE),
+    margins = c(12, 10)) {
     if (type == "used") {
         total_def <- total_lineage_defs(get_actual_defs(provoc_obj))
     } else if (type == "coverage") {
@@ -359,7 +360,7 @@ plot_actual_defs <- function(provoc_obj,
     }
 
     heatmap(total_def, Rowv = NA, Colv = NA, scale = "none",
-        revC = TRUE, col = col, main = main)
+        revC = TRUE, col = col, main = main, margins = margins)
 }
 
 #' Pairwise Jaccard similarity of all lineages from two separate definitions

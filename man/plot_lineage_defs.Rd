@@ -7,7 +7,7 @@
 plot_lineage_defs(
   lineage_defs,
   col = colorRampPalette(colors = c("white", "dodgerblue4")),
-  main = NULL
+  ...
 )
 }
 \arguments{
@@ -15,7 +15,7 @@ plot_lineage_defs(
 
 \item{col}{A function that takes argument \code{n} and returns a vector of colours of length \code{n}, such as \code{colorRampPallette(c("white", "dodgerblue4"))}}
 
-\item{main}{a main title for the plot.}
+\item{...}{Further arguments to be passed to \code{heatmap}, especially \code{main} and \code{margins}.}
 }
 \description{
 Plot a lineage definition matrix

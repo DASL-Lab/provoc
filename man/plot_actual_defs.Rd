@@ -10,7 +10,8 @@ plot_actual_defs(
   fun = mean,
   ...,
   main = NULL,
-  col = hcl.colors(n = 21, palette = "Dark Mint", rev = TRUE)
+  col = hcl.colors(n = 21, palette = "Dark Mint", rev = TRUE),
+  margins = c(12, 10)
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ plot_actual_defs(
 \item{main}{A main title for the plot.}
 
 \item{col}{Colours to be used in plotting. Default \code{hcl.colors(n = 21, palette = "Dark Mint", rev = TRUE)}. Single-hue sequential colour palettes recommended.}
+
+\item{margins}{The margins of the plot, as used by \code{heatmap()}.}
 }
 \description{
 Visualize how lineage definitions were used in analysis
