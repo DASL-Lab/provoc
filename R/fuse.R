@@ -27,7 +27,7 @@
 #' fused <- fuse(b1, lineage_defs)
 #' head(fused)
 #' @keywords internal
-fuse <- function(coco, lineage_defs, min_perc = 0.01, verbose = FALSE) {
+fuse <- function(coco, lineage_defs, min_perc = 0.01, verbose = FALSE, squash = FALSE) {
     if (any(colnames(coco) %in% paste0("lin_", rownames(lineage_defs)))) {
         stop("coco should not contain column names that are names of lineages. Is this object already fused?")
     }
@@ -66,16 +66,18 @@ fuse <- function(coco, lineage_defs, min_perc = 0.01, verbose = FALSE) {
     lin2 <- lin2[!too_many_zeros, ]
 
     # Squash (nearly) identical lineages
-    i <- 0
-    while (i < nrow(lin2)) {
-        i <- i + 1
-        this_row <- lin2[i, ]
-        dupes <- apply(lin2, 1, function(x) mean(this_row == x))
-        dupes[i] <- 0
-        if (any(dupes > 0.99)) {
-            squashed <- rownames(lin2)[c(i, which(dupes > 0.99))]
-            rownames(lin2)[i] <- paste(squashed, collapse = "|")
-            lin2 <- lin2[dupes <= 0.99, ]
+    if (squash) {
+        i <- 0
+        while (i < nrow(lin2)) {
+            i <- i + 1
+            this_row <- lin2[i, , drop = FALSE]
+            dupes <- apply(lin2, 1, function(x) mean(this_row == x))
+            dupes[i] <- 0
+            if (any(dupes > 0.99)) {
+                squashed <- rownames(lin2)[c(i, which(dupes > 0.99))]
+                rownames(lin2)[i] <- paste(squashed, collapse = "|")
+                lin2 <- lin2[dupes <= 0.99, ]
+            }
         }
     }
 
