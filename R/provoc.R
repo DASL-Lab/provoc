@@ -252,7 +252,7 @@ remove_identical_lineages <- function(fused_df, annihilate) {
 extract_formula_components <- function(formula, data,
     lineage_defs, mutation_col, by_col) {
     # Extract LHS and RHS of the formula
-    formula_str <- deparse(formula, width.cutoff = 500)
+    formula_str <- paste0(deparse(formula, width.cutoff = 500), collapse = " ")
     formula_parts <- strsplit(formula_str, "~")[[1]]
     lhs <- trimws(formula_parts[1])
     rhs <- trimws(formula_parts[2])
