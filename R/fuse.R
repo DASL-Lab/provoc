@@ -1,6 +1,8 @@
 #' Ensure mutations are present in the data and lineage_defs
 #'
 #' Finds the intersection between the mutations present in coco and lineage_defs. Will squash lineages together if the resulting mutation list is too similar (see details).
+#' 
+#' TODO: This could be an inner join followed by lineage post-processing; i.e., lineage defs could be dataframes (much more reasonable data type for humans), and a function "check_lineages()" will give the user the relevant info.
 #'
 #' @param coco A data frame with a column labelled \code{mutation}.
 #' @param lineage_defs Rownames are lineages, column names are Mutations.
@@ -91,6 +93,8 @@ fuse <- function(coco, lineage_defs, min_perc = 0.01, verbose = FALSE, squash = 
 #' Un-fuse coco and lineage_defs.
 #'
 #' Fusion ensures that the mutation lists match and are in the correct order, but the two are separated for analysis.
+#' 
+#' TODO: This function is fragile. It expects column names that start with "lin_". Is this what I want? Would it be easier to have the column names be arbitrary and have the ones that are lineages stored in attributes?
 #'
 #' @param fused The result of \code{fuse(coco, lineage_defs)}
 #' @param sample The name of the sample being used.

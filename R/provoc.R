@@ -2,6 +2,8 @@
 #'
 #' Applies provoc_optim to analyze COVID-19 lineage proportions.
 #' It allows flexible lineage and mutation definitions.
+#' 
+#' TODO: Add argument "fit" so that the user can create an object with the lineage definitions that will actually be used for fitting.
 #'
 #' @param formula A formula for the binomial model, like cbind(count, coverage) ~ .
 #' @param data Data frame containing count, coverage, and lineage columns.
@@ -53,6 +55,7 @@ provoc <- function(formula, data,
     mutation_col <- find_muation_column_output[[2]]
 
     # Find how many mutations they have in common
+    # TODO: Separate into helper function
     if (is.null(by)) {
         mutations_used <- length(intersect(
             data[, mutation_col],
@@ -77,10 +80,12 @@ provoc <- function(formula, data,
     # Extract components from the formula
     components <- extract_formula_components(formula, data,
         lineage_defs, mutation_col, by)
+    # TODO: This is wasteful for RAM, I think?
     data <- components$data
     lineage_defs <- components$lineage_defs
 
     # Fuse data with mutation definitions
+    # TODO: This is also wasteful for RAM. The functions should gather the important info and then do all modifications in one step.
     data <- provoc:::fuse(data, lineage_defs, verbose = verbose)
 
     #Finding summary statistics while lineage_defs is still in lineage_defs form
@@ -131,6 +136,7 @@ provoc <- function(formula, data,
             by = by)
     }
 
+   # TODO: This is more RAM waste. STOP MAKING COPIES OF THE DATA.
     provoc_obj <- final_results
     attr(provoc_obj, "lineage_defs") <- lineage_defs
     attr(provoc_obj, "lineage_defs_actual") <- res$lineage_defs
@@ -150,6 +156,8 @@ provoc <- function(formula, data,
 #' Validate Inputs for provoc
 #'
 #' Checks if the provided formula and data frame are valid for analysis.
+#' 
+#' TODO: Check for column names and mutations here.
 #'
 #' @param formula [stats]{formula}, specifying the model to be fitted.
 #' @param data A data frame containing the variables in the model.
@@ -204,6 +212,7 @@ find_mutation_column <- function(data, lineage_defs) {
 #' # This function is internally used and not typically called by the user.
 #' @keywords internal
 remove_identical_lineages <- function(fused_df, annihilate) {
+    # TODO: Either go all-in on dplyr or switch to base R throughout.
     subset_of_lineages <- dplyr::select(fused_df, contains("lin_"))
     if (annihilate) {
         unique_subset_of_lineages <- t(unique(t(subset_of_lineages)))
@@ -219,7 +228,7 @@ remove_identical_lineages <- function(fused_df, annihilate) {
     } else {
         names_of_duplicate_lin <- names(which(duplicated(t(fused_df))))
         for (lin in names_of_duplicate_lin) {
-            other_lineages <- dplyr::select(subset_of_lineages,!contains(lin))
+            other_lineages <- dplyr::select(subset_of_lineages, !contains(lin))
             duplicated_with_lin <- c(lin)
             for (lin_i in colnames(other_lineages)) {
                 if (all(other_lineages[[lin_i]] == subset_of_lineages[[lin]])) {
@@ -237,6 +246,8 @@ remove_identical_lineages <- function(fused_df, annihilate) {
 #' Extract Formula Components
 #'
 #' Extracts and processes components from the formula provided to the provoc function.
+#' 
+#' TODO: Error checking for "count / coverage ~ ..." pattern (check if user just put frequency ~ .). 
 #'
 #' @param formula The formula input by the user.
 #' @param data The dataframe containing the dataset.
@@ -316,6 +327,8 @@ process_lineage_defs <- function(lineage_defs) {
 #' Prepare and Fuse Data
 #'
 #' Prepares the data based on the grouping variable and applies the \code{fuse} function.
+#' 
+#' TODO: Unit testing for this function. Also, it doesn't fuse. Would be nice if fused data happened earlier, but hard to ensure consistency for multiple samples.
 #'
 #' @param data A data frame containing the variables in the model.
 #' @param lineage_defs A matrix of mutation definitions.

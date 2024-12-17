@@ -219,6 +219,8 @@ autoplot.provoc <- function(provoc_obj, date_col = NULL) {
 }
 
 #' Extract the lineage definitions used as input for the model
+#' 
+#' TODO: Reorganize these functions to another file.
 #'
 #' @param provoc_obj Object of class provoc to be used to extract the mutation definitions.
 #'
@@ -281,6 +283,8 @@ get_convergence <- function(res, verbose = TRUE) {
 
 
 #' Summarise the similarities in lineage matrices
+#' 
+#' TODO: Shorter, but also more informative.
 #'
 #' @inherit summary.provoc
 summarise_lineages <- function(provoc_obj) {
@@ -320,6 +324,8 @@ summarise_lineages <- function(provoc_obj) {
 }
 
 #' Plot the residuals, by lineage
+#' 
+#' TODO: More information, some theory.
 #'
 #' @param provoc_obj Result of fitting provoc().
 #' @param type Deviance or raw residuals.
@@ -356,6 +362,8 @@ plot_resids <- function(provoc_obj, type = "deviance", by_lineage = TRUE) {
 }
 
 #' plot the similarities of lineage
+#' 
+#' TODO: Isn't this a duplicate of functions in lineage_diagnostics.R
 #' 
 #' @param provoc_obj Either the result of \code{provoc} or a lineage definition matrix.
 #' @param type One of "Jaccard_similarity", "Differ_by_one_or_less", "is_subset", or "is_almost_subset". Default Jaccard_similiarity.

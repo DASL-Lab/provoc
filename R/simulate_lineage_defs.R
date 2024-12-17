@@ -1,3 +1,5 @@
+# TODO: Is this deprecated? Should it be?
+
 #' Simulate a small lineage matrix for testing
 #'
 #' Creates a matrix with the specified VoCs and mutation names, but randomly applies mutations. A future version of this function may be useful for simulating mutations in a more meaningful way, but for now it's only useful for testing purposes.

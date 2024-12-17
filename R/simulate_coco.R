@@ -1,3 +1,5 @@
+# TODO: Is this deprecated? Should it be?
+
 #' Simulate counts and coverage from a lineage definition matrix
 #'
 #' @param lineage_defs The lineage definition matrix, with properly named rows (VOCs) and columns (mutations)

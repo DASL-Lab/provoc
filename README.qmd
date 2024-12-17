@@ -225,14 +225,20 @@ plot_lineages(res_all)
     - [x] Correct documentation errors and vestiges
     - [x] Documentation overhaul and standardization
     - [ ] Trim the fat! Many functions are deprecated but not marked as so.
+    - [ ] Consider a custom data data class that contains the data and the lineages (like `fuse()` but more powerful, but also hidden unless desired like `stats::model.matrix()`). This allows for more methods, such as checking lineages based on actual data and plotting lineages easily, and can help make the "`~ .`" notation even easier for the `provoc()` function. 
+    - [ ] Add a vignette for a basic analysis and for a detailed analysis (using as many user-facing functions as is reasonable).
+    - [ ] Examples for all user-facing functions
+    - [ ] Optimizations: Stop making copies of the data!
 - [ ] 0.7: Better handling of multiple samples
     - [ ] General ease of use for fitting multiple models, checking lineage definitions, and checking diagnostics.
     - [ ] Dealing with residuals (raw and deviance) from multiple samples.
     - [ ] Proper diagnostics, easily applied to all samples
     - [ ] Maybe add a `multiprovoc` class so functions know how to handle things? If not, add the relevant functionality based on whether the "by" column has more than one unique value.
 - [ ] 0.8: Multiple methods
+    - [ ] Basic linear models, GLMs, and LASSO for comparison
     - [ ] Freyja and AlCoV (possibly others) as first-class objects, with access to methods for `provoc` objects.
-        - Potentially loading in Freyja output files as `provoc` objects
+        - Potentially loading in Freyja output files as `provoc` objects.
+    - [ ] Temporally Varying Coefficient (Functions-on-Scalars) models when `by` is a datetime object.
     - [ ] Stacking (`cbind()`) models for ease of comparison
     - [ ] Import and process iVar data, more mutation processing functions.
     - [ ] Main function works for multiple methods and data sources.
