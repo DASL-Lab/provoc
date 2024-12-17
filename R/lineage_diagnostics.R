@@ -19,7 +19,7 @@
 #'
 #' @export
 plot_lineage_defs <- function(lineage_defs,
-    col = colorRampPalette(colors = c("white", "dodgerblue4")), ...) {
+    col = colorRampPalette(colors = c("white", "dodgerblue4")), main = "Lineage Definitions", ...) {
 
     if (inherits(lineage_defs, "provoc")) {
         lineage_defs <- get_actual_defs(lineage_defs)

@@ -275,7 +275,7 @@ differ_by_one_or_less <- function(v1, v2) {
 #' @return The Jaccard simularity
 #' @keywords internal
 jaccard_simularity <- function(v1, v2) {
-    return(sum(v1 & v2) / sum(v1 | v2))
+    return(sum(v1  == v2) / sum(v1 | v2))
 }
 
 #' Finds if one lineage is a subset of another

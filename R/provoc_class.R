@@ -363,7 +363,7 @@ plot_resids <- function(provoc_obj, type = "deviance", by_lineage = TRUE) {
 #' @export
 plot_lineages <- function(provoc_obj,
     type = "Jaccard_similarity", labels = TRUE) {
-    
+
     if (inherits(provoc_obj, "provoc")) {
         similarities <- attributes(provoc_obj)$similarities[[type]]
     } else {

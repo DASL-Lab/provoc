@@ -40,7 +40,9 @@ predict.provoc <- function(provoc_obj,
         as.data.frame(provoc_obj)[, c("rho", "lineage", by_col)],
         values_from = rho, names_from = lineage,
         names_prefix = "lin_"
-    ) |> as.data.frame()
+    )
+    res_wide[is.na(res_wide)] <- 0
+    res_wide <- as.data.frame(res_wide)
     if (!is.null(by_col)) {
         res_wide <- res_wide[match(data_groups, res_wide[, by_col]), ]
     } else {
