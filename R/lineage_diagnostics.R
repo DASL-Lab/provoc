@@ -397,7 +397,7 @@ pairwise_lineage_plot <- function(left_def, right_def,
             l1 <- left_def[rownames(left_def)[lin1], shared_muts]
             intersection <- as.logical(l1) & as.logical(l2)
             lineage_similarity[lin1, lin2] <- sum(intersection) /
-                length(shared_muts)
+                sum(as.logical(l1) | as.logical(l2))
         }
     }
     heatmap(lineage_similarity,
