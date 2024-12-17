@@ -321,9 +321,9 @@ usher_barcodes <- function(
     barcodes
 }
 
-#' Gather CoVariants defintions
+#' Gather CoVariants defintions, as defined by \url{https://github.com/hodcroftlab/covariants}
 #' 
-#' CoVariants are stored as a python script, so this code downloads the file, runs it via \code{reticulate}, then parses the output.
+#' CoVariants are stored as a python script, so this code downloads the file, runs it via \code{reticulate}, then parses the output. This requires \code{python} on your computer's path, but the actual script simply defines a dictionary and thus should work on most versions of Python.
 #' 
 #' @param filename Save to disk so that the python needn't be run every time. If file exists, it is loaded rather than re-downloaded.
 #' @param path Path to which to read or write file.

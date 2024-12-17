@@ -13,6 +13,8 @@ to_feasible <- function(x) {
 
 #' Initialize a vector of proportions for the lineages of concern, prioritizing current (March 2022) most probable VoCs.
 #' 
+#' TODO: March 2022 is no longer "now". This function should not be called without reasonable defaults.
+#' 
 #' @param lineage_defs The lineage matrix to be used in the study; only used for the rownames (which should be VOCs in the expected format)
 #' 
 #' @return lineage_defs a vector with the same length as the number of rows of lineage_defs, such that the values sum to less than one and each value is between 0 and 1
@@ -39,7 +41,7 @@ rho_initializer <- function(lineage_defs) {
 
 #' Estimate the proportions of VOCs using Constrained Optimization
 #' 
-#' If 
+#' TODO: coco and lineage_defs shouldn't need to be separate; probably better for memory if they aren't.
 #' 
 #' @param coco A data frame containing columns labelled count, coverage, and mutation.
 #' @param lineage_defs The lineage matrix to be used in the study. The rownames must be the VoCs and the colnames must be the mutation names (in the same format as the mutation names in `coco`)

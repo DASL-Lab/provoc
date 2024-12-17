@@ -1,6 +1,8 @@
+# TODO: Better organization of functions. The plotting functions and the similarity calculations should be separate.
+
 #' Plot a lineage definition matrix
 #'
-#' @param lineage_defs Lineage definition matrix, such as those produced by \code{astronomize()} and \code{usher_barcodes()}.Alternatively the output of \code{provoc()}, from which the lineage definition matrix will be extracted.
+#' @param lineage_defs Lineage definition matrix, such as those produced by \code{astronomize()} and \code{usher_barcodes()}. Alternatively the output of \code{provoc()}, from which the lineage definition matrix will be extracted.
 #' @param col A function that takes argument \code{n} and returns a vector of colours of length \code{n}, such as \code{colorRampPallette(c("white", "dodgerblue4"))}
 #' @param ... Further arguments to be passed to \code{heatmap}, especially \code{main} and \code{margins}.
 #'
@@ -79,6 +81,8 @@ left_both_right <- function(left, right) {
 }
 
 #' Compare two lineage definition matrices
+#' 
+#' TODO: Check where this is used, make sure it's as useful as possible, give a more informative name.
 #'
 #' @param left_def,right_def Lineage definition matrices, such as those produced by \code{astronomize()} and \code{usher_barcodes()}.Alternatively the output of \code{provoc()}, from which the lineage definition matrix will be extracted (one may be a lineage definition matrix and the other may be the result of fitting provoc, allowing for comparison of which lineages/mutations were actually used).
 #' @param col A vector of three colours (left, middle, right). For a mutation present in \code{left_def} only, the colour will be the first colour in the vector, while a mutation not present will be 80% of the way between the left colour and the middle colour (similar for \code{right_def}). Optionally, the user can specify a vector of length 6, where the colours define left, middle, right, NA, neither, and both.
@@ -298,6 +302,8 @@ coverage_by_lineage_defs <- function(provoc_obj, fun = mean, ...) {
 
 #' Visualize how lineage definitions were used in analysis
 #' 
+#' TODO: Is this a duplicate of plot_lineage_defs() above??? Check with real data and choose the one I like best.
+#' 
 #' @param provoc_obj The result of calling \code{provoc}.
 #' @param type "used" for the total number of times a mutation was used in the analysis and "coverage" for information about the coverage. Default \code{"coverage"}.
 #' @param fun The function used to summarise coverage (when type = "coverage"). Default \code{mean}.
@@ -366,6 +372,8 @@ plot_actual_defs <- function(provoc_obj,
 #' Pairwise Jaccard similarity of all lineages from two separate definitions
 #' 
 #' Especially useful for arbitrary or made-up definitions, such as those from clustering of mutations.
+#' 
+#' TODO: Is this a duplicate of plot_lineage_defs2() above???
 #' 
 #' @param left_def,right_def Lineage definition matrices. Column names must be mutations in the same format, rownames can be arbitrary.
 #' @param prefix Optional character vector of length 2. Add a prefix to the lineage names to better differentiate them. The first entry is taken to be the prefix for left_def, the second is for right_def.

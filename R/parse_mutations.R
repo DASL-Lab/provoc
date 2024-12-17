@@ -3,6 +3,8 @@
 #' 
 #' As with many things in this repo, lovingly stolen from the \code{seq_utils.py} script in \url{https://github.com/PoonLab/gromstole} (as well as PoonLab/covizu).
 #' 
+#' TODO: This could be much faster using better optimized R code, possibly with `Vectorize()`.
+#' 
 #' @param type Either "~", "+", or "-" for mutation, insertion, or deletion, respectively.
 #' @param pos The one-indexed position relative to the reference.
 #' @param alt The alternate nucleotide, nucleotides, or number of deletions, respectively.
@@ -159,16 +161,12 @@ parse_mutations <- function(labels) {
 parse_one_ivar <- function(pos, alt) {
     if (substr(alt, 1, 1) == "-") {
         type <- "-"
-        pos <- pos
         alt <- substr(alt, 2, nchar(alt))
     } else if (substr(alt, 1, 1) == "+") {
         type <- "+"
-        pos <- pos
         alt <- substr(alt, 2, nchar(alt))
     } else {
         type <- "~"
-        pos <- pos
-        alt <- alt
     }
     provoc:::parse_mutation(type, pos, alt)
 }
