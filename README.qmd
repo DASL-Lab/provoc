@@ -34,8 +34,7 @@ If not specified, the lineage definitions uses hardcoded definitions from the [c
 #| label: load_Baaijens
 #| echo: true
 #| eval: true
-#library(provoc)
-devtools::load_all()
+library(provoc)
 data(Baaijens)
 b1 <- Baaijens [Baaijens$sra == Baaijens$sra[1], ]
 b1$mutation <- parse_mutations(b1$label)
@@ -91,7 +90,7 @@ plot_lineages(res)
 ```{r}
 #| label: multi_sample
 # First thirty samples from Baaijens
-b2 <- Baaijens [Baaijens$sra %in% unique(Baaijens$sra)[1:30], ]
+b2 <- Baaijens
 b2$mutations <- parse_mutations(b2$label)
 head(b1[, c("count", "coverage", "mutation", "label", "sra")])
 ```
@@ -225,6 +224,7 @@ plot_lineages(res_all)
     - [x] Correct documentation errors and vestiges
     - [x] Documentation overhaul and standardization
     - [ ] Trim the fat! Many functions are deprecated but not marked as so.
+        - Esp. by making detailed vignettes to see which functions are actually used.
 - [ ] 0.7: Better handling of multiple samples
     - [ ] General ease of use for fitting multiple models, checking lineage definitions, and checking diagnostics.
     - [ ] Dealing with residuals (raw and deviance) from multiple samples.
