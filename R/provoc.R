@@ -42,6 +42,7 @@ provoc <- function(formula, data,
     lineage_defs = NULL, by = NULL,
     bootstrap_samples = 0, update_interval = 20,
     verbose = FALSE, annihilate = FALSE) {
+    data <- as.data.frame(data)
     #creating original copy of data for later use
     data_copy <- data
 
