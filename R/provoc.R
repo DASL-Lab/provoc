@@ -187,10 +187,10 @@ validate_inputs <- function(formula, data) {
 find_mutation_column <- function(data, lineage_defs) {
     mutation_col <- NULL
     for (col in colnames(data)) {
-        if (any(colnames(lineage_defs) %in% data[, col])) {
+        if (any(colnames(lineage_defs) %in% unname(unlist(data[, col])))) {
             mutation_col <- col
             return(list(lineage_defs, mutation_col))
-        } else if (any(rownames(lineage_defs) %in% data[, col])) {
+        } else if (any(rownames(lineage_defs) %in% unname(unlist(data[, col])))) {
             mutation_col <- col
             return(list(t(lineage_defs), mutation_col))
         }
